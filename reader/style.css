@@ -1,0 +1,515 @@
+@import url('data:text/css,');
+:root {
+  color-scheme: dark;
+  --bg: #101619;
+  --panel: #161e22;
+  --border: #2b383d;
+  --muted: #99abb2;
+  --text: #e0e8e8;
+  --accent: #a8c8a2;
+  --gold: #c8b88c;
+}
+* {
+  box-sizing: border-box;
+}
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font:
+    14px/1.65 'Segoe UI',
+    'Microsoft YaHei',
+    sans-serif;
+}
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+button,
+a,
+input,
+select,
+textarea {
+  outline-offset: 4px;
+}
+button {
+  cursor: pointer;
+  background: #202b30;
+  border: 1px solid var(--border);
+  color: var(--text);
+  padding: 7px 12px;
+  border-radius: 5px;
+}
+button:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+button:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+a {
+  color: var(--accent);
+}
+input,
+select,
+textarea {
+  background: #10181c;
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  color: var(--text);
+  padding: 9px;
+  width: 100%;
+}
+textarea {
+  resize: vertical;
+}
+label {
+  display: block;
+  color: var(--muted);
+  font-size: 12px;
+  margin: 14px 0 8px;
+}
+label input,
+label textarea {
+  margin-top: 7px;
+}
+header {
+  height: 86px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  gap: 25px;
+  padding: 0 28px;
+  background: #141c20;
+}
+.brand {
+  display: flex;
+  gap: 14px;
+  align-items: center;
+  font-size: 18px;
+  font-weight: 600;
+  letter-spacing: 2px;
+}
+.mark {
+  font: 36px Georgia;
+  color: var(--accent);
+}
+small {
+  display: block;
+  font-size: 9px;
+  letter-spacing: 3px;
+  color: var(--muted);
+}
+header button {
+  margin-left: auto;
+}
+.scope {
+  border-left: 1px solid var(--border);
+  padding-left: 24px;
+  font-size: 12px;
+  color: var(--muted);
+}
+.workspace {
+  display: grid;
+  grid-template-columns: 285px minmax(350px, 1fr) 320px;
+  height: calc(100vh - 86px);
+}
+aside {
+  padding: 25px 20px;
+  overflow-y: auto;
+  background: var(--panel);
+}
+.library {
+  border-right: 1px solid var(--border);
+}
+.inspector {
+  border-left: 1px solid var(--border);
+}
+main {
+  padding: 28px 40px;
+  overflow-y: auto;
+  scroll-behavior: smooth;
+}
+h1 {
+  font-size: 30px;
+  font-weight: 500;
+  letter-spacing: 1px;
+  margin: 24px 0 6px;
+}
+h2 {
+  font-size: 19px;
+  font-weight: 500;
+  margin: 8px 0;
+}
+h3 {
+  font-size: 14px;
+  margin-top: 24px;
+}
+h4 {
+  color: var(--gold);
+  font-size: 12px;
+}
+.eyebrow {
+  font-size: 10px;
+  letter-spacing: 2px;
+  color: var(--accent);
+}
+.muted {
+  color: var(--muted);
+  font-size: 12px;
+}
+.hint {
+  font-size: 11px;
+  color: var(--muted);
+  line-height: 1.8;
+}
+.filters {
+  display: flex;
+  gap: 6px;
+}
+.filters select {
+  font-size: 11px;
+  padding: 7px 3px;
+}
+.readerTop {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  align-items: center;
+}
+.readerTop button {
+  font-size: 11px;
+  padding: 6px;
+}
+.toolbar {
+  display: flex;
+  gap: 7px;
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  padding: 14px 0;
+  margin: 25px 0 16px;
+  flex-wrap: wrap;
+}
+.toolbar select {
+  width: auto;
+  max-width: 180px;
+  font-size: 12px;
+}
+.toolbar input {
+  flex: 1;
+  min-width: 100px;
+  width: 120px;
+}
+.toolbar button {
+  font-size: 12px;
+}
+.notice {
+  border-left: 3px solid var(--gold);
+  background: #29281f;
+  padding: 12px 15px;
+  color: #d1c49f;
+  font-size: 12px;
+}
+details {
+  margin: 14px 0;
+  border: 1px solid var(--border);
+  padding: 10px;
+  font-size: 12px;
+}
+summary {
+  cursor: pointer;
+  color: var(--muted);
+}
+details p {
+  white-space: pre-wrap;
+}
+pre {
+  overflow: auto;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  font:
+    11px/1.6 Consolas,
+    monospace;
+  color: #b3c9cb;
+}
+nav details {
+  padding: 0;
+  border: 0;
+  margin: 6px 0;
+}
+nav summary {
+  padding: 10px 4px;
+  color: #cbd6d6;
+  font-size: 13px;
+}
+nav summary span {
+  float: right;
+  color: var(--muted);
+  font-size: 10px;
+}
+.chapter {
+  display: block;
+  text-align: left;
+  border: 0;
+  border-left: 2px solid transparent;
+  border-radius: 0;
+  background: transparent;
+  width: 100%;
+  font-size: 12px;
+  padding: 10px;
+  color: var(--muted);
+}
+.chapter.active {
+  background: #26332f;
+  color: var(--accent);
+  border-left-color: var(--accent);
+}
+.chapter small {
+  font-size: 10px;
+  letter-spacing: 0;
+}
+article.line {
+  position: relative;
+  border-left: 2px solid transparent;
+  padding: 15px 18px;
+  margin: 3px 0;
+  cursor: pointer;
+  border-radius: 3px;
+}
+article.line:hover {
+  background: #192329;
+}
+.line.selected {
+  background: #1f2c2c;
+  border-left-color: var(--accent);
+}
+.line .lineHead {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  font-size: 11px;
+  color: var(--muted);
+  margin-bottom: 5px;
+}
+.line .speakerName {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--accent);
+}
+.line .lineNo {
+  margin-left: auto;
+  color: #63767f;
+  font: 10px Consolas;
+}
+.line p {
+  margin: 0;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  font-size: 16px;
+  line-height: 2;
+}
+.large .line p {
+  font-size: 19px;
+}
+.line.narration p {
+  color: #b5c0c3;
+}
+.line.command,
+.line.branch {
+  border: 1px dashed var(--border);
+  background: #131c21;
+}
+.line.command p,
+.line.branch p {
+  font: 12px/1.7 Consolas;
+  color: var(--muted);
+}
+.line.choice {
+  border: 1px solid #4a4934;
+  background: #24271f;
+}
+.choice button {
+  margin: 5px;
+  max-width: 100%;
+  text-align: left;
+  border-color: #4a4934;
+}
+.tabs {
+  display: flex;
+  gap: 5px;
+  margin: 16px 0;
+}
+.tabs button {
+  flex: 1;
+  font-size: 12px;
+}
+.tabs .active {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+.selection {
+  font-size: 12px;
+  border-left: 2px solid var(--gold);
+  padding: 10px;
+  background: #1d292c;
+  overflow-wrap: anywhere;
+}
+.actions {
+  display: flex;
+  gap: 5px;
+}
+.actions button {
+  font-size: 12px;
+}
+.primary {
+  background: var(--accent);
+  color: #15251a;
+  border-color: var(--accent);
+}
+.primary:hover {
+  background: #bed6b9;
+  color: #15251a;
+}
+.fileLabel {
+  cursor: pointer;
+  border: 1px dashed var(--border);
+  padding: 6px 10px;
+  display: inline-block;
+}
+.fileLabel input {
+  display: none;
+}
+.noteItem,
+.result {
+  display: block;
+  width: 100%;
+  text-align: left;
+  margin: 8px 0;
+  font-size: 12px;
+  overflow-wrap: anywhere;
+}
+.noteItem small,
+.result small {
+  font-size: 10px;
+  letter-spacing: 0;
+}
+.wiki {
+  border-top: 1px solid var(--border);
+  margin-top: 30px;
+  padding-top: 22px;
+}
+.wiki h3 {
+  margin-top: 8px;
+}
+.wiki a {
+  font-size: 12px;
+}
+.empty {
+  padding: 60px 0;
+  text-align: center;
+  color: var(--muted);
+  line-height: 2.5;
+}
+footer {
+  font-size: 11px;
+  color: var(--muted);
+  border-top: 1px solid var(--border);
+  padding: 20px 0;
+  margin-top: 25px;
+}
+dialog {
+  max-width: 740px;
+  width: 90%;
+  background: var(--panel);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 30px;
+}
+dialog::backdrop {
+  background: #000a;
+}
+.close {
+  float: right;
+}
+#toast {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--accent);
+  color: #15251a;
+  padding: 10px 20px;
+  border-radius: 5px;
+  display: none;
+  z-index: 20;
+}
+mark {
+  background: #66572c;
+  color: #fff0b9;
+}
+@media (min-width: 1700px) {
+  .workspace {
+    grid-template-columns: 310px minmax(350px, 1fr) 350px;
+  }
+  main {
+    padding: 30px max(40px, 6vw);
+  }
+}
+@media (max-width: 1150px) {
+  .workspace {
+    grid-template-columns: 245px minmax(300px, 1fr);
+  }
+  .inspector {
+    grid-column: 1/-1;
+    border-top: 1px solid var(--border);
+    overflow: visible;
+  }
+  .workspace {
+    height: auto;
+  }
+  main,
+  .library {
+    height: calc(100vh - 86px);
+  }
+  .scope {
+    display: none;
+  }
+}
+@media (max-width: 650px) {
+  header {
+    padding: 12px;
+    height: 78px;
+  }
+  .brand {
+    font-size: 14px;
+    letter-spacing: 0;
+  }
+  .workspace {
+    display: block;
+  }
+  .library {
+    height: 320px;
+    border-bottom: 1px solid var(--border);
+  }
+  main {
+    height: auto;
+    min-height: 70vh;
+    padding: 22px 16px;
+  }
+  .readerTop {
+    align-items: start;
+  }
+  h1 {
+    font-size: 25px;
+  }
+  .inspector {
+    padding: 25px 16px;
+  }
+  .toolbar select {
+    max-width: 140px;
+  }
+}

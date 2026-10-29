@@ -1,0 +1,64 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:prts-source:reader-chapter:v1",
+  "title": "阅读器数据投影（非语义抽取）",
+  "type": "object",
+  "required": ["meta", "brief", "summary", "lines", "raw"],
+  "additionalProperties": false,
+  "properties": {
+    "meta": {
+      "type": "object",
+      "required": ["id", "key", "eventId", "member", "sha256", "lineCount", "refs"],
+      "properties": {
+        "id": { "type": "string", "pattern": "^[0-9a-f]{24}$" },
+        "key": { "type": "string" },
+        "eventId": { "type": "string" },
+        "member": { "type": "string" },
+        "sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+        "title": { "type": "string" },
+        "code": { "type": "string" },
+        "tag": { "type": "string" },
+        "type": { "type": "string" },
+        "sort": { "type": ["number", "null"] },
+        "lineCount": { "type": "integer" },
+        "textCount": { "type": "integer" },
+        "speakers": { "type": "array", "items": { "type": "string" } },
+        "optionTrace": { "type": ["boolean", "null"] },
+        "hasChoices": { "type": "boolean" },
+        "refs": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["eventId", "sort", "origin", "raw"],
+            "properties": {
+              "eventId": { "type": "string" },
+              "sort": { "type": ["number", "null"] },
+              "origin": { "enum": ["story_review_table", "story_supplement"] },
+              "raw": { "type": "object" }
+            }
+          }
+        }
+      }
+    },
+    "brief": { "type": "string" },
+    "summary": { "type": ["string", "object", "null"] },
+    "raw": { "$ref": "source-story.schema.json" },
+    "lines": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["index", "sourceId", "pointer", "kind", "speaker", "text", "raw"],
+        "additionalProperties": false,
+        "properties": {
+          "index": { "type": "integer", "minimum": 0 },
+          "sourceId": { "type": ["integer", "null"] },
+          "pointer": { "type": "string", "pattern": "^/storyList/[0-9]+$" },
+          "kind": { "enum": ["dialogue", "narration", "text", "choice", "branch", "command"] },
+          "speaker": { "type": "string" },
+          "text": { "type": "string" },
+          "raw": { "$ref": "source-story.schema.json#/$defs/line" }
+        }
+      }
+    }
+  }
+}

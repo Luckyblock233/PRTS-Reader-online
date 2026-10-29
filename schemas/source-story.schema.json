@@ -1,0 +1,52 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:prts-source:astr-story:v1",
+  "title": "ASTR 发布包剧情文件（本快照观察契约）",
+  "description": "描述源文件结构，不是知识图谱本体。开放未知字段，避免丢失脚本属性。",
+  "type": "object",
+  "required": [
+    "lang",
+    "eventid",
+    "eventName",
+    "entryType",
+    "storyCode",
+    "avgTag",
+    "storyName",
+    "storyInfo",
+    "storyList",
+    "OPTIONTRACE"
+  ],
+  "properties": {
+    "lang": { "type": "string" },
+    "eventid": { "type": "string" },
+    "eventName": { "type": "string" },
+    "entryType": { "type": "string" },
+    "storyCode": { "type": ["string", "null"] },
+    "avgTag": { "type": "string" },
+    "storyName": { "type": "string" },
+    "storyInfo": { "type": "string" },
+    "OPTIONTRACE": { "type": "boolean" },
+    "storyList": { "type": "array", "items": { "$ref": "#/$defs/line" } }
+  },
+  "additionalProperties": true,
+  "$defs": {
+    "line": {
+      "type": "object",
+      "required": ["id", "prop", "attributes"],
+      "properties": {
+        "id": { "type": "integer", "minimum": 0 },
+        "prop": { "type": ["string", "null"] },
+        "attributes": { "type": "object", "additionalProperties": true },
+        "figure_art": { "type": ["string", "null"] },
+        "targetLine": {
+          "oneOf": [
+            { "type": "string" },
+            { "type": "object", "additionalProperties": { "type": "string" } }
+          ]
+        },
+        "endOfOpt": { "type": "boolean" }
+      },
+      "additionalProperties": true
+    }
+  }
+}

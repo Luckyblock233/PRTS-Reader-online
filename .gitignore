@@ -1,0 +1,65 @@
+# Upstream checkout, research history and machine-local runtime data
+/upstream/
+/archive/
+/data/
+/.dev-deps/
+/release-latest.json
+
+# Rebuildable story projections, artwork caches and manifests
+/reader/data/
+/reader/snapshots/
+/reader/assets/figures/
+/reader/assets/figure-index.json
+
+# Editable / private configuration; version the examples instead
+/config/home.json
+*.local.json
+.env
+.env.*
+!.env.example
+.npmrc
+.pypirc
+pip.ini
+*.key
+*.pem
+*.p12
+*.pfx
+
+# Only application documentation is part of this repository
+/docs/*
+!/docs/reader-guide.md
+!/docs/architecture.md
+!/docs/development.md
+
+# Python / Node tooling, test fixtures and build outputs
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.coverage
+htmlcov/
+node_modules/
+dist/
+build/
+*.egg-info/
+/tests/tmp*/
+
+# Downloaded archives, local databases, logs and personal note exports
+*.zip
+*.sqlite*
+*.db
+*.log
+*.tmp
+*.bak
+terra-notes*.json
+
+# Editor / OS files
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+desktop.ini
+*~

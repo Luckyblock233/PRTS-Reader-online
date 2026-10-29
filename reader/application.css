@@ -1,0 +1,477 @@
+[hidden] {
+  display: none !important;
+}
+:root {
+  --app-header-height: 86px;
+}
+.appHeader {
+  position: sticky;
+  top: 0;
+  z-index: 15;
+  height: var(--app-header-height);
+  gap: 18px;
+  padding: 0 28px;
+}
+.brand {
+  text-decoration: none;
+  color: var(--text);
+  white-space: nowrap;
+}
+.appNav {
+  display: flex;
+  gap: 5px;
+  align-items: center;
+}
+.appHeader button {
+  margin-left: 0;
+}
+.appNav button {
+  border-color: transparent;
+  background: transparent;
+  white-space: nowrap;
+}
+.appNav button[aria-current] {
+  color: var(--accent);
+  background: var(--active);
+  border-color: var(--border);
+}
+.topSearch {
+  display: flex;
+  gap: 0;
+  max-width: 460px;
+  flex: 1;
+  margin-left: auto;
+}
+.topSearch input {
+  border-radius: 6px 0 0 6px;
+  min-width: 100px;
+  font-size: 13px;
+}
+.topSearch button {
+  border-radius: 0 6px 6px 0;
+  white-space: nowrap;
+  border-left: 0;
+  color: var(--accent);
+}
+.topSearch button.active {
+  background: var(--active);
+}
+.appHeader #themeToggle {
+  margin-left: 0;
+}
+.appPage {
+  height: calc(100dvh - var(--app-header-height));
+  overflow: auto;
+  padding: 48px max(28px, calc((100vw - 1160px) / 2)) 64px;
+}
+.homeHero {
+  position: relative;
+  padding: 18px 0 36px;
+  border-bottom: 1px solid var(--border);
+}
+.homeHero h1 {
+  font-size: clamp(32px, 4vw, 52px);
+  max-width: 900px;
+  margin: 25px 0 16px;
+  letter-spacing: 0.04em;
+}
+.homeHero #homeIntro {
+  max-width: 760px;
+  font-size: 17px;
+  line-height: 1.9;
+  color: var(--muted);
+  white-space: pre-wrap;
+}
+.homeHero .eyebrow {
+  letter-spacing: 3px;
+}
+.homeActions {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  margin-top: 28px;
+  flex-wrap: wrap;
+}
+.homeActions button {
+  padding: 11px 22px;
+}
+.homeActions .hint {
+  flex-basis: 100%;
+  margin: 0;
+}
+.homeMeta {
+  display: flex;
+  gap: 30px;
+  margin: 24px 0 0;
+  flex-wrap: wrap;
+  align-items: center;
+}
+.homeMeta span {
+  font-size: 12px;
+  color: var(--muted);
+}
+.homeMeta strong {
+  font:
+    24px Georgia,
+    serif;
+  color: var(--accent);
+  margin-right: 6px;
+}
+.homeMeta #editHome {
+  margin-left: auto;
+  font-size: 12px;
+}
+.homeSections {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 32px;
+  margin-top: 38px;
+}
+.homeNumber {
+  font:
+    italic 28px Georgia,
+    serif;
+  color: var(--gold);
+}
+.homeSection h2 {
+  font-size: 18px;
+  margin: 14px 0;
+}
+.homeSection p {
+  white-space: pre-wrap;
+  line-height: 1.95;
+  font-size: 14px;
+  color: var(--muted);
+}
+.homeReference {
+  margin-top: 32px;
+  padding: 24px 0 0;
+}
+.homeReference h3 {
+  font-size: 18px;
+  font-weight: 500;
+  margin: 8px 0;
+}
+.homeReference .hint {
+  font-size: 13px;
+  margin: 8px 0 14px;
+}
+.homeReference a {
+  font-size: 13px;
+}
+.homeUpdates {
+  margin-top: 32px;
+  padding: 24px 0;
+  border-top: 1px solid var(--border);
+}
+.updateHeading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+}
+.updateHeading h2 {
+  font-size: 22px;
+  margin: 6px 0;
+}
+.homeUpdates > .hint {
+  font-size: 12px;
+  max-width: 850px;
+}
+.updateVersions {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
+  gap: 16px;
+  margin: 20px 0;
+}
+.updateVersions > div {
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--surface);
+  padding: 16px 20px;
+}
+.updateVersions strong {
+  display: block;
+  font:
+    14px/1.8 Consolas,
+    var(--ui-font);
+  overflow-wrap: anywhere;
+  margin-top: 8px;
+}
+.updateVersions p {
+  margin: 7px 0 0;
+  overflow-wrap: anywhere;
+}
+.updateVersions a {
+  font-size: 12px;
+  display: inline-block;
+  margin-top: 10px;
+}
+.homeUpdates progress {
+  display: block;
+  width: 100%;
+  height: 8px;
+  margin-top: 20px;
+  accent-color: var(--accent);
+}
+.updateActions {
+  display: flex;
+  gap: 12px;
+}
+#homeEditor {
+  width: min(780px, 94vw);
+  max-height: 90dvh;
+  overflow: auto;
+}
+#homeEditor h2 {
+  margin-top: 0;
+}
+.homeEditSection {
+  border: 1px solid var(--border);
+  margin: 20px 0;
+  padding: 4px 16px 16px;
+  border-radius: 5px;
+}
+.homeEditSection legend {
+  color: var(--accent);
+  font-size: 12px;
+}
+.homeEditActions {
+  position: sticky;
+  bottom: -30px;
+  background: var(--panel);
+  border-top: 1px solid var(--border);
+  padding: 16px 0 0;
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+}
+.searchPageHead {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 20px;
+  margin-bottom: 20px;
+}
+.searchPageHead h1 {
+  font-size: 34px;
+  margin: 8px 0;
+}
+.searchPageHead p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 13px;
+}
+.corpusForm {
+  display: grid;
+  grid-template-columns: minmax(180px, 1fr) 220px auto;
+  gap: 14px;
+  align-items: end;
+}
+.corpusForm label {
+  margin: 0;
+}
+.corpusForm label select {
+  margin-top: 7px;
+}
+.corpusForm button {
+  height: 42px;
+}
+.searchFilterRow {
+  display: flex;
+  gap: 24px;
+  align-items: end;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+.searchFilterRow label {
+  max-width: 650px;
+  flex: 1;
+  margin: 0;
+}
+.searchFilterRow select {
+  margin-top: 6px;
+}
+#searchView .searchPager {
+  position: static;
+  margin: 0;
+  padding: 0;
+  gap: 20px;
+  background: transparent;
+}
+#searchPane .searchGroup {
+  font-size: 15px;
+  margin-top: 28px;
+  padding-top: 20px;
+}
+#searchPane .result {
+  padding: 18px 22px;
+  margin-bottom: 0;
+  background: var(--surface);
+}
+#searchPane .result strong {
+  font-size: 14px;
+}
+#searchPane .result p {
+  font-size: 16px;
+  font-family: var(--reading-font);
+  margin: 10px 0;
+}
+#searchPane .searchSource {
+  font-size: 11px;
+}
+#searchPane .searchContext {
+  border-top: 0;
+  padding: 12px 22px;
+}
+#searchPane .searchContext > summary {
+  font-size: 12px;
+}
+#searchPane .contextBody {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+#searchPane .contextLine {
+  margin: 0;
+  padding: 12px;
+  align-self: start;
+}
+#searchPane .contextLine p {
+  font-size: 14px;
+  font-family: var(--reading-font);
+}
+#searchPane .contextMore {
+  width: auto;
+  margin: 12px 0 0;
+}
+html:not([data-view='reader']) #exitFocus,
+html:not([data-view='reader']) #focusFigureSlot {
+  display: none !important;
+}
+.workspace,
+:root[data-focus='on'] .workspace {
+  height: calc(100dvh - var(--app-header-height));
+}
+@media (max-width: 1150px) {
+  .brand small {
+    display: none;
+  }
+  .appHeader {
+    gap: 10px;
+    padding-inline: 18px;
+  }
+  .workspace {
+    height: auto;
+  }
+  main,
+  .library {
+    height: calc(100dvh - var(--app-header-height));
+  }
+  .homeSections {
+    gap: 24px;
+  }
+}
+@media (max-width: 850px) {
+  :root {
+    --app-header-height: 132px;
+  }
+  .appHeader {
+    height: var(--app-header-height);
+    flex-wrap: wrap;
+    align-content: center;
+    gap: 8px 12px;
+  }
+  .brand {
+    font-size: 15px;
+    flex: 1;
+  }
+  .appHeader #sources {
+    font-size: 11px;
+    padding: 6px;
+  }
+  .appHeader #themeToggle {
+    font-size: 11px;
+    padding: 6px;
+  }
+  .topSearch {
+    order: 5;
+    flex-basis: 100%;
+    max-width: none;
+  }
+  .appPage {
+    padding: 28px 24px 48px;
+  }
+  .homeSections {
+    grid-template-columns: 1fr;
+    gap: 15px;
+  }
+  .homeSection {
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 16px;
+  }
+  .homeSection h2 {
+    display: inline;
+    margin-left: 12px;
+  }
+  .corpusForm {
+    grid-template-columns: 1fr 180px;
+  }
+  .corpusForm > label:first-child {
+    grid-column: 1/-1;
+  }
+  .searchFilterRow {
+    align-items: stretch;
+    flex-direction: column;
+    gap: 14px;
+  }
+  .searchFilterRow label {
+    max-width: none;
+  }
+  #searchView .searchPager {
+    justify-content: space-between;
+  }
+  #searchPane .contextBody {
+    grid-template-columns: 1fr;
+  }
+  .appNav button {
+    font-size: 12px;
+    padding: 6px;
+  }
+}
+@media (max-width: 500px) {
+  .appHeader #sources {
+    display: none;
+  }
+  .brand {
+    font-size: 13px;
+    letter-spacing: 0;
+  }
+  .brand .mark {
+    font-size: 26px;
+  }
+  .appNav {
+    gap: 0;
+  }
+  .appNav button {
+    font-size: 11px;
+    padding: 6px;
+  }
+  .homeMeta {
+    gap: 16px;
+  }
+  .homeHero h1 {
+    font-size: 32px;
+  }
+  .homeHero #homeIntro {
+    font-size: 15px;
+  }
+  .appPage {
+    padding: 24px 18px;
+  }
+  .searchPageHead h1 {
+    font-size: 28px;
+  }
+}

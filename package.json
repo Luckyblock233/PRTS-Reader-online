@@ -1,0 +1,20 @@
+{
+  "name": "prts-reader",
+  "version": "0.1.0",
+  "packageManager": "pnpm@11.25.0",
+  "private": true,
+  "type": "module",
+  "description": "Local-first Arknights story reader. Node.js is used only for development tools.",
+  "license": "MIT",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "test": "node --test tests/reading-session.test.mjs",
+    "format": "prettier --write reader config/*.example.json config/data-source.json config/figure-source.json schemas *.md docs/architecture.md docs/development.md docs/reader-guide.md .github",
+    "format:check": "prettier --check reader config/*.example.json config/data-source.json config/figure-source.json schemas *.md docs/architecture.md docs/development.md docs/reader-guide.md .github"
+  },
+  "devDependencies": {
+    "prettier": "3.6.2"
+  }
+}

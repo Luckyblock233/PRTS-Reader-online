@@ -1,0 +1,44 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:prts-source:reader-notes:v1",
+  "title": "人工观察导出",
+  "type": "object",
+  "required": ["schemaVersion", "snapshotId", "exportedAt", "records"],
+  "properties": {
+    "schemaVersion": { "const": "reader-notes/v1" },
+    "snapshotId": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "exportedAt": { "type": "string", "format": "date-time" },
+    "records": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "chapterId",
+          "index",
+          "sourceId",
+          "pointer",
+          "member",
+          "sha256",
+          "quote",
+          "speaker",
+          "note",
+          "bookmark",
+          "updatedAt"
+        ],
+        "properties": {
+          "chapterId": { "type": "string", "pattern": "^[0-9a-f]{24}$" },
+          "index": { "type": "integer", "minimum": 0 },
+          "sourceId": { "type": ["integer", "null"] },
+          "pointer": { "type": "string", "pattern": "^/storyList/[0-9]+$" },
+          "member": { "type": "string" },
+          "sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+          "quote": { "type": "string" },
+          "speaker": { "type": "string" },
+          "note": { "type": "string" },
+          "bookmark": { "type": "boolean" },
+          "updatedAt": { "type": "string", "format": "date-time" }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,9 @@
+reader/data/
+reader/snapshots/
+reader/assets/
+data/
+upstream/
+archive/
+config/home.json
+config/*.local.json
+docs/screenshots/

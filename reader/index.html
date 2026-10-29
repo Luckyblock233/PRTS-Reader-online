@@ -1,0 +1,299 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>泰拉 · 文本考察室</title>
+    <script src="preferences.js"></script>
+    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="features.css" />
+    <link rel="stylesheet" href="reading.css" />
+    <link rel="stylesheet" href="application.css" />
+  </head>
+  <body>
+    <header class="appHeader">
+      <a class="brand" href="#home" aria-label="泰拉文本考察室首页"
+        ><span class="mark">⌘</span>
+        <div>泰拉 · 文本考察室<small>TERRA / SOURCE OBSERVATORY</small></div></a
+      >
+      <nav class="appNav" aria-label="应用导航">
+        <button id="homeNav" type="button" aria-current="page">首页</button
+        ><button id="readerNav" type="button">阅读</button>
+      </nav>
+      <form id="topSearchForm" class="topSearch" role="search">
+        <input
+          id="topSearchQuery"
+          aria-label="全文检索关键词"
+          placeholder="搜索全库正文、角色名、线索…"
+          maxlength="100"
+        /><button id="openGlobalSearch" type="submit">全文检索</button>
+      </form>
+      <button id="themeToggle" type="button" aria-label="切换到夜间模式">☾ 夜间模式</button
+      ><button id="sources">来源与版本 ↗</button>
+    </header>
+    <section id="homeView" class="appPage" aria-labelledby="homeTitle">
+      <div class="homeHero">
+        <div class="eyebrow">TERRA / A PERSONAL READING ROOM</div>
+        <h1 id="homeTitle">从原文开始，理解泰拉。</h1>
+        <p id="homeIntro">阅读剧情、查找对白，留下你的观察。</p>
+        <div class="homeActions">
+          <button id="homeRead" type="button" class="primary">继续阅读 →</button
+          ><button id="homeSearch" type="button">探索全文检索</button>
+          <p id="homeResumeLabel" class="hint">正在读取上次阅读位置…</p>
+        </div>
+      </div>
+      <div class="homeMeta">
+        <span><strong id="homeChapterCount">—</strong> 篇剧情</span
+        ><span><strong id="homeLineCount">—</strong> 条源记录</span
+        ><button id="editHome" type="button" disabled>编辑首页</button>
+      </div>
+      <p id="homeLoadStatus" class="hint" role="status">正在读取首页说明…</p>
+      <div id="homeSections" class="homeSections"></div>
+      <section class="homeUpdates" aria-labelledby="dataUpdateTitle">
+        <div class="eyebrow">DATA / RELEASE UPDATES</div>
+        <div class="updateHeading">
+          <h2 id="dataUpdateTitle">数据更新</h2>
+          <button id="checkDataUpdates" type="button">检查更新</button>
+        </div>
+        <p class="hint">
+          从 arknights-data-pipeline 的正式发布中检查已转换的 ASTR
+          中文剧情数据。仅在点击「更新到此版本」后下载、校验并重建索引。
+        </p>
+        <div class="updateVersions">
+          <div>
+            <span class="hint">当前使用</span><strong id="currentDataTag">正在读取…</strong>
+            <p id="currentDataDate" class="hint"></p>
+          </div>
+          <div id="dataUpdateCandidate" hidden>
+            <span class="hint">最新可用发布</span><strong id="latestDataTag"></strong>
+            <p id="latestDataDetail" class="hint"></p>
+            <p id="latestAstr" class="hint"></p>
+            <a id="dataReleaseLink" target="_blank" rel="noopener noreferrer">查看 Release ↗</a>
+          </div>
+        </div>
+        <p id="dataCheckTime" class="hint"></p>
+        <progress id="dataUpdateProgress" aria-label="数据更新进度" hidden></progress>
+        <p id="dataUpdateStatus" class="hint" role="status">正在读取本地更新状态…</p>
+        <div class="updateActions">
+          <button id="installDataUpdate" type="button" class="primary" hidden>更新到此版本</button
+          ><button id="reloadDataUpdate" type="button" class="primary" hidden>载入新版本</button>
+        </div>
+        <p class="hint">
+          更新期间可继续阅读。原数据保留，校验成功后才切换；笔记与阅读位置按数据快照分别保存。
+        </p>
+      </section>
+      <div class="wiki homeReference">
+        <span class="eyebrow">EXTERNAL REFERENCE</span>
+        <h3>PRTS 泰拉年表 ↗</h3>
+        <p class="hint">玩家整理，包含推测与未定时间。未导入本地，不与剧情顺序自动对齐。</p>
+        <a href="https://prts.wiki/w/泰拉年表" target="_blank" rel="noopener noreferrer"
+          >打开 Wiki 年表</a
+        >
+        · <a href="https://prts.wiki/w/首页" target="_blank" rel="noopener noreferrer">首页</a>
+      </div>
+    </section>
+
+    <div id="readerView" class="workspace" hidden>
+      <aside class="library">
+        <div class="eyebrow">01 / LIBRARY</div>
+        <h2>剧情资料库</h2>
+        <p class="muted" id="stats">正在读取本地数据…</p>
+        <label>目录检索<input id="catalogSearch" placeholder="活动、章节、代号…" /></label>
+        <div class="filters">
+          <select id="type" aria-label="剧情类型">
+            <option value="">全部类型</option></select
+          ><select id="sort" aria-label="目录排序">
+            <option value="source">目录顺序</option>
+            <option value="release">活动开放时间 ↓</option>
+          </select>
+        </div>
+        <p class="hint">目录序号与开放时间都不代表泰拉世界时间。</p>
+        <nav id="tree" aria-label="章节目录"></nav>
+      </aside>
+      <main>
+        <div class="readerTop">
+          <div>
+            <div class="eyebrow">02 / READING DESK</div>
+            <p id="breadcrumb" class="muted">请选择章节</p>
+          </div>
+          <div>
+            <button id="prev" title="同一目录上一章">← 上一篇</button
+            ><button id="next">下一篇 →</button>
+          </div>
+        </div>
+        <h1 id="title">从原文开始，理解泰拉。</h1>
+        <p class="muted" id="subtitle">保留每段文本的来源，逐步积累你的观察。</p>
+        <div class="toolbar">
+          <select id="mode" aria-label="阅读模式">
+            <option value="read">正文阅读</option>
+            <option value="all">正文与脚本指令</option>
+            <option value="raw">源 JSON</option></select
+          ><select id="speaker" aria-label="发言标签筛选">
+            <option value="">全部发言标签</option></select
+          ><input id="find" placeholder="篇内查找…" aria-label="篇内查找" /><button
+            id="clearFilters"
+          >
+            清除筛选
+          </button>
+        </div>
+        <div class="readingControls" role="group" aria-label="阅读外观">
+          <label for="readingFont">字体</label
+          ><select id="readingFont" aria-label="正文字体">
+            <option value="wenkai">霞鹜文楷</option>
+            <option value="serif">书卷宋体</option>
+            <option value="sans">清晰黑体</option></select
+          ><button id="size" type="button" aria-pressed="false" title="切换标准 / 大字号">
+            Aa · 标准</button
+          ><button id="compactToggle" type="button" aria-pressed="false">紧凑模式</button
+          ><button
+            id="focusToggle"
+            type="button"
+            aria-pressed="false"
+            title="收起左右侧栏，Esc 退出"
+          >
+            专注阅读</button
+          ><span class="appearanceHint" id="appearanceHint">舒适行距 · 18 px</span>
+        </div>
+        <div id="focusFigureSlot" aria-label="专注阅读立绘"></div>
+        <p id="readingPosition" class="hint readingPosition" aria-live="polite">
+          ↑ / ↓ 切换可见对白与旁白 · 自动记住所选段落
+        </p>
+        <div id="notice" class="notice" hidden></div>
+        <details id="brief">
+          <summary>游戏简介 / 上游 LLM 摘要（可能剧透）</summary>
+          <h4>游戏简介 · storyInfo</h4>
+          <p id="briefText"></p>
+          <h4>上游 LLM 生成摘要 · 不作为原文事实</h4>
+          <p id="summaryText"></p>
+        </details>
+        <div id="searchHighlightBar" class="searchHighlightBar" hidden>
+          <span id="searchHighlightLabel"></span
+          ><button id="clearSearchHighlight" type="button">清除关键词高亮</button>
+        </div>
+        <section id="content" aria-live="polite">
+          <div class="empty">载入本地资料库后即可阅读。<br />无需模型 API 或数据库服务。</div>
+        </section>
+        <footer id="readingFooter"></footer>
+      </main>
+      <aside class="inspector">
+        <div class="eyebrow">03 / FIELD NOTES</div>
+        <h2>人工考察</h2>
+        <section class="figureCard" aria-label="所选记录立绘">
+          <div class="figureHeading">
+            <span id="figureName">选择一段对白</span><span class="figureBadge">AVG</span>
+          </div>
+          <div id="figureStage" class="figureStage">
+            <img id="figureImage" alt="" hidden />
+            <p id="figureEmpty">点击记录，在此查看对应立绘。</p>
+          </div>
+          <p id="figureRef" class="hint">figure_art · 尚未选择</p>
+          <p id="figureStatus" class="hint">只展示记录明确引用的资源，不用立绘推断角色身份。</p>
+        </section>
+        <h3>段落观察</h3>
+        <section id="notesPane">
+          <p class="muted">点击正文段落，查看出处并记录观察。</p>
+          <div id="selection" class="selection">尚未选择段落</div>
+          <details>
+            <summary>所选段落源记录</summary>
+            <pre id="lineRaw"></pre>
+          </details>
+          <label
+            >观察笔记<textarea
+              id="note"
+              rows="6"
+              placeholder="记录格式问题、待核实的称谓或时间表述…"
+            ></textarea>
+          </label>
+          <div class="actions">
+            <button id="saveNote" class="primary">保存观察</button
+            ><button id="bookmark">☆ 收藏段落</button>
+          </div>
+          <p class="hint" id="noteStatus">笔记保存在当前浏览器；请定期导出。</p>
+          <button id="export">导出笔记 JSON ↓</button
+          ><label class="fileLabel"
+            >导入笔记 JSON<input id="import" type="file" accept="application/json,.json"
+          /></label>
+          <h3>本地记录 <span id="noteCount">0</span></h3>
+          <div id="noteList"></div>
+        </section>
+      </aside>
+    </div>
+    <section id="searchView" class="appPage" hidden aria-labelledby="searchTitle">
+      <div class="searchPageHead">
+        <div>
+          <div class="eyebrow">FULL TEXT / ACROSS TERRA</div>
+          <h1 id="searchTitle">全文检索</h1>
+          <p>从一句对白出发，找回它所在的篇章与上下文。</p>
+        </div>
+      </div>
+      <section id="searchPane">
+        <div class="corpusForm">
+          <label
+            >全库关键词<input
+              id="globalQuery"
+              placeholder="输入关键词（支持单字）…"
+              maxlength="100" /></label
+          ><label
+            >检索字段<select id="searchField">
+              <option value="all">正文与发言标签</option>
+              <option value="text">仅正文 / 选项</option>
+              <option value="speaker">仅发言标签</option>
+            </select></label
+          ><button id="searchGo" class="primary">查询全库</button>
+        </div>
+        <p id="searchStatus" class="hint" role="status">
+          覆盖当前资料库全部剧情文本，结果可翻页；不调用 LLM。
+        </p>
+        <div class="searchFilterRow">
+          <label
+            >关键词所在篇章<select id="searchChapter" disabled>
+              <option value="">全部命中篇章</option>
+            </select></label
+          >
+          <div class="searchPager">
+            <button id="searchPrev" disabled>← 上一页</button><span id="searchPage">—</span
+            ><button id="searchNext" disabled>下一页 →</button>
+          </div>
+        </div>
+        <div id="results"></div>
+      </section>
+    </section>
+    <dialog id="homeEditor" aria-labelledby="homeEditorTitle">
+      <form id="homeEditForm">
+        <h2 id="homeEditorTitle">编辑首页</h2>
+        <p class="hint">自定义标题、简介和说明区块。内容按纯文本显示，可换行。</p>
+        <label>首页标题<input id="editHomeTitle" maxlength="100" required /></label
+        ><label
+          >首页简介<textarea id="editHomeIntro" rows="3" maxlength="1500" required></textarea>
+        </label>
+        <div id="homeEditSections"></div>
+        <button id="addHomeSection" type="button">＋ 添加说明区块</button>
+        <p id="homeEditStatus" class="hint" role="status"></p>
+        <div class="homeEditActions">
+          <button id="cancelHomeEdit" type="button">取消</button
+          ><button id="saveHomeEdit" type="submit" class="primary">保存首页</button>
+        </div>
+      </form>
+    </dialog>
+    <dialog id="sourceDialog">
+      <button id="closeDialog" class="close">关闭 ×</button>
+      <h2>来源与版本</h2>
+      <p>
+        本阅读器展示发布包中的 ASTR 转换 JSON，未包含转换前 TXT。段落定位使用数组下标；sourceId
+        保留上游行号，二者不可互换。
+      </p>
+      <pre id="sourceInfo"></pre>
+      <p>
+        仅按文本字段投影，不识别实体、事件、因果、伏笔或世界时间。发言标签未经角色身份消歧。正文模式保留全部分支内容，选项仅用于核对跳转。
+      </p>
+      <p>
+        <a id="releaseLink" target="_blank" rel="noopener noreferrer"
+          >查看锁定的 GitHub Release ↗</a
+        >
+      </p>
+    </dialog>
+    <button id="exitFocus" type="button" hidden>退出专注 · Esc</button>
+    <div id="toast" role="status"></div>
+    <script type="module" src="app.js"></script>
+  </body>
+</html>

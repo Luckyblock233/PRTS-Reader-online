@@ -1,0 +1,42 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:prts-source:reader-catalog:v1",
+  "title": "本地阅读资料目录",
+  "type": "object",
+  "required": ["schemaVersion", "snapshot", "events", "chapters", "inventory"],
+  "properties": {
+    "schemaVersion": { "const": "source-reader/v1" },
+    "snapshot": {
+      "type": "object",
+      "required": ["id", "releaseTag", "releaseUrl", "asset", "sha256", "verified"],
+      "properties": {
+        "id": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+        "releaseTag": { "type": "string" },
+        "releaseUrl": { "type": "string" },
+        "asset": { "const": "zh_CN.zip" },
+        "sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+        "verified": { "const": true }
+      }
+    },
+    "events": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "name", "type", "startTime", "raw", "summary"],
+        "properties": {
+          "id": { "type": "string" },
+          "name": { "type": "string" },
+          "type": { "type": "string" },
+          "startTime": { "type": ["number", "null"] },
+          "raw": { "type": "object" },
+          "summary": { "type": ["string", "object", "null"] }
+        }
+      }
+    },
+    "chapters": {
+      "type": "array",
+      "items": { "$ref": "reader-chapter.schema.json#/properties/meta" }
+    },
+    "inventory": { "type": "object" }
+  }
+}
