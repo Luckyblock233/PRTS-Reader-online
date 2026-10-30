@@ -3,33 +3,33 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <title>泰拉 · 文本考察室</title>
-    <script src="preferences.js"></script>
+    <title>泰拉 · 纪事</title>
+    <script src="preferences.js?v=reading-8"></script>
     <link rel="stylesheet" href="style.css" />
     <link rel="stylesheet" href="features.css" />
     <link rel="stylesheet" href="reading.css" />
     <link rel="stylesheet" href="application.css" />
+    <link rel="stylesheet" href="reader-layout.css?v=reading-11" />
   </head>
   <body>
     <header class="appHeader">
-      <a class="brand" href="#home" aria-label="泰拉文本考察室首页"
-        ><span class="mark">⌘</span>
-        <div>泰拉 · 文本考察室<small>TERRA / SOURCE OBSERVATORY</small></div></a
+      <a class="brand" href="#home" aria-label="泰拉纪事首页"
+        ><span class="mark"></span>
+        <div>泰拉 · 纪事<small>TERRA / RECORDS</small></div></a
       >
       <nav class="appNav" aria-label="应用导航">
         <button id="homeNav" type="button" aria-current="page">首页</button
         ><button id="readerNav" type="button">阅读</button>
       </nav>
       <form id="topSearchForm" class="topSearch" role="search">
-        <input
-          id="topSearchQuery"
-          aria-label="全文检索关键词"
-          placeholder="搜索全库正文、角色名、线索…"
-          maxlength="100"
-        /><button id="openGlobalSearch" type="submit">全文检索</button>
+        <input id="topSearchQuery" aria-label="全文检索关键词" maxlength="80" /><button
+          id="openGlobalSearch"
+          type="submit"
+        >
+          全文检索
+        </button>
       </form>
-      <button id="themeToggle" type="button" aria-label="切换到夜间模式">☾ 夜间模式</button
-      ><button id="sources">来源与版本 ↗</button>
+      <button id="themeToggle" type="button" aria-label="切换到夜间模式">☾</button>
     </header>
     <section id="homeView" class="appPage" aria-labelledby="homeTitle">
       <div class="homeHero">
@@ -53,7 +53,10 @@
         <div class="eyebrow">DATA / RELEASE UPDATES</div>
         <div class="updateHeading">
           <h2 id="dataUpdateTitle">数据更新</h2>
-          <button id="checkDataUpdates" type="button">检查更新</button>
+          <div class="updateHeadingActions">
+            <button id="sources" type="button">来源与版本</button
+            ><button id="checkDataUpdates" type="button">检查更新</button>
+          </div>
         </div>
         <p class="hint">
           从 arknights-data-pipeline 的正式发布中检查已转换的 ASTR
@@ -94,8 +97,8 @@
     </section>
 
     <div id="readerView" class="workspace" hidden>
-      <aside class="library">
-        <div class="eyebrow">01 / LIBRARY</div>
+      <aside class="library" id="chapterPanel" aria-label="章节目录面板">
+        <button class="panelClose" data-close-panel type="button">关闭目录</button>
         <h2>剧情资料库</h2>
         <p class="muted" id="stats">正在读取本地数据…</p>
         <label>目录检索<input id="catalogSearch" placeholder="活动、章节、代号…" /></label>
@@ -111,56 +114,86 @@
         <nav id="tree" aria-label="章节目录"></nav>
       </aside>
       <main>
-        <div class="readerTop">
-          <div>
-            <div class="eyebrow">02 / READING DESK</div>
-            <p id="breadcrumb" class="muted">请选择章节</p>
+        <div class="readerHeader">
+          <div class="readerTop">
+            <div>
+              <div class="eyebrow">02 / READING DESK</div>
+              <p id="breadcrumb" class="muted">请选择章节</p>
+            </div>
+            <div>
+              <button id="prev" title="同一目录上一章">← 上一篇</button
+              ><button id="next">下一篇 →</button>
+            </div>
           </div>
-          <div>
-            <button id="prev" title="同一目录上一章">← 上一篇</button
-            ><button id="next">下一篇 →</button>
+          <h1 id="title">从原文开始，理解泰拉。</h1>
+          <div class="readerActions">
+            <button id="catalogToggle" aria-controls="chapterPanel" aria-expanded="false">
+              目录
+            </button>
+            <input id="find" type="search" placeholder="篇内查找…" aria-label="篇内查找" />
+            <details id="readingSettings" class="readerMenu">
+              <summary>阅读设置</summary>
+              <div class="menuBody readingControls">
+                <label
+                  >字体<select id="readingFont" aria-label="正文字体">
+                    <option value="wenkai">霞鹜文楷</option>
+                    <option value="serif">书卷宋体</option>
+                    <option value="sans">清晰黑体</option>
+                  </select></label
+                >
+                <label for="size">字号</label
+                ><button id="size" type="button" aria-pressed="false">标准</button>
+                <label
+                  >行距<select id="lineSpacing" aria-label="正文行距">
+                    <option value="comfortable">舒适</option>
+                    <option value="close">适中</option>
+                    <option value="loose">宽松</option>
+                  </select></label
+                >
+                <label for="compactToggle">段落间距</label
+                ><button id="compactToggle" type="button" aria-pressed="false">紧凑模式</button>
+              </div>
+            </details>
+            <details id="readerFilters" class="readerMenu">
+              <summary>筛选与原文</summary>
+              <div class="menuBody toolbar">
+                <p class="muted" id="subtitle"></p>
+                <select id="mode" aria-label="显示内容">
+                  <option value="read">正文阅读</option>
+                  <option value="all">正文与脚本指令</option>
+                  <option value="raw">查看源 JSON</option>
+                </select>
+                <select id="speaker" aria-label="说话人筛选">
+                  <option value="">全部说话人</option>
+                </select>
+                <button id="clearFilters">清除筛选与查找</button>
+              </div>
+            </details>
+            <button
+              id="focusToggle"
+              type="button"
+              aria-pressed="false"
+              title="收起目录和笔记，保留阅读位置"
+            >
+              专注阅读
+            </button>
+            <button
+              id="inspectorToggle"
+              type="button"
+              aria-controls="notesPanel"
+              aria-expanded="false"
+            >
+              笔记与出处
+            </button>
           </div>
+          <p id="filterStatus" class="hint" role="status" hidden></p>
         </div>
-        <h1 id="title">从原文开始，理解泰拉。</h1>
-        <p class="muted" id="subtitle">保留每段文本的来源，逐步积累你的观察。</p>
-        <div class="toolbar">
-          <select id="mode" aria-label="阅读模式">
-            <option value="read">正文阅读</option>
-            <option value="all">正文与脚本指令</option>
-            <option value="raw">源 JSON</option></select
-          ><select id="speaker" aria-label="发言标签筛选">
-            <option value="">全部发言标签</option></select
-          ><input id="find" placeholder="篇内查找…" aria-label="篇内查找" /><button
-            id="clearFilters"
-          >
-            清除筛选
-          </button>
-        </div>
-        <div class="readingControls" role="group" aria-label="阅读外观">
-          <label for="readingFont">字体</label
-          ><select id="readingFont" aria-label="正文字体">
-            <option value="wenkai">霞鹜文楷</option>
-            <option value="serif">书卷宋体</option>
-            <option value="sans">清晰黑体</option></select
-          ><button id="size" type="button" aria-pressed="false" title="切换标准 / 大字号">
-            Aa · 标准</button
-          ><button id="compactToggle" type="button" aria-pressed="false">紧凑模式</button
-          ><button
-            id="focusToggle"
-            type="button"
-            aria-pressed="false"
-            title="收起左右侧栏，Esc 退出"
-          >
-            专注阅读</button
-          ><span class="appearanceHint" id="appearanceHint">舒适行距 · 18 px</span>
-        </div>
-        <div id="focusFigureSlot" aria-label="专注阅读立绘"></div>
-        <p id="readingPosition" class="hint readingPosition" aria-live="polite">
-          ↑ / ↓ 切换可见对白与旁白 · 自动记住所选段落
-        </p>
-        <div id="notice" class="notice" hidden></div>
+        <details id="notice" class="notice" hidden>
+          <summary id="noticeTitle"></summary>
+          <p id="noticeDetail"></p>
+        </details>
         <details id="brief">
-          <summary>游戏简介 / 上游 LLM 摘要（可能剧透）</summary>
+          <summary>简介与生成摘要（可能剧透）</summary>
           <h4>游戏简介 · storyInfo</h4>
           <p id="briefText"></p>
           <h4>上游 LLM 生成摘要 · 不作为原文事实</h4>
@@ -175,10 +208,16 @@
         </section>
         <footer id="readingFooter"></footer>
       </main>
-      <aside class="inspector">
-        <div class="eyebrow">03 / FIELD NOTES</div>
-        <h2>人工考察</h2>
-        <section class="figureCard" aria-label="所选记录立绘">
+      <div id="focusFigureSlot" aria-label="专注阅读立绘"></div>
+      <aside class="inspector" id="notesPanel" aria-label="段落笔记与出处">
+        <div class="notesHeading">
+          <h2>笔记与出处</h2>
+          <button class="panelClose" data-close-panel type="button" aria-label="关闭笔记与出处">
+            关闭
+          </button>
+        </div>
+        <details class="figureCard" open>
+          <summary>角色立绘</summary>
           <div class="figureHeading">
             <span id="figureName">选择一段对白</span><span class="figureBadge">AVG</span>
           </div>
@@ -186,36 +225,49 @@
             <img id="figureImage" alt="" hidden />
             <p id="figureEmpty">点击记录，在此查看对应立绘。</p>
           </div>
-          <p id="figureRef" class="hint">figure_art · 尚未选择</p>
-          <p id="figureStatus" class="hint">只展示记录明确引用的资源，不用立绘推断角色身份。</p>
-        </section>
-        <h3>段落观察</h3>
-        <section id="notesPane">
-          <p class="muted">点击正文段落，查看出处并记录观察。</p>
-          <div id="selection" class="selection">尚未选择段落</div>
           <details>
-            <summary>所选段落源记录</summary>
-            <pre id="lineRaw"></pre>
+            <summary>资源详情</summary>
+            <p id="figureRef" class="hint">figure_art · 尚未选择</p>
+            <p id="figureStatus" class="hint">只展示记录明确引用的资源，不用立绘推断角色身份。</p>
           </details>
-          <label
-            >观察笔记<textarea
-              id="note"
-              rows="6"
-              placeholder="记录格式问题、待核实的称谓或时间表述…"
-            ></textarea>
-          </label>
+        </details>
+        <section id="notesPane">
+          <h3>所选段落</h3>
+          <blockquote id="selectedQuote">请选择段落</blockquote>
+          <details class="sourceDetails">
+            <summary>段落出处</summary>
+            <div id="selection" class="selection">尚未选择段落</div>
+            <details>
+              <summary>源记录 JSON</summary>
+              <pre id="lineRaw"></pre>
+            </details>
+          </details>
+          
+          <label for="note">笔记</label>
+          <textarea id="note" rows="4" placeholder="写下你的观察…"></textarea>
           <div class="actions">
-            <button id="saveNote" class="primary">保存观察</button
+            <button id="saveNote" class="primary">保存笔记</button
             ><button id="bookmark">☆ 收藏段落</button>
           </div>
-          <p class="hint" id="noteStatus">笔记保存在当前浏览器；请定期导出。</p>
-          <button id="export">导出笔记 JSON ↓</button
-          ><label class="fileLabel"
-            >导入笔记 JSON<input id="import" type="file" accept="application/json,.json"
-          /></label>
-          <h3>本地记录 <span id="noteCount">0</span></h3>
-          <div id="noteList"></div>
+          
+          <details class="savedNotes">
+            <summary>笔记与收藏 <span id="noteCount">0</span></summary>
+            <div id="noteList"></div>
+            <div class="noteTransfer">
+              <button id="export">导出 JSON</button
+              ><label class="fileLabel"
+                >导入 JSON<input id="import" type="file" accept="application/json,.json"
+              /></label>
+            </div>
+            <p class="hint" id="noteStatus">笔记仅保存在此浏览器，可导出备份。</p>
+          </details>
         </section>
+        <label class="notesBehaviorLabel"
+          >侧栏显示<select id="notesBehavior" aria-label="笔记侧栏显示">
+            <option value="auto">默认收起</option>
+            <option value="pinned">保持展开</option>
+          </select></label
+        >
       </aside>
     </div>
     <section id="searchView" class="appPage" hidden aria-labelledby="searchTitle">
@@ -294,6 +346,6 @@
     </dialog>
     <button id="exitFocus" type="button" hidden>退出专注 · Esc</button>
     <div id="toast" role="status"></div>
-    <script type="module" src="app.js"></script>
+    <script type="module" src="app.js?v=reading-8"></script>
   </body>
 </html>

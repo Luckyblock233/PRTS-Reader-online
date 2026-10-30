@@ -1,0 +1,591 @@
+/* Reading workspace only: home and search keep their existing presentation. */
+#readerView {
+  grid-template-columns: 240px minmax(0, 1fr) 300px;
+  height: calc(100dvh - var(--app-header-height));
+  overflow: hidden;
+}
+#readerView main {
+  min-width: 0;
+  height: 100%;
+  padding: 0 28px 40px;
+  scroll-behavior: auto;
+  scroll-padding-top: 170px;
+  overflow-anchor: none;
+}
+#readerView main > * {
+  max-width: 900px;
+  margin-inline: auto;
+}
+#readerView .readerHeader {
+  position: sticky;
+  top: 0;
+  z-index: 5;
+  padding: 14px 0 12px;
+  background: var(--bg);
+  border-bottom: 1px solid var(--border);
+}
+#readerView .readerTop .eyebrow {
+  display: none;
+}
+#readerView #breadcrumb {
+  margin: 0;
+}
+#readerView h1 {
+  margin: 6px 0 10px;
+  font-size: 25px;
+}
+#readerView #subtitle {
+  margin: 0;
+  width: 100%;
+}
+#readerView .readerActions {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+#readerView .readerActions button,
+#readerView .readerMenu summary {
+  font-size: 12px;
+  padding: 6px 8px;
+}
+#readerView #find {
+  width: 130px;
+  min-width: 100px;
+  flex: 1;
+  font-size: 12px;
+  padding: 7px;
+}
+#readerView .readerMenu {
+  position: relative;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+#readerView .readerMenu > summary {
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  color: var(--text);
+}
+#readerView .menuBody {
+  position: absolute;
+  right: 0;
+  top: 100%;
+  width: 275px;
+  max-width: 85vw;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  padding: 14px;
+  margin: 6px 0 0;
+  z-index: 8;
+}
+#readerView .menuBody label {
+  width: 100%;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+#readerView .menuBody select {
+  max-width: 100%;
+}
+#readerView #filterStatus {
+  margin: 7px 0 0;
+}
+#readerView .readingPosition {
+  border: 0;
+  padding: 0;
+  margin-block: 12px;
+}
+#readerView .notice {
+  padding: 8px 10px;
+  background: transparent;
+  border: 0;
+  border-left: 2px solid var(--border);
+}
+#readerView .notice p {
+  margin-bottom: 0;
+}
+#readerView #content {
+  padding-block: 16px;
+}
+#readerView article.line {
+  padding: 8px 10px;
+  margin: 0;
+  border-radius: 0;
+  background: transparent;
+  border: 0;
+  border-left: 2px solid transparent;
+}
+#readerView .line.dialogue {
+  display: grid;
+  grid-template-columns: 6em minmax(0, 1fr);
+  column-gap: 14px;
+}
+#readerView .line .lineHead {
+  display: block;
+  margin: 0;
+  line-height: 1.9;
+}
+#readerView .line .speakerName {
+  color: var(--speaker-color, var(--accent));
+  font-size: 13px;
+  overflow-wrap: anywhere;
+}
+#readerView .line .lineNo {
+  display: none;
+  font-size: 10px;
+  line-height: 1.5;
+  margin: 4px 0 0;
+}
+#readerView .line.selected .lineNo {
+  display: block;
+}
+#readerView .line.narration .lineHead > span:first-child {
+  display: none;
+}
+#readerView .line.narration:not(.selected) .lineHead {
+  display: none;
+}
+#readerView .line.narration {
+  padding-block: 12px;
+}
+#readerView .line p {
+  font-family: var(--book-serif);
+  line-height: var(--reader-leading, 1.9);
+  letter-spacing: 0.015em;
+}
+:root[data-font='wenkai'] #readerView .line p {
+  font-family: var(--reading-font);
+}
+:root[data-font='sans'] #readerView .line p {
+  font-family: var(--ui-font);
+}
+:root[data-spacing='close'] {
+  --reader-leading: 1.65;
+}
+:root[data-spacing='loose'] {
+  --reader-leading: 2.2;
+}
+#readerView article.line:hover {
+  border-left-color: var(--border);
+}
+#readerView article.line.selected {
+  background: var(--selected);
+  border-left-color: var(--accent);
+}
+#readerView .line.choice,
+#readerView .line.branch,
+#readerView .line.command {
+  border-block: 1px solid var(--border);
+}
+#readerView .line.command p,
+#readerView .line.branch p {
+  font:
+    12px/1.7 Consolas,
+    monospace;
+}
+:root[data-density='compact'] #readerView article.line {
+  padding-block: 3px;
+}
+#readerView .inspector {
+  grid-column: auto;
+  overflow: auto;
+  padding: 20px 16px;
+}
+#readerView .inspector .eyebrow {
+  display: none;
+}
+#readerView .selection {
+  background: transparent;
+  padding: 8px;
+}
+#readerView .figureCard {
+  background: transparent;
+  box-shadow: none;
+}
+#readerView .figureStage {
+  height: 180px;
+}
+#readerView .figureStage img {
+  filter: none;
+}
+#readerView .figureBadge {
+  display: none;
+}
+#readerView #focusFigureSlot {
+  display: none;
+}
+#readerView .panelClose,
+#readerView #catalogToggle {
+  display: none;
+}
+#readerView .library .panelClose {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+}
+:root[data-focus='on'] #readerView {
+  display: block;
+}
+:root[data-focus='on'] #readerView main {
+  max-width: 1000px;
+  margin: auto;
+}
+:root[data-focus='on'] #readerView #catalogToggle {
+  display: block;
+}
+:root[data-view='reader'] #exitFocus {
+  display: none;
+}
+@media (max-width: 1150px) {
+  #readerView {
+    display: block;
+  }
+  #readerView main {
+    width: 100%;
+    max-width: 1000px;
+    margin: auto;
+  }
+  #readerView .library,
+  #readerView .inspector {
+    display: none;
+  }
+  #readerView #catalogToggle,
+  #readerView .panelClose {
+    display: block;
+  }
+  #readerView[data-panel='catalog'] .library,
+  #readerView[data-panel='notes'] .inspector {
+    display: block;
+    position: fixed;
+    top: var(--app-header-height);
+    bottom: 0;
+    width: min(360px, 94vw);
+    height: auto;
+    z-index: 12;
+    overflow: auto;
+  }
+  #readerView[data-panel='catalog'] .library {
+    left: 0;
+  }
+  #readerView[data-panel='notes'] .inspector {
+    right: 0;
+  }
+  #readerView .panelClose {
+    margin: 0 0 14px auto;
+  }
+}
+@media (max-width: 650px) {
+  #readerView main,
+  :root[data-focus='on'] #readerView main {
+    padding-inline: 16px;
+    min-height: 0;
+    scroll-padding-top: 190px;
+  }
+  #readerView .readerTop {
+    align-items: center;
+  }
+  #readerView .readerTop > div:last-child {
+    display: flex;
+    flex-shrink: 0;
+  }
+  #readerView #breadcrumb {
+    max-width: 160px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  #readerView .readerMenu {
+    position: static;
+  }
+  #readerView .menuBody {
+    right: 0;
+    top: calc(100% - 6px);
+  }
+  #readerView .line.dialogue {
+    grid-template-columns: 4.5em minmax(0, 1fr);
+    gap: 9px;
+  }
+  #readerView h1 {
+    font-size: 22px;
+  }
+  #readerView .line p {
+    font-size: var(--reading-size);
+  }
+}
+/* Quiet scroll areas retain wheel, touch and keyboard scrolling. */
+#readerView main,
+#readerView .library,
+#readerView .inspector {
+  scrollbar-width: none;
+}
+#readerView main::-webkit-scrollbar,
+#readerView .library::-webkit-scrollbar,
+#readerView .inspector::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+}
+#readerView {
+  grid-template-columns: 240px minmax(0, 1fr);
+}
+#readerView .inspector {
+  display: none;
+}
+#readerView #inspectorToggle[aria-expanded='true'] {
+  background: var(--active);
+  border-color: var(--accent);
+}
+#readerView[data-panel='notes'] .inspector {
+  display: block;
+  position: fixed;
+  top: var(--app-header-height);
+  bottom: 0;
+  right: 0;
+  width: min(360px, 94vw);
+  height: auto;
+  z-index: 12;
+  overflow: auto;
+}
+#readerView .inspector .panelClose {
+  display: block;
+  margin: 0 0 12px auto;
+}
+#readerView .notesBehaviorLabel {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin: 16px 0;
+}
+#readerView #notesBehavior {
+  width: 140px;
+  font-size: 12px;
+}
+#readerView #readingSettings .readingControls {
+  display: grid;
+  grid-template-columns: 76px minmax(0, 1fr);
+  gap: 14px 12px;
+  align-items: center;
+  width: 300px;
+  padding: 18px;
+}
+#readerView #readingSettings label:has(select) {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: 76px minmax(0, 1fr);
+  gap: 12px;
+}
+#readerView #readingSettings select,
+#readerView #readingSettings button {
+  width: 100%;
+  max-width: none;
+  margin: 0;
+  padding: 8px 10px;
+  font-size: 12px;
+}
+:root[data-focus='on'] #readerView[data-panel='catalog'] .library {
+  display: block;
+  position: fixed;
+  left: 0;
+  top: var(--app-header-height);
+  bottom: 0;
+  height: auto;
+  width: min(360px, 94vw);
+  z-index: 12;
+}
+:root[data-focus='on'] #readerView .library .panelClose {
+  display: block;
+  margin: 0 0 14px auto;
+}
+@media (min-width: 1151px) {
+  :root[data-notes='pinned']:not([data-focus='on']) #readerView {
+    grid-template-columns: 240px minmax(0, 1fr) 300px;
+  }
+  :root[data-notes='pinned']:not([data-focus='on']) #readerView .inspector {
+    display: block;
+    position: static;
+    width: auto;
+    height: 100%;
+  }
+}
+@media (max-width: 650px) {
+  #readerView main {
+    padding-bottom: 80px;
+  }
+}
+@media (max-width: 1150px) {
+  :root[data-notes='pinned']:not([data-focus='on']) #readerView .inspector {
+    display: block;
+    position: fixed;
+    top: var(--app-header-height);
+    bottom: 0;
+    right: 0;
+    width: min(360px, 94vw);
+    height: auto;
+    z-index: 12;
+  }
+}
+/* Portraits float outside the text flow, so loading or expanding them cannot move prose. */
+:root #readerView #focusFigureSlot {
+  display: block;
+  position: fixed;
+  top: calc(var(--app-header-height) + 20px);
+  right: 20px;
+  bottom: auto;
+  width: 180px;
+  z-index: 9;
+  background: var(--panel);
+}
+:root #readerView #focusFigureSlot:empty {
+  display: none;
+}
+:root #readerView #focusFigureSlot .figureCard {
+  position: static;
+  display: block;
+  width: 100%;
+  margin: 0;
+  box-shadow: none;
+  max-height: calc(100dvh - var(--app-header-height) - 100px);
+  overflow: auto;
+  scrollbar-width: none;
+}
+:root #readerView #focusFigureSlot .figureHeading {
+  display: flex;
+  padding: 8px 0;
+  font-size: 13px;
+}
+:root #readerView #focusFigureSlot .figureStage {
+  height: 180px;
+  background: none;
+}
+:root #readerView #focusFigureSlot #figureStatus {
+  display: block;
+}
+:root #readerView #focusFigureSlot #figureRef {
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+@media (max-width: 1199px) {
+  :root #readerView #focusFigureSlot {
+    top: auto;
+    bottom: 16px;
+    left: 16px;
+    right: auto;
+    width: 180px;
+  }
+}
+
+.updateHeadingActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+#readerView .notesHeading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+#readerView .notesHeading h2 {
+  font-size: 16px;
+  margin: 0;
+}
+#readerView .notesHeading .panelClose {
+  margin: 0;
+  font-size: 12px;
+}
+#readerView #notesPanel .figureCard {
+  margin: 0 0 18px;
+  border-radius: 0;
+}
+#readerView #notesPanel .figureHeading {
+  font-size: 14px;
+  padding: 8px 0;
+  border: 0;
+}
+#readerView #notesPanel .figureStage {
+  height: 160px;
+  background: none;
+}
+#readerView #notesPanel .figureCard details {
+  margin-bottom: 0;
+}
+#readerView #notesPane h3 {
+  margin: 12px 0 8px;
+}
+#readerView #selectedQuote {
+  margin: 0;
+  padding: 0 0 0 10px;
+  border-left: 2px solid var(--border);
+  font-size: 13px;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+#readerView #notesPane .actions {
+  margin-top: 10px;
+}
+#readerView .sourceDetails,
+#readerView .savedNotes {
+  border: 0;
+  border-top: 1px solid var(--border);
+  padding: 12px 0 0;
+  margin: 16px 0;
+}
+#readerView .noteTransfer {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-top: 12px;
+}
+#readerView .noteTransfer > * {
+  margin: 0;
+  font-size: 12px;
+}
+#readerView .notesBehaviorLabel {
+  border-top: 1px solid var(--border);
+  padding-top: 14px;
+}
+
+/* Reserve equal side space so the portrait cannot push focus reading off center. */
+@media (min-width: 1200px) {
+  :root[data-focus='on'] #readerView main {
+    width: calc(100% - 440px);
+    margin-inline: auto;
+  }
+}
+:root #readerView #focusFigureSlot .figureCard > details {
+  display: none;
+}
+/* Balance the reading column against the directory; give research its own column. */
+@media (min-width: 1151px) {
+  :root:not([data-focus='on']) #readerView main {
+    padding-left: 48px;
+    padding-right: calc(48px + clamp(220px, 100vw - 1200px, 240px));
+  }
+  :root #readerView[data-panel='notes'],
+  :root[data-notes='pinned']:not([data-focus='on']) #readerView {
+    display: grid;
+    grid-template-columns: 240px minmax(0, 1fr) 320px;
+  }
+  :root[data-focus='on'] #readerView[data-panel='notes'] {
+    grid-template-columns: minmax(0, 1fr) 320px;
+  }
+  :root #readerView[data-panel='notes'] main,
+  :root[data-notes='pinned']:not([data-focus='on']) #readerView main,
+  :root[data-focus='on'] #readerView[data-panel='notes'] main {
+    width: 100%;
+    max-width: none;
+    margin: 0;
+    padding-inline: 48px;
+  }
+  :root #readerView[data-panel='notes'] .inspector,
+  :root[data-notes='pinned']:not([data-focus='on']) #readerView .inspector {
+    position: static;
+    width: auto;
+    height: 100%;
+    padding-inline: 20px;
+  }
+}

@@ -24,6 +24,7 @@ pip.ini
 *.pem
 *.p12
 *.pfx
+/artifacts/
 
 # Only application documentation is part of this repository
 /docs/*
