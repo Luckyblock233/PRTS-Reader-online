@@ -1,8 +1,8 @@
 # 参与开发
 
-请先阅读 [开发说明](docs/development.md) 与 [代码结构](docs/architecture.md)。运行时仅依赖 Python 标准库；前端不需要构建。
+请先阅读 [开发说明](docs/development.md) 与 [代码结构](docs/architecture.md)。前端使用 Astro 静态构建，数据准备使用 Python 标准库。
 
-提交前运行 Python 与 JavaScript 测试、格式检查。CI 使用合成剧情，不需要真实游戏发布包、立绘、API Key 或上游仓库。为问题准备最小合成样例，避免将整段游戏剧情、个人笔记或本机路径加入测试。
+提交前运行 Python 与 JavaScript 测试、生产构建。CI 使用合成剧情，不需要真实游戏发布包、立绘、API Key 或上游仓库。为问题准备最小合成样例，避免将整段游戏剧情、个人笔记或本机路径加入测试。
 
 修改数据适配器时，保留原始记录、数组下标、sourceId 和 JSON Pointer 的区分；更新失败不得破坏当前活动快照。修改阅读交互时，检查选中行、键盘导航、专注模式及旧快照检索的一致性。
 

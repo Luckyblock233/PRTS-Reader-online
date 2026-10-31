@@ -1,3 +1,4 @@
+import { resolveFigure } from './static-figures.js';
 const $ = (id) => document.getElementById(id);
 // Hash the full source speaker label: identical labels keep their color across chapters.
 export function speakerColor(name) {
@@ -15,17 +16,6 @@ let figureVersion = 0;
 let figureSnapshot = '';
 export function setFigureSnapshot(snapshot) {
   figureSnapshot = snapshot;
-}
-async function api(url, options) {
-  const r = await fetch(url, options);
-  let data;
-  try {
-    data = await r.json();
-  } catch {
-    throw Error('本地服务响应无效，请重启新版服务');
-  }
-  if (!r.ok) throw Error(data.error || data.message || `HTTP ${r.status}`);
-  return data;
 }
 export function clearFigure() {
   figureVersion++;
@@ -54,14 +44,9 @@ export async function showFigure(line) {
     return;
   }
   $('figureEmpty').textContent = '正在读取立绘…';
-  $('figureStatus').textContent = '从本地缓存读取；缺失时尝试下载精确匹配的 PNG。';
+  $('figureStatus').textContent = '正在从上游资源读取精确匹配的 PNG。';
   try {
-    const image = await api(
-      '/api/figure?ref=' +
-        encodeURIComponent(ref) +
-        '&snapshot=' +
-        encodeURIComponent(figureSnapshot),
-    );
+    const image = await resolveFigure(ref);
     if (version !== figureVersion) return;
     if (image.status !== 'ready') {
       $('figureEmpty').textContent = '立绘暂不可用';
@@ -79,11 +64,10 @@ export async function showFigure(line) {
       if (version !== figureVersion) return;
       img.hidden = true;
       $('figureEmpty').hidden = false;
-      $('figureEmpty').textContent = '本地图片读取失败';
+      $('figureEmpty').textContent = '图片读取失败，请检查网络';
     };
-    img.src = 'assets/' + image.file;
-    $('figureStatus').textContent =
-      '已缓存到本地 · ' + Math.round(image.bytes / 1024) + ' KB · 精确资源匹配';
+    img.src = image.url;
+    $('figureStatus').textContent = '来自固定版本的上游资源 · 精确匹配';
   } catch (e) {
     if (version !== figureVersion) return;
     $('figureEmpty').textContent = '立绘暂不可用';

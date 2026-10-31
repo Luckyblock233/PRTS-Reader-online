@@ -1,14 +1,17 @@
+---
+import "../../reader/style.css";
+import "../../reader/features.css";
+import "../../reader/reading.css";
+import "../../reader/application.css";
+---
 <!doctype html>
 <html lang="zh-CN">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <title>泰拉 · 文本考察室</title>
-    <script src="preferences.js"></script>
-    <link rel="stylesheet" href="style.css" />
-    <link rel="stylesheet" href="features.css" />
-    <link rel="stylesheet" href="reading.css" />
-    <link rel="stylesheet" href="application.css" />
+    <script is:inline src={`${import.meta.env.BASE_URL}/preferences.js`}></script>
+    <meta name="description" content="在线阅读明日方舟剧情，检索对白、收藏段落并记录观察。" />
   </head>
   <body>
     <header class="appHeader">
@@ -50,37 +53,10 @@
       <p id="homeLoadStatus" class="hint" role="status">正在读取首页说明…</p>
       <div id="homeSections" class="homeSections"></div>
       <section class="homeUpdates" aria-labelledby="dataUpdateTitle">
-        <div class="eyebrow">DATA / RELEASE UPDATES</div>
-        <div class="updateHeading">
-          <h2 id="dataUpdateTitle">数据更新</h2>
-          <button id="checkDataUpdates" type="button">检查更新</button>
-        </div>
-        <p class="hint">
-          从 arknights-data-pipeline 的正式发布中检查已转换的 ASTR
-          中文剧情数据。仅在点击「更新到此版本」后下载、校验并重建索引。
-        </p>
-        <div class="updateVersions">
-          <div>
-            <span class="hint">当前使用</span><strong id="currentDataTag">正在读取…</strong>
-            <p id="currentDataDate" class="hint"></p>
-          </div>
-          <div id="dataUpdateCandidate" hidden>
-            <span class="hint">最新可用发布</span><strong id="latestDataTag"></strong>
-            <p id="latestDataDetail" class="hint"></p>
-            <p id="latestAstr" class="hint"></p>
-            <a id="dataReleaseLink" target="_blank" rel="noopener noreferrer">查看 Release ↗</a>
-          </div>
-        </div>
-        <p id="dataCheckTime" class="hint"></p>
-        <progress id="dataUpdateProgress" aria-label="数据更新进度" hidden></progress>
-        <p id="dataUpdateStatus" class="hint" role="status">正在读取本地更新状态…</p>
-        <div class="updateActions">
-          <button id="installDataUpdate" type="button" class="primary" hidden>更新到此版本</button
-          ><button id="reloadDataUpdate" type="button" class="primary" hidden>载入新版本</button>
-        </div>
-        <p class="hint">
-          更新期间可继续阅读。原数据保留，校验成功后才切换；笔记与阅读位置按数据快照分别保存。
-        </p>
+        <div class="eyebrow">DATA / PUBLISHED SNAPSHOT</div>
+        <h2 id="dataUpdateTitle">剧情数据版本</h2>
+        <p>本站使用经过校验的固定剧情快照，数据随网站发布更新。笔记和阅读位置仅保存在当前浏览器，请定期导出备份。</p>
+        <a href="https://github.com/Luckyblock233/PRTS-Reader-online/actions" target="_blank" rel="noopener noreferrer">查看网站发布记录 ↗</a>
       </section>
       <div class="wiki homeReference">
         <span class="eyebrow">EXTERNAL REFERENCE</span>
@@ -97,7 +73,7 @@
       <aside class="library">
         <div class="eyebrow">01 / LIBRARY</div>
         <h2>剧情资料库</h2>
-        <p class="muted" id="stats">正在读取本地数据…</p>
+        <p class="muted" id="stats">正在读取剧情数据…</p>
         <label>目录检索<input id="catalogSearch" placeholder="活动、章节、代号…" /></label>
         <div class="filters">
           <select id="type" aria-label="剧情类型">
@@ -171,7 +147,7 @@
           ><button id="clearSearchHighlight" type="button">清除关键词高亮</button>
         </div>
         <section id="content" aria-live="polite">
-          <div class="empty">载入本地资料库后即可阅读。<br />无需模型 API 或数据库服务。</div>
+          <div class="empty">载入剧情资料库后即可阅读。<br />无需模型 API 或数据库服务。</div>
         </section>
         <footer id="readingFooter"></footer>
       </main>
@@ -294,6 +270,6 @@
     </dialog>
     <button id="exitFocus" type="button" hidden>退出专注 · Esc</button>
     <div id="toast" role="status"></div>
-    <script type="module" src="app.js"></script>
+    <script>import "../../reader/app.js";</script>
   </body>
 </html>

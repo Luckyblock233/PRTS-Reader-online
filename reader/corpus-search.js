@@ -1,3 +1,4 @@
+import { search, context } from './static-search.js';
 const $ = (id) => document.getElementById(id);
 let corpusSnapshot = '';
 export function setSearchSnapshot(snapshot) {
@@ -52,9 +53,7 @@ export function initCorpusSearch(navigate) {
           radius: String(radius),
           snapshot,
         });
-        const response = await fetch('/api/search/context?' + params);
-        const data = await response.json();
-        if (!response.ok) throw Error(data.error || `HTTP ${response.status}`);
+        const data = await context(params);
         body.replaceChildren();
         for (const line of data.lines) {
           const button = node(
@@ -123,7 +122,7 @@ export function initCorpusSearch(navigate) {
     }
     const ticket = ++version;
     const selectedChapter = $('searchChapter').value;
-    $('searchStatus').textContent = '正在检索全库…';
+    $('searchStatus').textContent = '正在检索全库…首次检索需下载索引，请稍候。';
     $('results').replaceChildren();
     pager(true);
     $('searchChapter').disabled = true;
@@ -137,10 +136,8 @@ export function initCorpusSearch(navigate) {
         chapter: selectedChapter,
         snapshot,
       });
-      const response = await fetch('/api/search?' + params);
-      const data = await response.json();
+      const data = await search(params);
       if (ticket !== version) return;
-      if (!response.ok) throw Error(data.error || `HTTP ${response.status}`);
       page = data.page;
       pages = data.pages;
       $('searchStatus').textContent =

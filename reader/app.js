@@ -1,4 +1,4 @@
-import { initDataUpdates } from './data-updates.js';
+import { readData, siteUrl } from './static-data.js';
 import { initApplication, showView, setHomeStats } from './application.js';
 import { initCorpusSearch, setSearchSnapshot } from './corpus-search.js';
 import { speakerColor, showFigure, clearFigure, setFigureSnapshot } from './features.js';
@@ -40,7 +40,7 @@ function toast(s) {
   toast.timer = setTimeout(() => ($('toast').style.display = 'none'), 3000);
 }
 async function json(url) {
-  const r = await fetch(url);
+  const r = await fetch(siteUrl(url));
   if (!r.ok) throw Error(`${r.status} ${await r.text()}`);
   return r.json();
 }
@@ -491,12 +491,10 @@ $('clearSearchHighlight').onclick = () => {
   if (selected) $('line-' + selected.index)?.focus({ preventScroll: true });
 };
 try {
-  const active = await json('/api/data/status');
-  dataBase = active.dataBase;
+  dataBase = 'data';
   catalog = await json(dataBase + '/catalog.json');
   setSearchSnapshot(catalog.snapshot.id);
   setFigureSnapshot(catalog.snapshot.id);
-  initDataUpdates(() => catalog.snapshot.id);
   catalog.chapters.forEach((c) => byId.set(c.id, c));
   storageKey = 'terra-source-notes-' + catalog.snapshot.id;
   try {
@@ -545,6 +543,5 @@ try {
   } else showView(location.hash === '#search' ? 'search' : 'home');
 } catch (e) {
   $('homeResumeLabel').textContent = '资料库未就绪，请先准备数据。';
-  $('content').textContent =
-    '资料库未就绪。请先运行 scripts/prepare.py，再运行 scripts/serve.py。\n' + e.message;
+  $('content').textContent = '资料库加载失败，请检查网络连接后刷新页面。\n' + e.message;
 }

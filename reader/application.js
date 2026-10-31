@@ -1,3 +1,4 @@
+import { readData } from './static-data.js';
 const $ = (id) => document.getElementById(id);
 const node = (tag, text, cls) => {
   const e = document.createElement(tag);
@@ -40,16 +41,19 @@ export function initApplication({ home, read, search }) {
   };
   let content = null;
   async function api(options) {
-    const response = await fetch('/api/home', options);
-    let data;
-    try {
-      data = await response.json();
-    } catch {
-      throw Error('请重启新版阅读器服务');
+    const key = 'terra-online-home';
+    if (options?.method === 'POST') {
+      const data = JSON.parse(options.body);
+      localStorage.setItem(key, JSON.stringify(data));
+      return data;
     }
-    if (!response.ok) throw Error(data.error || `HTTP ${response.status}`);
-    return data;
+    try {
+      const saved = JSON.parse(localStorage.getItem(key));
+      if (saved?.title && Array.isArray(saved.sections)) return saved;
+    } catch {}
+    return readData('home.json');
   }
+
   function render(data) {
     content = data;
     $('homeTitle').textContent = data.title;
@@ -109,7 +113,7 @@ export function initApplication({ home, read, search }) {
     $('editHomeIntro').value = content.intro;
     $('homeEditSections').replaceChildren();
     content.sections.forEach(addSection);
-    $('homeEditStatus').textContent = '保存后写入 config/home.json，所有浏览器共用此本地文件。';
+    $('homeEditStatus').textContent = '仅保存到当前浏览器，不影响其他访客。';
     $('homeEditor').showModal();
   };
   $('addHomeSection').onclick = () => addSection();
@@ -125,7 +129,7 @@ export function initApplication({ home, read, search }) {
       return;
     }
     $('saveHomeEdit').disabled = true;
-    $('homeEditStatus').textContent = '正在保存到本地文件…';
+    $('homeEditStatus').textContent = '正在保存到当前浏览器…';
     try {
       const data = await api({
         method: 'POST',
@@ -138,7 +142,7 @@ export function initApplication({ home, read, search }) {
       });
       render(data);
       $('homeEditor').close();
-      $('homeLoadStatus').textContent = '首页已保存到 config/home.json。';
+      $('homeLoadStatus').textContent = '首页已保存到当前浏览器。';
     } catch (error) {
       $('homeEditStatus').textContent = '保存失败：' + error.message;
     } finally {

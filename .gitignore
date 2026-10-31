@@ -63,3 +63,9 @@ terra-notes*.json
 Thumbs.db
 desktop.ini
 *~
+
+.astro/
+/public/data/
+/public/assets/
+/public/home.json
+/public/figure-source.json
