@@ -4,6 +4,7 @@ import { initCorpusSearch, setSearchSnapshot } from './corpus-search.js';
 import { speakerColor, showFigure, clearFigure, setFigureSnapshot } from './features.js';
 import {
   initReadingSession,
+  revealCurrentChapter,
   resolveReadingPosition,
   saveReadingPosition,
 } from './reading-session.js';
@@ -147,6 +148,7 @@ function renderTree() {
     tree.append(d);
   }
   if (!total) tree.append(make('p', 'hint', '没有匹配章节'));
+  revealCurrentChapter();
 }
 function highlight(parent, text, q) {
   text = plain(text);
@@ -183,6 +185,15 @@ function renderContent() {
     q = $('find').value.trim(),
     speaker = $('speaker').value,
     highlightQuery = q || searchHighlight;
+  $('filterStatus').hidden = !q && !speaker && mode === 'read';
+  $('filterStatus').textContent =
+    [
+      q && '仅显示匹配「' + q + '」的段落',
+      speaker && '说话人：' + speaker,
+      mode !== 'read' && '正在显示脚本或源记录',
+    ]
+      .filter(Boolean)
+      .join(' · ') + ' · 在「筛选与原文」中恢复正文';
   root.replaceChildren();
   if (mode === 'raw') {
     root.append(make('pre', '', JSON.stringify(current.raw, null, 2)));
@@ -252,7 +263,8 @@ function selectLine(index) {
   document.querySelectorAll('.line.selected').forEach((e) => e.classList.remove('selected'));
   $('line-' + index)?.classList.add('selected');
   $('selection').textContent =
-    `${current.meta.member}\n${selected.pointer} · sourceId=${selected.sourceId}\n${plain(selected.text).slice(0, 240)}`;
+    `${current.meta.member}\n${selected.pointer} · sourceId=${selected.sourceId}`;
+  $('selectedQuote').textContent = plain(selected.text).slice(0, 240) || '此段为脚本指令';
   $('lineRaw').textContent = JSON.stringify(selected.raw, null, 2);
   $('note').value = rec()?.note || '';
   $('bookmark').textContent = rec()?.bookmark ? '★ 已收藏' : '☆ 收藏段落';
@@ -261,7 +273,6 @@ function selectLine(index) {
   saveReadingPosition(catalog.snapshot.id, current.meta, index);
   resumePosition = { chapterId: current.meta.id, index };
   setHomeStats(catalog, current.meta.title + ' · #' + index);
-  $('readingPosition').textContent = `段落 #${index} · ↑ / ↓ 切换可见文本 · 已记住阅读位置`;
 }
 function jump(index) {
   if (!current || !Number.isInteger(index) || index < 0 || index >= current.lines.length) return;
@@ -291,8 +302,9 @@ async function navigate(id, index, keyword = '') {
     $('brief').open = false;
     $('note').value = '';
     $('selection').textContent = '请选择段落';
+    $('selectedQuote').textContent = '请选择段落';
     $('lineRaw').textContent = '';
-    $('speaker').replaceChildren(make('option', '', '全部发言标签'));
+    $('speaker').replaceChildren(make('option', '', '全部说话人'));
     $('speaker').firstChild.value = '';
     for (const s of c.meta.speakers) {
       const o = make('option', '', s);
@@ -302,14 +314,18 @@ async function navigate(id, index, keyword = '') {
     $('find').value = '';
     const ev = catalog.events.find((e) => e.id === c.meta.eventId);
     $('title').textContent = c.meta.title;
-    $('breadcrumb').textContent = `${ev?.name || '其他'} / ${c.meta.code || c.meta.key}`;
+    $('breadcrumb').textContent = `${ev?.name || '其他'} / ${c.meta.code || c.meta.tag || '剧情'}`;
     $('subtitle').textContent =
       `${c.meta.tag || c.meta.type} · ${c.meta.textCount} 条含文本记录 · ${c.meta.speakers.length} 个发言标签`;
     $('briefText').textContent = plain(c.brief) || '未提供';
     $('summaryText').textContent =
       typeof c.summary === 'string' ? c.summary : JSON.stringify(c.summary ?? '未提供');
     $('notice').hidden = !c.meta.hasChoices && c.meta.optionTrace !== false;
-    $('notice').textContent =
+    $('noticeTitle').textContent =
+      c.meta.optionTrace === false
+        ? '分支跳转不可靠 · 展开说明'
+        : '含分支，按原文件顺序阅读 · 展开说明';
+    $('noticeDetail').textContent =
       c.meta.optionTrace === false
         ? '上游标记 OPTIONTRACE=false。分支追踪不可靠，请在源 JSON 中人工核对。'
         : '本篇含选项：正文按文件顺序展示全部分支。点击选项只定位源记录，不代表实际游玩路线。';
@@ -326,7 +342,6 @@ async function navigate(id, index, keyword = '') {
       document.querySelector('main').scrollTop = 0;
       history.replaceState(null, '', '#' + id);
       saveReadingPosition(catalog.snapshot.id, c.meta, null);
-      $('readingPosition').textContent = '↑ / ↓ 切换可见对白与旁白 · 自动记住所选段落';
     }
     try {
       localStorage.setItem(storageKey + '-last', id);

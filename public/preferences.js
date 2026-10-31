@@ -3,10 +3,12 @@
   const key = 'terra-reading-preferences-v1';
   const defaults = {
     theme: 'light',
-    font: 'wenkai',
+    font: 'serif',
     density: 'comfortable',
     size: 'standard',
     focus: 'off',
+    spacing: 'comfortable',
+    notes: 'auto',
   };
   let saved;
   try {
@@ -20,6 +22,8 @@
     density: ['comfortable', 'compact'],
     size: ['standard', 'large'],
     focus: ['off', 'on'],
+    spacing: ['comfortable', 'close', 'loose'],
+    notes: ['auto', 'pinned'],
   };
   const prefs = { ...defaults };
   for (const name of Object.keys(options)) {
@@ -31,9 +35,10 @@
       font: prefs.font,
       density: prefs.density,
       textSize: prefs.size,
+      spacing: prefs.spacing,
       focus: prefs.focus,
+      notes: prefs.notes,
     });
-    window.dispatchEvent(new Event('reader:appearance'));
   }
   apply();
   document.addEventListener(
@@ -42,23 +47,25 @@
       const $ = (id) => document.getElementById(id);
       function render() {
         const light = prefs.theme === 'light';
-        $('themeToggle').textContent = light ? '☾ 夜间模式' : '☀ 白天模式';
+        $('themeToggle').textContent = light ? '☾' : '☀';
         $('themeToggle').setAttribute('aria-label', light ? '切换到夜间模式' : '切换到白天模式');
         $('readingFont').value = prefs.font;
+        $('lineSpacing').value = prefs.spacing;
+        $('notesBehavior').value = prefs.notes;
         $('compactToggle').setAttribute('aria-pressed', String(prefs.density === 'compact'));
         $('compactToggle').textContent = prefs.density === 'compact' ? '✓ 紧凑模式' : '紧凑模式';
         $('size').setAttribute('aria-pressed', String(prefs.size === 'large'));
-        $('size').textContent = prefs.size === 'large' ? 'Aa · 大字' : 'Aa · 标准';
-        $('appearanceHint').textContent =
-          `${prefs.density === 'compact' ? '紧凑行距' : '舒适行距'} · ${prefs.size === 'large' ? '21' : '18'} px`;
+        $('size').textContent = prefs.size === 'large' ? '大字 · 21 px' : '标准 · 18 px';
         $('focusToggle').setAttribute('aria-pressed', String(prefs.focus === 'on'));
         $('focusToggle').textContent = prefs.focus === 'on' ? '退出专注' : '专注阅读';
         $('exitFocus').hidden = prefs.focus !== 'on';
       }
       function update(name, value) {
+        window.dispatchEvent(new Event('reader:beforeappearance'));
         prefs[name] = value;
         apply();
         render();
+        window.dispatchEvent(new Event('reader:appearance'));
         try {
           localStorage.setItem(key, JSON.stringify(prefs));
         } catch {
@@ -66,6 +73,8 @@
         }
       }
       $('themeToggle').onclick = () => update('theme', prefs.theme === 'light' ? 'dark' : 'light');
+      $('notesBehavior').onchange = (event) => update('notes', event.target.value);
+      $('lineSpacing').onchange = (event) => update('spacing', event.target.value);
       $('readingFont').onchange = (event) => update('font', event.target.value);
       $('compactToggle').onclick = () =>
         update('density', prefs.density === 'compact' ? 'comfortable' : 'compact');
