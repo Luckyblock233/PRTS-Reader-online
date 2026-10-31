@@ -1,0 +1,65 @@
+name: Sync upstream
+on:
+  schedule:
+    - cron: '17 */6 * * *'
+  workflow_dispatch:
+permissions:
+  contents: write
+  actions: write
+concurrency:
+  group: sync-upstream
+  cancel-in-progress: false
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: npm
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Fetch and merge upstream in temporary checkout
+        id: merge
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git remote add upstream https://github.com/Luckyblock233/PRTS-Reader.git
+          git fetch upstream main
+          node scripts/sync-upstream.mjs
+      - name: Validate candidate (also runs on manual checks without new commits)
+        if: steps.merge.outputs.changed == 'true' || github.event_name == 'workflow_dispatch'
+        run: |
+          npm ci
+          npm test
+          python -m unittest discover -s tests -p 'test_*.py' -v
+          python scripts/check_release.py
+          python scripts/bootstrap.py
+          npm run build
+          node scripts/check-online.mjs
+          git diff --exit-code
+      - name: Promote tested merge without overwriting concurrent changes
+        if: steps.merge.outputs.changed == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh auth setup-git
+          git push origin HEAD:main
+      # Pushes made with GITHUB_TOKEN do not trigger push workflows.
+      # Explicit dispatch also retries a previous deployment on a manual no-change run.
+      - name: Trigger tested Pages deployment
+        if: steps.merge.outputs.changed == 'true' || github.event_name == 'workflow_dispatch'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh workflow run deploy.yml --ref main
+      - name: Explain stopped sync
+        if: failure()
+        run: |
+          echo '同步或验证失败，未验证的合并不会推送；若仅发布触发失败，可手动重跑本工作流。请查看失败步骤。' >> "$GITHUB_STEP_SUMMARY"

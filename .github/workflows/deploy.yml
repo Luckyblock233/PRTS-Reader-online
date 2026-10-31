@@ -24,9 +24,12 @@ jobs:
           python-version: '3.12'
       - run: npm ci
       - run: npm test
+      - run: python -m unittest discover -s tests -p 'test_*.py' -v
+      - run: python scripts/check_release.py
       - name: Download and verify pinned story snapshot
         run: python scripts/bootstrap.py
       - run: npm run build
+      - run: node scripts/check-online.mjs
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:
