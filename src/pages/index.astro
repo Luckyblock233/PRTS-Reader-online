@@ -1,4 +1,5 @@
 ---
+import homeContent from "../../config/home.example.json";
 import "../../reader/style.css";
 import "../../reader/features.css";
 import "../../reader/reading.css";
@@ -38,8 +39,8 @@ import "../../reader/reader-layout.css";
     <section id="homeView" class="appPage" aria-labelledby="homeTitle">
       <div class="homeHero">
         <div class="eyebrow">TERRA / A PERSONAL READING ROOM</div>
-        <h1 id="homeTitle">从原文开始，理解泰拉。</h1>
-        <p id="homeIntro">阅读剧情、查找对白，留下你的观察。</p>
+        <h1 id="homeTitle">{homeContent.title}</h1>
+        <p id="homeIntro">{homeContent.intro}</p>
         <div class="homeActions">
           <button id="homeRead" type="button" class="primary">继续阅读 →</button
           ><button id="homeSearch" type="button">探索全文检索</button>
@@ -48,11 +49,17 @@ import "../../reader/reader-layout.css";
       </div>
       <div class="homeMeta">
         <span><strong id="homeChapterCount">—</strong> 篇剧情</span
-        ><span><strong id="homeLineCount">—</strong> 条源记录</span
-        ><button id="editHome" type="button" disabled>编辑首页</button>
+        ><span><strong id="homeLineCount">—</strong> 条源记录</span>
       </div>
-      <p id="homeLoadStatus" class="hint" role="status">正在读取首页说明…</p>
-      <div id="homeSections" class="homeSections"></div>
+      <div id="homeSections" class="homeSections">
+        {homeContent.sections.map((section, index) => (
+          <article class="homeSection">
+            <span class="homeNumber">{String(index + 1).padStart(2, "0")}</span>
+            <h2>{section.title}</h2>
+            <p>{section.body}</p>
+          </article>
+        ))}
+      </div>
       <section class="homeUpdates" aria-labelledby="dataUpdateTitle">
         <div class="eyebrow">DATA / PUBLISHED SNAPSHOT</div>
         <div class="updateHeading">
@@ -293,23 +300,6 @@ import "../../reader/reader-layout.css";
         <div id="results"></div>
       </section>
     </section>
-    <dialog id="homeEditor" aria-labelledby="homeEditorTitle">
-      <form id="homeEditForm">
-        <h2 id="homeEditorTitle">编辑首页</h2>
-        <p class="hint">自定义标题、简介和说明区块。内容按纯文本显示，可换行。</p>
-        <label>首页标题<input id="editHomeTitle" maxlength="100" required /></label
-        ><label
-          >首页简介<textarea id="editHomeIntro" rows="3" maxlength="1500" required></textarea>
-        </label>
-        <div id="homeEditSections"></div>
-        <button id="addHomeSection" type="button">＋ 添加说明区块</button>
-        <p id="homeEditStatus" class="hint" role="status"></p>
-        <div class="homeEditActions">
-          <button id="cancelHomeEdit" type="button">取消</button
-          ><button id="saveHomeEdit" type="submit" class="primary">保存首页</button>
-        </div>
-      </form>
-    </dialog>
     <dialog id="sourceDialog">
       <button id="closeDialog" class="close">关闭 ×</button>
       <h2>来源与版本</h2>
