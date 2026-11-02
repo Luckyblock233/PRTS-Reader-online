@@ -74,10 +74,6 @@ header #themeToggle {
   margin-left: auto;
   white-space: nowrap;
 }
-header #sources {
-  margin-left: 0;
-  white-space: nowrap;
-}
 button {
   background: var(--surface);
 }

@@ -8,14 +8,13 @@
     "schemaVersion": { "const": "source-reader/v1" },
     "snapshot": {
       "type": "object",
-      "required": ["id", "releaseTag", "releaseUrl", "asset", "sha256", "verified"],
+      "required": ["id", "releaseTag", "releaseUrl", "publishedAt"],
+      "additionalProperties": false,
       "properties": {
         "id": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
         "releaseTag": { "type": "string" },
         "releaseUrl": { "type": "string" },
-        "asset": { "const": "zh_CN.zip" },
-        "sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
-        "verified": { "const": true }
+        "publishedAt": { "type": "string", "format": "date-time" }
       }
     },
     "events": {

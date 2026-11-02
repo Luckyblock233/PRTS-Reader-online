@@ -137,7 +137,9 @@ class DataUpdateTests(TestCase):
             json.loads((self.root / "reader/data/catalog.json").read_text())["snapshot"], self.old
         )
         self.assertTrue((self.root / "data/releases" / self.new_id / "raw/zh_CN.zip").is_file())
-        self.assertEqual(self.manager.current()["snapshot"]["pipelineCheckout"], "test-pipeline")
+        self.assertEqual(
+            self.manager.current()["snapshot"]["publishedAt"], self.release["published_at"]
+        )
         self.assertFalse(self.manager.check()["candidate"]["available"])
         with (
             patch.object(data_store, "ROOT", self.root),

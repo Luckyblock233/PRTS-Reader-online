@@ -36,6 +36,16 @@ assert.match(built, /\/PRTS-Reader-online\/_astro\//);
 const catalog = JSON.parse(await read('dist/data/catalog.json'));
 const lock = JSON.parse(await read('config/data-source.json'));
 assert.equal(catalog.snapshot.id, lock.sha256);
+assert.deepEqual(Object.keys(catalog.snapshot).sort(), [
+  'id',
+  'publishedAt',
+  'releaseTag',
+  'releaseUrl',
+]);
+assert.ok(
+  Number.isFinite(Date.parse(catalog.snapshot.publishedAt)),
+  'Missing release publication date',
+);
 assert.ok(catalog.chapters.length > 0);
 for (const chapter of catalog.chapters) await access(`dist/data/chapters/${chapter.id}.json`);
 const manifest = JSON.parse(await read('dist/data/search-manifest.json'));

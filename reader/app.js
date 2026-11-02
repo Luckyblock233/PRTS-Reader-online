@@ -520,7 +520,7 @@ try {
   }
   $('stats').textContent =
     `${catalog.chapters.length.toLocaleString()} 篇 · ${catalog.events.filter((e) => catalog.chapters.some((c) => c.eventId === e.id)).length} 个目录`;
-  $('sourceInfo').textContent = JSON.stringify(catalog.snapshot, null, 2);
+  $('sourceVersion').textContent = catalog.snapshot.releaseTag;
   $('releaseLink').href = catalog.snapshot.releaseUrl;
   for (const t of [...new Set(catalog.chapters.map((c) => c.type))].sort()) {
     const o = make(

@@ -34,21 +34,6 @@
   color: var(--accent);
   text-decoration: underline;
 }
-.homeRights {
-  margin-top: 36px;
-  padding-top: 24px;
-  border-top: 1px solid var(--border);
-  max-width: 880px;
-}
-.homeRights h2 {
-  font-size: 18px;
-  margin: 0 0 12px;
-}
-.homeRights p {
-  color: var(--muted);
-  font-size: 13px;
-  line-height: 1.9;
-}
 .appHeader button {
   margin-left: 0;
 }
@@ -109,9 +94,6 @@
   color: var(--muted);
   white-space: pre-wrap;
 }
-.homeHero .eyebrow {
-  letter-spacing: 3px;
-}
 .homeActions {
   display: flex;
   gap: 12px;
@@ -144,48 +126,25 @@
   color: var(--accent);
   margin-right: 6px;
 }
-.homeSections {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 32px;
-  margin-top: 38px;
+.homePublished {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 8px 12px;
 }
-.homeNumber {
-  font:
-    italic 28px Georgia,
-    serif;
-  color: var(--gold);
-}
-.homeSection h2 {
-  font-size: 18px;
-  margin: 14px 0;
-}
-.homeSection p {
-  white-space: pre-wrap;
-  line-height: 1.95;
-  font-size: 14px;
-  color: var(--muted);
-}
-.homeReference {
-  margin-top: 32px;
-  padding: 24px 0 0;
-}
-.homeReference h3 {
-  font-size: 18px;
-  font-weight: 500;
-  margin: 8px 0;
-}
-.homeReference .hint {
-  font-size: 13px;
-  margin: 8px 0 14px;
-}
-.homeReference a {
-  font-size: 13px;
+.homePublished time {
+  color: var(--accent);
+  font-size: 16px;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
 }
 .homeUpdates {
   margin-top: 32px;
-  padding: 24px 0;
-  border-top: 1px solid var(--border);
+}
+.homeUpdates > p {
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.9;
 }
 .updateHeading {
   display: flex;
@@ -197,49 +156,23 @@
   font-size: 22px;
   margin: 6px 0;
 }
-.homeUpdates > .hint {
-  font-size: 12px;
-  max-width: 850px;
+.updateHeading button {
+  flex-shrink: 0;
 }
-.updateVersions {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
-  gap: 16px;
-  margin: 20px 0;
+.sourceVersion {
+  margin: 24px 0;
 }
-.updateVersions > div {
-  border: 1px solid var(--border);
-  border-radius: 6px;
-  background: var(--surface);
-  padding: 16px 20px;
+.sourceVersion dt {
+  color: var(--muted);
+  font-size: 13px;
 }
-.updateVersions strong {
-  display: block;
-  font:
-    14px/1.8 Consolas,
-    var(--ui-font);
-  overflow-wrap: anywhere;
-  margin-top: 8px;
-}
-.updateVersions p {
-  margin: 7px 0 0;
+.sourceVersion dd {
+  margin: 8px 0 0;
   overflow-wrap: anywhere;
 }
-.updateVersions a {
-  font-size: 12px;
-  display: inline-block;
-  margin-top: 10px;
-}
-.homeUpdates progress {
-  display: block;
-  width: 100%;
-  height: 8px;
-  margin-top: 20px;
-  accent-color: var(--accent);
-}
-.updateActions {
-  display: flex;
-  gap: 12px;
+#sourceDialog p {
+  font-size: 14px;
+  line-height: 1.9;
 }
 .searchPageHead {
   display: flex;
@@ -365,9 +298,6 @@ html:not([data-view='reader']) #focusFigureSlot {
   .library {
     height: calc(100dvh - var(--app-header-height));
   }
-  .homeSections {
-    gap: 24px;
-  }
 }
 @media (max-width: 850px) {
   :root {
@@ -383,10 +313,6 @@ html:not([data-view='reader']) #focusFigureSlot {
     font-size: 15px;
     flex: 1;
   }
-  .appHeader #sources {
-    font-size: 11px;
-    padding: 6px;
-  }
   .appHeader #themeToggle {
     font-size: 11px;
     padding: 6px;
@@ -398,18 +324,6 @@ html:not([data-view='reader']) #focusFigureSlot {
   }
   .appPage {
     padding: 28px 24px 48px;
-  }
-  .homeSections {
-    grid-template-columns: 1fr;
-    gap: 15px;
-  }
-  .homeSection {
-    border-bottom: 1px solid var(--border);
-    padding-bottom: 16px;
-  }
-  .homeSection h2 {
-    display: inline;
-    margin-left: 12px;
   }
   .corpusForm {
     grid-template-columns: 1fr 180px;
@@ -437,9 +351,6 @@ html:not([data-view='reader']) #focusFigureSlot {
   }
 }
 @media (max-width: 500px) {
-  .appHeader #sources {
-    display: none;
-  }
   .brand {
     font-size: 13px;
     letter-spacing: 0;

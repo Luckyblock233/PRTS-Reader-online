@@ -37,60 +37,28 @@ import "../../reader/reader-layout.css";
     </header>
     <section id="homeView" class="appPage" aria-labelledby="homeTitle">
       <div class="homeHero">
-        <div class="eyebrow">TERRA / A PERSONAL READING ROOM</div>
-        <h1 id="homeTitle">从原文开始，理解泰拉。</h1>
-        <p id="homeIntro">一间面向《明日方舟》剧情的个人文本考察室。阅读原始脚本、查找散落各处的对白，把好奇和观察留在它们发生的地方。</p>
+        <h1 id="homeTitle">“今天有在好好执行源石计划吗？”</h1>
+        <p id="homeIntro"> ————Love from your PRTS. </p>
         <div class="homeActions">
           <button id="homeRead" type="button" class="primary">继续阅读 →</button
           ><button id="homeSearch" type="button">探索全文检索</button>
           <p id="homeResumeLabel" class="hint">正在读取上次阅读位置…</p>
         </div>
       </div>
-      <div class="homeMeta">
-        <span><strong id="homeChapterCount">—</strong> 篇剧情</span
-        ><span><strong id="homeLineCount">—</strong> 条源记录</span>
-      </div>
-      <div id="homeSections" class="homeSections">
-        <article class="homeSection">
-          <span class="homeNumber">01</span>
-          <h2>阅读剧情，核对出处</h2>
-          <p>按主线、活动与其他目录浏览章节，点击对白查看发言标签、立绘和源记录。支持字体调整、紧凑排版、专注阅读与键盘导航。</p>
-        </article>
-        <article class="homeSection">
-          <span class="homeNumber">02</span>
-          <h2>从关键词找到上下文</h2>
-          <p>使用页面顶部的全文检索查找正文、选项与发言标签。展开命中行的前后文，点击回到原文并高亮关键词。</p>
-        </article>
-        <article class="homeSection">
-          <span class="homeNumber">03</span>
-          <h2>记录你的观察</h2>
-          <p>为段落记笔记、收藏位置并导出备份。阅读位置与笔记按数据快照保存在浏览器中，剧情数据随网站发布更新。</p>
-        </article>
-      </div>
+
       <section class="homeUpdates" aria-labelledby="dataUpdateTitle">
-        <div class="eyebrow">DATA / PUBLISHED SNAPSHOT</div>
         <div class="updateHeading">
           <h2 id="dataUpdateTitle">剧情数据版本</h2>
           <button id="sources" type="button">来源与版本</button>
         </div>
-        <p>本站使用经过校验的固定剧情快照，数据随网站发布更新。笔记和阅读位置仅保存在当前浏览器，请定期导出备份。</p>
-        <a href="https://github.com/Luckyblock233/PRTS-Reader-online/actions" target="_blank" rel="noopener noreferrer">查看网站发布记录 ↗</a>
+        <div class="homeMeta">
+          <span><strong id="homeChapterCount">—</strong> 篇剧情</span
+          ><span><strong id="homeLineCount">—</strong> 条源记录</span>
+          <span class="homePublished">发布时间（北京时间）<time id="homePublishedAt">—</time></span>
+        </div>
+        <p>本站使用经过校验的固定剧情快照，剧情数据随网站发布更新。</p>
+        <p>笔记和阅读位置仅保存在当前浏览器，安全起见，请定期导出备份。</p>
       </section>
-      <div class="wiki homeReference">
-        <span class="eyebrow">EXTERNAL REFERENCE</span>
-        <h3>PRTS 泰拉年表 ↗</h3>
-        <p class="hint">玩家整理，包含推测与未定时间。未导入本地，不与剧情顺序自动对齐。</p>
-        <a href="https://prts.wiki/w/泰拉年表" target="_blank" rel="noopener noreferrer"
-          >打开 Wiki 年表</a
-        >
-        · <a href="https://prts.wiki/w/首页" target="_blank" rel="noopener noreferrer">首页</a>
-      </div>
-      <footer class="homeRights" aria-labelledby="rightsTitle">
-        <h2 id="rightsTitle">权利说明</h2>
-        <p>泰拉纪事是非官方《明日方舟》剧情阅读工具，不代表游戏官方或数据源维护者。游戏文本、图片及角色等内容的权利归原权利人所有。</p>
-        <p>应用代码采用 MIT 许可，阅读字体遵循 SIL Open Font License 1.1；应用代码的许可不改变游戏素材及其他第三方内容的权利归属。使用或再分发相关内容时，请遵守各自的许可与使用条件。</p>
-        <a href={`${import.meta.env.BASE_URL}/acknowledgements/`}>致谢与完整第三方说明 →</a>
-      </footer>
     </section>
 
     <div id="readerView" class="workspace" hidden>
@@ -307,20 +275,22 @@ import "../../reader/reader-layout.css";
         <div id="results"></div>
       </section>
     </section>
-    <dialog id="sourceDialog">
+    <dialog id="sourceDialog" aria-labelledby="sourceTitle">
       <button id="closeDialog" class="close">关闭 ×</button>
-      <h2>来源与版本</h2>
-      <p>
-        本阅读器展示发布包中的 ASTR 转换 JSON，未包含转换前 TXT。段落定位使用数组下标；sourceId
-        保留上游行号，二者不可互换。
-      </p>
-      <pre id="sourceInfo"></pre>
-      <p>
-        仅按文本字段投影，不识别实体、事件、因果、伏笔或世界时间。发言标签未经角色身份消歧。正文模式保留全部分支内容，选项仅用于核对跳转。
-      </p>
+      <h2 id="sourceTitle">来源与版本</h2>
+      <p>剧情数据来自 arknights-data-pipeline 的中文剧情发布包。</p>
+      <dl class="sourceVersion">
+        <dt>当前版本</dt>
+        <dd id="sourceVersion">—</dd>
+      </dl>
       <p>
         <a id="releaseLink" target="_blank" rel="noopener noreferrer"
-          >查看锁定的 GitHub Release ↗</a
+          >锁定的 GitHub Release ↗</a
+        >
+      </p>
+      <p>
+        <a href="https://github.com/Luckyblock233/PRTS-Reader-online/actions" target="_blank" rel="noopener noreferrer"
+          >查看网站发布记录 ↗</a
         >
       </p>
     </dialog>

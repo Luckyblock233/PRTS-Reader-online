@@ -219,26 +219,13 @@ def build(*, raw=RAW, out=OUT, release_path=None, reports=ROOT / "data/reports")
             "chaptersWithoutCatalogRef": sum(not c["refs"] for c in chapters),
             "optionTraceFalse": sum(c["optionTrace"] is False for c in chapters),
         }
-    commit = manifest.get("pipeline", {}).get("commit") or "unknown"
+    # Keep only reading identity and release details needed by the application.
+    # The raw manifest and release metadata retain full build provenance.
     snapshot = {
         "id": actual,
         "releaseTag": release["tag_name"],
         "releaseUrl": release["html_url"],
         "publishedAt": release["published_at"],
-        "pipelineCheckout": commit,
-        "source": manifest["source"],
-        "publicationRevision": manifest.get("publicationRevision", 1),
-        "contractVersion": manifest["contractVersion"],
-        "astr": manifest.get("tools", {}).get("ASTR-Script"),
-        "asset": "zh_CN.zip",
-        "assetUrl": asset["browser_download_url"],
-        "sha256": actual,
-        "verified": True,
-        "wiki": {
-            "url": "https://prts.wiki/w/泰拉年表",
-            "localSnapshot": False,
-            "reason": "HTTP 403 from local HTTP client; external link only",
-        },
     }
     # Sort only by source-provided order within an event. Unknown sort follows known sort.
     chapters.sort(key=lambda c: (c["eventId"], c["sort"] is None, c["sort"] or 0, c["key"]))
