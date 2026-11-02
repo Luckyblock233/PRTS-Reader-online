@@ -53,7 +53,7 @@ npm run preview
 
 ## 目录
 
-- `src/pages/index.astro`：Astro 页面入口。
+- `src/pages/index.astro`：Astro 页面入口；直接修改其中的标题、简介和说明区块即可维护首页内容。
 - `reader/`：阅读交互、样式、后台搜索与浏览器数据访问。
 - `public/preferences.js`：在页面绘制前恢复外观。
 - `scripts/bootstrap.py` / `prepare.py`：校验及转换上游剧情。

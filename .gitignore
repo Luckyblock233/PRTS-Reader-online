@@ -11,8 +11,7 @@
 /reader/assets/figures/
 /reader/assets/figure-index.json
 
-# Editable / private configuration; version the examples instead
-/config/home.json
+# Private configuration
 *.local.json
 .env
 .env.*
@@ -68,5 +67,4 @@ desktop.ini
 .astro/
 /public/data/
 /public/assets/
-/public/home.json
 /public/figure-source.json

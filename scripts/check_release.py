@@ -33,8 +33,7 @@ def main():
         if (
             name.startswith(FORBIDDEN)
             or name.endswith(".local.json")
-            or name
-            in ("config/home.json", "reader/assets/figure-index.json", "release-latest.json")
+            or name in ("reader/assets/figure-index.json", "release-latest.json")
             or Path(name).name.startswith(".env")
         ):
             failures.append(name + " (private or generated file)")

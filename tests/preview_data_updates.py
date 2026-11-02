@@ -41,13 +41,6 @@ try:
     data_store.ROOT = root
     data_store.ACTIVE = root / "data/active-reader.json"
     serve.MANAGER = case.manager
-    serve.read_home = lambda: {
-        "title": "数据更新验收 · 隔离样例",
-        "intro": "本页使用合成剧情和模拟发布信息，不访问远程发布包，不改变正式资料。",
-        "sections": [
-            {"title": "检查与更新", "body": "检查后手动更新，验证下载、校验、索引重建和切换。"}
-        ],
-    }
     print("Isolated fixture: http://127.0.0.1:8769", flush=True)
     ThreadingHTTPServer(("127.0.0.1", 8769), serve.Handler).serve_forever()
 finally:

@@ -7,7 +7,6 @@ import argparse
 import json
 from figures import resolve as resolve_figure
 from search_index import search as corpus_search, context as search_context, SearchError
-from home_content import read_home, save_home, HomeError
 from data_store import descriptor, dataset_dir
 from data_updates import MANAGER, UpdateError
 
@@ -24,11 +23,6 @@ class Handler(SimpleHTTPRequestHandler):
             return self.respond(descriptor())
         if url.path == "/api/data/updates":
             return self.respond(MANAGER.status())
-        if url.path == "/api/home":
-            try:
-                return self.respond(read_home())
-            except (HomeError, ValueError, OSError):
-                return self.respond({"error": "首页配置读取失败，请检查 config/home.json"}, 500)
         if url.path == "/api/figure":
             try:
                 args = parse_qs(url.query)
@@ -57,7 +51,7 @@ class Handler(SimpleHTTPRequestHandler):
 
     def do_POST(self):
         endpoint = urlsplit(self.path).path
-        if endpoint not in ("/api/home", "/api/data/check", "/api/data/install"):
+        if endpoint not in ("/api/data/check", "/api/data/install"):
             return self.respond({"error": "未知接口"}, 404)
         # State changes accept same-origin JSON interactions or local HTTP clients.
         host = self.headers.get("Host", "")
@@ -70,7 +64,7 @@ class Handler(SimpleHTTPRequestHandler):
             return self.respond({"error": "需要 application/json"}, 415)
         try:
             size = int(self.headers.get("Content-Length", "0"))
-            if not 0 < size <= (262144 if endpoint == "/api/home" else 32768):
+            if not 0 < size <= 32768:
                 return self.respond({"error": "请求大小无效"}, 413)
             args = json.loads(self.rfile.read(size))
             if not isinstance(args, dict):
@@ -79,21 +73,12 @@ class Handler(SimpleHTTPRequestHandler):
                 return self.respond(MANAGER.check())
             if endpoint == "/api/data/install":
                 return self.respond(MANAGER.start(args.get("token")))
-            if endpoint == "/api/home":
-                return self.respond(save_home(args))
         except UpdateError as e:
             return self.respond({"error": str(e)}, e.status)
-        except HomeError as e:
-            return self.respond({"error": str(e)}, 400)
         except (ValueError, TypeError):
             return self.respond({"error": "请求或配置格式无效"}, 400)
         except Exception:
-            message = (
-                "数据更新请求失败，请检查网络与本地目录权限。"
-                if endpoint.startswith("/api/data/")
-                else "首页保存失败；请检查 config/home.json 与目录权限。"
-            )
-            return self.respond({"error": message}, 500)
+            return self.respond({"error": "数据更新请求失败，请检查网络与本地目录权限。"}, 500)
 
     def respond(self, value, status=200):
         body = json.dumps(value, ensure_ascii=False).encode("utf-8")
