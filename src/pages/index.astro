@@ -23,6 +23,7 @@ import "../../reader/reader-layout.css";
       <nav class="appNav" aria-label="应用导航">
         <button id="homeNav" type="button" aria-current="page">首页</button
         ><button id="readerNav" type="button">阅读</button>
+        <a class="thanksLink" href={`${import.meta.env.BASE_URL}/acknowledgements/`}>致谢</a>
       </nav>
       <form id="topSearchForm" class="topSearch" role="search">
         <input id="topSearchQuery" aria-label="全文检索关键词" maxlength="80" /><button
@@ -70,6 +71,12 @@ import "../../reader/reader-layout.css";
         >
         · <a href="https://prts.wiki/w/首页" target="_blank" rel="noopener noreferrer">首页</a>
       </div>
+      <footer class="homeRights" aria-labelledby="rightsTitle">
+        <h2 id="rightsTitle">权利说明</h2>
+        <p>泰拉纪事是非官方《明日方舟》剧情阅读工具，不代表游戏官方或数据源维护者。游戏文本、图片及角色等内容的权利归原权利人所有。</p>
+        <p>应用代码采用 MIT 许可，阅读字体遵循 SIL Open Font License 1.1；应用代码的许可不改变游戏素材及其他第三方内容的权利归属。使用或再分发相关内容时，请遵守各自的许可与使用条件。</p>
+        <a href={`${import.meta.env.BASE_URL}/acknowledgements/`}>致谢与完整第三方说明 →</a>
+      </footer>
     </section>
 
     <div id="readerView" class="workspace" hidden>

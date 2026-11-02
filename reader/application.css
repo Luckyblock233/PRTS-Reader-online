@@ -22,6 +22,33 @@
   gap: 5px;
   align-items: center;
 }
+.appNav .thanksLink {
+  color: var(--text);
+  text-decoration: none;
+  font-size: 13px;
+  padding: 8px 10px;
+  white-space: nowrap;
+}
+.appNav .thanksLink:hover,
+.appNav .thanksLink:focus-visible {
+  color: var(--accent);
+  text-decoration: underline;
+}
+.homeRights {
+  margin-top: 36px;
+  padding-top: 24px;
+  border-top: 1px solid var(--border);
+  max-width: 880px;
+}
+.homeRights h2 {
+  font-size: 18px;
+  margin: 0 0 12px;
+}
+.homeRights p {
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.9;
+}
 .appHeader button {
   margin-left: 0;
 }

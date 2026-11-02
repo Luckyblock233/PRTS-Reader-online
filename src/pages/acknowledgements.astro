@@ -1,0 +1,48 @@
+---
+import { Content } from '../../THIRD_PARTY_NOTICES.md';
+const home = `${import.meta.env.BASE_URL}/#home`;
+---
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta name="description" content="泰拉纪事的第三方项目致谢、资料来源与权利说明。" />
+    <title>致谢与权利说明 · 泰拉纪事</title>
+    <script is:inline>
+      try {
+        const prefs = JSON.parse(localStorage.getItem('terra-reading-preferences-v1') || '{}');
+        if (prefs.theme === 'dark') document.documentElement.dataset.theme = 'dark';
+      } catch {}
+    </script>
+  </head>
+  <body>
+    <header>
+      <a class="brand" href={home}>泰拉 · 纪事</a>
+      <a href={home}>← 返回首页</a>
+    </header>
+    <main><Content /></main>
+    <footer><a href={home}>返回阅读器 →</a></footer>
+  </body>
+</html>
+<style>
+  :global(:root) { color-scheme: light; --paper: #faf8f0; --ink: #303d35; --muted: #626b61; --rule: #d7dbcf; --link: #375b42; }
+  :global(:root[data-theme='dark']) { color-scheme: dark; --paper: #101619; --ink: #e0e8e8; --muted: #a6b4ac; --rule: #2b383d; --link: #a8c8a2; }
+  :global(*) { box-sizing: border-box; }
+  :global(body) { margin: 0; background: var(--paper); color: var(--ink); font: 16px/1.9 'Segoe UI', 'Microsoft YaHei', sans-serif; }
+  header, main, footer { width: min(100% - 40px, 820px); margin-inline: auto; }
+  header { display: flex; justify-content: space-between; align-items: center; gap: 20px; padding: 24px 0; border-bottom: 1px solid var(--rule); }
+  .brand { font-weight: 600; letter-spacing: 0.12em; text-decoration: none; }
+  main { padding: 30px 0; }
+  main :global(h1) { font: 600 clamp(28px, 5vw, 38px)/1.4 'Noto Serif SC', SimSun, serif; margin: 12px 0 24px; }
+  main :global(h2) { font-size: 20px; margin: 32px 0 12px; padding-top: 24px; border-top: 1px solid var(--rule); }
+  main :global(p), main :global(li) { color: var(--muted); }
+  main :global(ul) { padding-left: 24px; }
+  main :global(li) { margin: 10px 0; }
+  :global(a) { color: var(--link); text-underline-offset: 4px; overflow-wrap: anywhere; }
+  :global(a:hover) { text-decoration-thickness: 2px; }
+  :global(a:focus-visible) { outline: 2px solid var(--link); outline-offset: 4px; }
+  :global(code) { font-size: 0.9em; overflow-wrap: anywhere; }
+  footer { padding: 24px 0 40px; border-top: 1px solid var(--rule); }
+  @media (max-width: 480px) { :global(body) { font-size: 14px; } header { font-size: 13px; } }
+</style>
