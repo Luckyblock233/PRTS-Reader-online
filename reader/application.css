@@ -144,10 +144,6 @@
   color: var(--accent);
   margin-right: 6px;
 }
-.homeMeta #editHome {
-  margin-left: auto;
-  font-size: 12px;
-}
 .homeSections {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -244,34 +240,6 @@
 .updateActions {
   display: flex;
   gap: 12px;
-}
-#homeEditor {
-  width: min(780px, 94vw);
-  max-height: 90dvh;
-  overflow: auto;
-}
-#homeEditor h2 {
-  margin-top: 0;
-}
-.homeEditSection {
-  border: 1px solid var(--border);
-  margin: 20px 0;
-  padding: 4px 16px 16px;
-  border-radius: 5px;
-}
-.homeEditSection legend {
-  color: var(--accent);
-  font-size: 12px;
-}
-.homeEditActions {
-  position: sticky;
-  bottom: -30px;
-  background: var(--panel);
-  border-top: 1px solid var(--border);
-  padding: 16px 0 0;
-  display: flex;
-  gap: 10px;
-  justify-content: flex-end;
 }
 .searchPageHead {
   display: flex;

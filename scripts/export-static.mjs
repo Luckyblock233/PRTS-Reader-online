@@ -29,7 +29,6 @@ for (let i = 0; i < records.length; i += 20000) {
   shards.push(name);
 }
 await write(`${out}/search-manifest.json`, { snapshot: catalog.snapshot.id, shards });
-await write('public/home.json', await read('config/home.example.json'));
 await cp('reader/assets/fonts', 'public/assets/fonts', { recursive: true });
 await write('public/figure-source.json', await read('config/figure-source.json'));
 console.log(
