@@ -14,25 +14,18 @@ const { page, title, description, eyebrow, headings } = Astro.props;
 <SiteLayout page={page} title={title} description={description}>
   <main class="documentPage pageShell">
     <aside class="documentContents" aria-label="本页目录">
-      <p class="eyebrow">ON THIS PAGE</p>
+      <p class="eyebrow">CONTENT</p>
       <nav aria-label="致谢章节">
         {headings.map(({ slug, text }) => (
           <a href={`#${slug}`}>{text}</a>
         ))}
       </nav>
-      <a class="backToReader" href={sitePath('reader/')}>
-        继续阅读 →
-      </a>
     </aside>
     <article class="documentBody">
       <p class="eyebrow">{eyebrow}</p>
       <div class="prose">
         <slot />
       </div>
-      <footer>
-        <a href={sitePath()}>← 返回首页</a>
-        <a href={sitePath('reader/')}>前往阅读 →</a>
-      </footer>
     </article>
   </main>
 </SiteLayout>

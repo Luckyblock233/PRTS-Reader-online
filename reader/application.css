@@ -9,7 +9,7 @@
   align-items: center;
   gap: 20px;
   border-bottom: 1px solid var(--border);
-  padding-bottom: 20px;
+  padding-bottom: 10px;
   margin-bottom: 20px;
 }
 .searchPageHead h1 {
@@ -26,6 +26,7 @@
   grid-template-columns: minmax(180px, 1fr) 220px auto;
   gap: 14px;
   align-items: end;
+  margin-bottom: 30px;
 }
 .corpusForm label {
   margin: 0;

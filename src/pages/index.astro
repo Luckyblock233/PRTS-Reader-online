@@ -43,9 +43,11 @@ const lineCount = catalog.chapters.reduce((sum, chapter) => sum + chapter.lineCo
           <strong id="homeLineCount">{lineCount.toLocaleString('zh-CN')}</strong> 条源记录
         </span>
         <span class="homePublished">
-          <time id="homePublishedAt" datetime={snapshot.publishedAt}>
-            {formatPublishedAt(snapshot.publishedAt)}
-          </time>
+          <strong>
+            <time id="homePublishedAt" datetime={snapshot.publishedAt}>
+              {formatPublishedAt(snapshot.publishedAt)}
+            </time>
+          </strong>
           发布（UTC+8）
         </span>
       </div>
@@ -118,7 +120,6 @@ const lineCount = catalog.chapters.reduce((sum, chapter) => sum + chapter.lineCo
   }
   .homePublished time {
     color: var(--accent);
-    font-size: 16px;
     font-variant-numeric: tabular-nums;
     white-space: nowrap;
   }

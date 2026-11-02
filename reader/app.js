@@ -253,8 +253,6 @@ function renderContent() {
     root.append(row);
   }
   if (!count) root.append(make('div', 'empty', '当前条件下没有段落。可清除筛选。'));
-  $('readingFooter').textContent =
-    `显示 ${count} / ${current.lines.length} 条源记录 · 本文所有分支均保留 · 未模拟游戏演出`;
 }
 function selectLine(index) {
   saveDraft();
@@ -322,12 +320,12 @@ async function navigate(id, index, keyword = '') {
     $('notice').hidden = !c.meta.hasChoices && c.meta.optionTrace !== false;
     $('noticeTitle').textContent =
       c.meta.optionTrace === false
-        ? '分支跳转不可靠 · 展开说明'
-        : '含分支，按原文件顺序阅读 · 展开说明';
+        ? '分支跳转不可靠'
+        : '含分支，按原文件顺序阅读';
     $('noticeDetail').textContent =
       c.meta.optionTrace === false
         ? '上游标记 OPTIONTRACE=false。分支追踪不可靠，请在源 JSON 中人工核对。'
-        : '本篇含选项：正文按文件顺序展示全部分支。点击选项只定位源记录，不代表实际游玩路线。';
+        : '本篇含选项：正文按文件顺序展示全部分支，点击选项可跳转对应记录。';
     const siblings = catalog.chapters.filter((x) => x.eventId === c.meta.eventId);
     const pos = siblings.findIndex((x) => x.id === id);
     $('prev').disabled = pos === 0;
@@ -526,8 +524,6 @@ try {
   } catch {
     toast('无法读取浏览器笔记，请从导出文件恢复');
   }
-  $('stats').textContent =
-    `${catalog.chapters.length.toLocaleString()} 篇 · ${catalog.events.filter((e) => catalog.chapters.some((c) => c.eventId === e.id)).length} 个目录`;
   for (const t of [...new Set(catalog.chapters.map((c) => c.type))].sort()) {
     const o = make(
       'option',
