@@ -1,6 +1,10 @@
 # 架构
 
-Astro 负责页面、样式和客户端脚本打包，GitHub Pages 提供静态文件。页面保留原阅读器的 DOM 契约和交互，使用仓库 base 路径访问数据。
+Astro 使用文件路由生成首页 `/`、阅读页 `/reader/` 和致谢页 `/acknowledgements/`，GitHub Pages 提供静态文件。页面使用 SiteLayout 的 slot 组合内容，共享 SiteHeader、主题变量、字体和基础控件样式；链接统一通过 sitePath 适配仓库 base 路径。
+
+阅读页组合 ChapterLibrary、ReadingDesk、NotesPanel 和 SearchPanel 组件，只在该页加载阅读样式与脚本。阅读和搜索在页内切换，导航到其他页面使用普通链接。首页统计和来源弹窗由 Astro 构建时生成，客户端只负责旧链接兼容与续读提示；致谢页使用 DocumentLayout 排版原始第三方声明，并从 Markdown 标题生成目录。
+
+原首页 `#章节ID/段落下标` 和 `#search` 链接自动转到 `/reader/`。快照标识和浏览器存储键保持不变，切换页面时保存未提交的笔记；外观脚本按页面实际存在的控件初始化，首页和致谢页也可切换主题。
 
 构建链：固定 Release → Python SHA-256 校验和转换 → reader/data → export-static.mjs → public/data → Astro dist → Pages。不会发布本地笔记。
 

@@ -1,87 +1,3 @@
-@font-face {
-  font-family: 'Reader WenKai';
-  src: url('assets/fonts/LXGWWenKaiLite-Regular.ttf') format('truetype');
-  font-display: swap;
-  font-weight: 400;
-  font-style: normal;
-}
-:root {
-  --ui-font: 'Source Han Sans SC', 'Noto Sans SC', 'Microsoft YaHei', sans-serif;
-  --book-serif: 'Noto Serif SC', 'Source Han Serif SC', 'Songti SC', SimSun, serif;
-  --reading-font: 'Reader WenKai', 'LXGW WenKai Lite', KaiTi, var(--book-serif);
-  --reading-size: 18px;
-  --surface: #202b30;
-  --field: #10181c;
-  --header: #141c20;
-  --hover: #192329;
-  --active: #26332f;
-  --selected: #1f2c2c;
-  --narration: #bdc9cb;
-  --code: #b3c9cb;
-  --command: #131c21;
-  --choice: #24271f;
-  --choice-border: #4a4934;
-  --notice-bg: #29281f;
-  --notice-text: #d1c49f;
-  --figure-top: #253139;
-  --figure-bottom: #131c22;
-}
-:root[data-theme='light'] {
-  color-scheme: light;
-  --bg: #faf7f0;
-  --panel: #f2efe6;
-  --border: #d6d3c7;
-  --muted: #666b63;
-  --text: #2e352f;
-  --accent: #3c654d;
-  --gold: #87672f;
-  --surface: #f9f7f0;
-  --field: #fffdf8;
-  --header: #eeeae0;
-  --hover: #eeeade;
-  --active: #e0e9dc;
-  --selected: #e4ebdf;
-  --narration: #585f55;
-  --code: #3f5b57;
-  --command: #eeeee6;
-  --choice: #f0eddd;
-  --choice-border: #c7bc94;
-  --notice-bg: #f4ecd8;
-  --notice-text: #6f572c;
-  --figure-top: #e4eade;
-  --figure-bottom: #f9f7ef;
-}
-:root[data-theme='dark'] {
-  color-scheme: dark;
-}
-:root[data-font='serif'] {
-  --reading-font: var(--book-serif);
-}
-:root[data-font='sans'] {
-  --reading-font: var(--ui-font);
-}
-:root[data-text-size='large'] {
-  --reading-size: 21px;
-}
-body {
-  font-family: var(--ui-font);
-}
-header {
-  background: var(--header);
-  gap: 12px;
-}
-header #themeToggle {
-  margin-left: auto;
-  white-space: nowrap;
-}
-button {
-  background: var(--surface);
-}
-input,
-select,
-textarea {
-  background: var(--field);
-}
 nav summary {
   color: var(--text);
 }
@@ -133,14 +49,6 @@ pre {
 .figureBadge {
   border-color: var(--border);
 }
-.primary {
-  background: var(--accent);
-  color: var(--bg);
-}
-.primary:hover {
-  background: color-mix(in srgb, var(--accent) 85%, var(--text));
-  color: var(--bg);
-}
 #toast {
   color: var(--bg);
 }
@@ -150,11 +58,6 @@ pre {
 }
 :root[data-theme='light'] .figureStage img {
   filter: drop-shadow(0 8px 12px #394f3926);
-}
-h1 {
-  font-family: var(--reading-font);
-  font-size: 32px;
-  line-height: 1.5;
 }
 .line p {
   font-family: var(--reading-font);
@@ -228,25 +131,6 @@ h1 {
   padding: 4px 9px;
 }
 @media (max-width: 650px) {
-  header {
-    gap: 7px;
-    padding: 10px;
-  }
-  header .brand {
-    font-size: 13px;
-    gap: 6px;
-  }
-  header .mark {
-    font-size: 26px;
-  }
-  header small {
-    font-size: 7px;
-    letter-spacing: 1px;
-  }
-  header button {
-    padding: 6px;
-    font-size: 10px;
-  }
   .appearanceHint {
     margin-left: 0;
   }

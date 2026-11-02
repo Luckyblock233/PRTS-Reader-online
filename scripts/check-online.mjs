@@ -1,13 +1,31 @@
 import assert from 'node:assert/strict';
 import { readFile, access } from 'node:fs/promises';
 const read = (path) => readFile(path, 'utf8');
-const page = await read('src/pages/index.astro');
+const page = await read('src/pages/reader.astro');
+const pages = {
+  home: await read('dist/index.html'),
+  reader: await read('dist/reader/index.html'),
+  acknowledgements: await read('dist/acknowledgements/index.html'),
+};
 const app = await read('reader/app.js');
 const config = await read('astro.config.mjs');
 assert.match(config, /base:\s*['"]\/PRTS-Reader-online['"]/);
 assert.match(config, /output:\s*['"]static['"]/);
 assert.match(page, /import.*reader\/app\.js/);
-assert.match(page, /is:inline.*BASE_URL.*preferences\.js/);
+for (const [name, html] of Object.entries(pages)) {
+  const ids = [...html.matchAll(/\sid="([^"]+)"/g)].map((match) => match[1]);
+  assert.equal(new Set(ids).size, ids.length, `${name}: duplicate component IDs`);
+  for (const id of ['homeNav', 'readerNav', 'thanksNav', 'topSearchForm', 'themeToggle'])
+    assert.ok(html.includes(`id="${id}"`), `${name}: missing shared #${id}`);
+  assert.match(html, /src="\/PRTS-Reader-online\/preferences\.js\?v=/);
+  assert.match(html, /action="\/PRTS-Reader-online\/reader\/"/);
+  assert.match(html, /name="q"/);
+  assert.match(html, /href="\/PRTS-Reader-online\/acknowledgements\/"/);
+}
+assert.doesNotMatch(pages.home, /id="(?:readerView|searchView|notesPanel)"/);
+assert.doesNotMatch(pages.reader, /id="homeView"/);
+assert.doesNotMatch(pages.acknowledgements, /id="(?:readerView|homeView|notesPanel)"/);
+assert.match(pages.home, /id="homePublishedAt"[^>]*datetime=/);
 assert.match(app, /siteUrl\(url\)/);
 for (const file of [
   'reader/app.js',
@@ -22,8 +40,17 @@ for (const file of [
   // Check direct DOM dependencies: upstream UI changes must arrive with matching markup.
   const ids = [...source.matchAll(/(?:\$|getElementById)\(['"]([^'"]+)['"]\)/g)].map((m) => m[1]);
   for (const id of ids)
-    assert.ok(page.includes(`id="${id}"`), `${file}: missing #${id} in Astro page`);
+    assert.ok(pages.reader.includes(`id="${id}"`), `${file}: missing #${id} in reader page`);
 }
+for (const id of [
+  'homeView',
+  'homeRead',
+  'homeResumeLabel',
+  'sources',
+  'sourceDialog',
+  'closeDialog',
+])
+  assert.ok(pages.home.includes(`id="${id}"`), `home: missing #${id}`);
 for (const file of [
   'reader/static-data.js',
   'reader/static-search.js',

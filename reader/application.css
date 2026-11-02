@@ -1,178 +1,7 @@
-[hidden] {
-  display: none !important;
-}
-:root {
-  --app-header-height: 86px;
-}
-.appHeader {
-  position: sticky;
-  top: 0;
-  z-index: 15;
-  height: var(--app-header-height);
-  gap: 18px;
-  padding: 0 28px;
-}
-.brand {
-  text-decoration: none;
-  color: var(--text);
-  white-space: nowrap;
-}
-.appNav {
-  display: flex;
-  gap: 5px;
-  align-items: center;
-}
-.appNav .thanksLink {
-  color: var(--text);
-  text-decoration: none;
-  font-size: 13px;
-  padding: 8px 10px;
-  white-space: nowrap;
-}
-.appNav .thanksLink:hover,
-.appNav .thanksLink:focus-visible {
-  color: var(--accent);
-  text-decoration: underline;
-}
-.appHeader button {
-  margin-left: 0;
-}
-.appNav button {
-  border-color: transparent;
-  background: transparent;
-  white-space: nowrap;
-}
-.appNav button[aria-current] {
-  color: var(--accent);
-  background: var(--active);
-  border-color: var(--border);
-}
-.topSearch {
-  display: flex;
-  gap: 0;
-  max-width: 460px;
-  flex: 1;
-  margin-left: auto;
-}
-.topSearch input {
-  border-radius: 6px 0 0 6px;
-  min-width: 100px;
-  font-size: 13px;
-}
-.topSearch button {
-  border-radius: 0 6px 6px 0;
-  white-space: nowrap;
-  border-left: 0;
-  color: var(--accent);
-}
-.topSearch button.active {
-  background: var(--active);
-}
-.appHeader #themeToggle {
-  margin-left: 0;
-}
 .appPage {
   height: calc(100dvh - var(--app-header-height));
   overflow: auto;
   padding: 48px max(28px, calc((100vw - 1160px) / 2)) 64px;
-}
-.homeHero {
-  position: relative;
-  padding: 18px 0 36px;
-  border-bottom: 1px solid var(--border);
-}
-.homeHero h1 {
-  font-size: clamp(32px, 4vw, 52px);
-  max-width: 900px;
-  margin: 25px 0 16px;
-  letter-spacing: 0.04em;
-}
-.homeHero #homeIntro {
-  max-width: 760px;
-  font-size: 17px;
-  line-height: 1.9;
-  color: var(--muted);
-  white-space: pre-wrap;
-}
-.homeActions {
-  display: flex;
-  gap: 12px;
-  align-items: center;
-  margin-top: 28px;
-  flex-wrap: wrap;
-}
-.homeActions button {
-  padding: 11px 22px;
-}
-.homeActions .hint {
-  flex-basis: 100%;
-  margin: 0;
-}
-.homeMeta {
-  display: flex;
-  gap: 30px;
-  margin: 24px 0 0;
-  flex-wrap: wrap;
-  align-items: center;
-}
-.homeMeta span {
-  font-size: 12px;
-  color: var(--muted);
-}
-.homeMeta strong {
-  font:
-    24px Georgia,
-    serif;
-  color: var(--accent);
-  margin-right: 6px;
-}
-.homePublished {
-  display: flex;
-  align-items: baseline;
-  flex-wrap: wrap;
-  gap: 8px 12px;
-}
-.homePublished time {
-  color: var(--accent);
-  font-size: 16px;
-  font-variant-numeric: tabular-nums;
-  white-space: nowrap;
-}
-.homeUpdates {
-  margin-top: 32px;
-}
-.homeUpdates > p {
-  color: var(--muted);
-  font-size: 13px;
-  line-height: 1.9;
-}
-.updateHeading {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 14px;
-}
-.updateHeading h2 {
-  font-size: 22px;
-  margin: 6px 0;
-}
-.updateHeading button {
-  flex-shrink: 0;
-}
-.sourceVersion {
-  margin: 24px 0;
-}
-.sourceVersion dt {
-  color: var(--muted);
-  font-size: 13px;
-}
-.sourceVersion dd {
-  margin: 8px 0 0;
-  overflow-wrap: anywhere;
-}
-#sourceDialog p {
-  font-size: 14px;
-  line-height: 1.9;
 }
 .searchPageHead {
   display: flex;
@@ -284,13 +113,6 @@ html:not([data-view='reader']) #focusFigureSlot {
   height: calc(100dvh - var(--app-header-height));
 }
 @media (max-width: 1150px) {
-  .brand small {
-    display: none;
-  }
-  .appHeader {
-    gap: 10px;
-    padding-inline: 18px;
-  }
   .workspace {
     height: auto;
   }
@@ -300,28 +122,6 @@ html:not([data-view='reader']) #focusFigureSlot {
   }
 }
 @media (max-width: 850px) {
-  :root {
-    --app-header-height: 132px;
-  }
-  .appHeader {
-    height: var(--app-header-height);
-    flex-wrap: wrap;
-    align-content: center;
-    gap: 8px 12px;
-  }
-  .brand {
-    font-size: 15px;
-    flex: 1;
-  }
-  .appHeader #themeToggle {
-    font-size: 11px;
-    padding: 6px;
-  }
-  .topSearch {
-    order: 5;
-    flex-basis: 100%;
-    max-width: none;
-  }
   .appPage {
     padding: 28px 24px 48px;
   }
@@ -345,35 +145,8 @@ html:not([data-view='reader']) #focusFigureSlot {
   #searchPane .contextBody {
     grid-template-columns: 1fr;
   }
-  .appNav button {
-    font-size: 12px;
-    padding: 6px;
-  }
 }
 @media (max-width: 500px) {
-  .brand {
-    font-size: 13px;
-    letter-spacing: 0;
-  }
-  .brand .mark {
-    font-size: 26px;
-  }
-  .appNav {
-    gap: 0;
-  }
-  .appNav button {
-    font-size: 11px;
-    padding: 6px;
-  }
-  .homeMeta {
-    gap: 16px;
-  }
-  .homeHero h1 {
-    font-size: 32px;
-  }
-  .homeHero #homeIntro {
-    font-size: 15px;
-  }
   .appPage {
     padding: 24px 18px;
   }

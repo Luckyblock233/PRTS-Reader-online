@@ -1,0 +1,70 @@
+---
+interface Props {
+  snapshot: { releaseTag: string; releaseUrl: string };
+}
+const { snapshot } = Astro.props;
+---
+
+<dialog id="sourceDialog" aria-labelledby="sourceTitle">
+  <button id="closeDialog" class="close">
+    关闭 ×
+  </button>
+  <h2 id="sourceTitle">来源与版本</h2>
+  <p>剧情数据来自 arknights-data-pipeline 的中文剧情发布包。</p>
+  <dl class="sourceVersion">
+    <dt>当前版本</dt>
+    <dd id="sourceVersion">{snapshot.releaseTag}</dd>
+  </dl>
+  <p>
+    <a id="releaseLink" href={snapshot.releaseUrl} target="_blank" rel="noopener noreferrer">
+      锁定的 GitHub Release ↗
+    </a>
+  </p>
+  <p>
+    <a
+      href="https://github.com/Luckyblock233/PRTS-Reader-online/actions"
+      target="_blank"
+      rel="noopener noreferrer"
+    >
+      查看网站发布记录 ↗
+    </a>
+  </p>
+</dialog>
+<script>
+  const dialog = document.querySelector<HTMLDialogElement>('#sourceDialog');
+  document.getElementById('sources')?.addEventListener('click', () => dialog?.showModal());
+  document.getElementById('closeDialog')?.addEventListener('click', () => dialog?.close());
+</script>
+
+<style>
+  dialog {
+    max-width: 740px;
+    width: 90%;
+    background: var(--panel);
+    color: var(--text);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 30px;
+  }
+  dialog::backdrop {
+    background: #000a;
+  }
+  .close {
+    float: right;
+  }
+  .sourceVersion {
+    margin: 24px 0;
+  }
+  .sourceVersion dt {
+    color: var(--muted);
+    font-size: 13px;
+  }
+  .sourceVersion dd {
+    margin: 8px 0 0;
+    overflow-wrap: anywhere;
+  }
+  #sourceDialog p {
+    font-size: 14px;
+    line-height: 1.9;
+  }
+</style>

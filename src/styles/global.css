@@ -1,0 +1,156 @@
+* {
+  box-sizing: border-box;
+}
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font: 14px/1.65 var(--ui-font);
+}
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+button,
+a,
+input,
+select,
+textarea {
+  outline-offset: 4px;
+}
+button {
+  cursor: pointer;
+  border: 1px solid var(--border);
+  color: var(--text);
+  padding: 7px 12px;
+  border-radius: 5px;
+  background: var(--surface);
+}
+button:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+button:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+a {
+  color: var(--accent);
+}
+input,
+select,
+textarea {
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  color: var(--text);
+  padding: 9px;
+  width: 100%;
+  background: var(--field);
+}
+textarea {
+  resize: vertical;
+}
+label {
+  display: block;
+  color: var(--muted);
+  font-size: 12px;
+  margin: 14px 0 8px;
+}
+label input,
+label textarea {
+  margin-top: 7px;
+}
+small {
+  display: block;
+  font-size: 9px;
+  letter-spacing: 3px;
+  color: var(--muted);
+}
+h1 {
+  font-weight: 500;
+  letter-spacing: 1px;
+  margin: 24px 0 6px;
+  font-family: var(--reading-font);
+  font-size: 32px;
+  line-height: 1.5;
+}
+h2 {
+  font-size: 19px;
+  font-weight: 500;
+  margin: 8px 0;
+}
+h3 {
+  font-size: 14px;
+  margin-top: 24px;
+}
+h4 {
+  color: var(--gold);
+  font-size: 12px;
+}
+.eyebrow {
+  font-size: 10px;
+  letter-spacing: 2px;
+  color: var(--accent);
+}
+.muted {
+  color: var(--muted);
+  font-size: 12px;
+}
+.hint {
+  font-size: 11px;
+  color: var(--muted);
+  line-height: 1.8;
+}
+.primary {
+  border-color: var(--accent);
+  background: var(--accent);
+  color: var(--bg);
+}
+.primary:hover {
+  background: color-mix(in srgb, var(--accent) 85%, var(--text));
+  color: var(--bg);
+}
+[hidden] {
+  display: none !important;
+}
+:root {
+  --app-header-height: 86px;
+}
+.button {
+  display: inline-block;
+  font: inherit;
+  text-decoration: none;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  color: var(--text);
+  padding: 7px 12px;
+  border-radius: 5px;
+}
+.button:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+.button.primary {
+  background: var(--accent);
+  color: var(--bg);
+  border-color: var(--accent);
+}
+.pageShell {
+  min-height: calc(100dvh - var(--app-header-height));
+  padding: 48px max(28px, calc((100vw - 1160px) / 2)) 64px;
+}
+@media (max-width: 850px) {
+  :root {
+    --app-header-height: 132px;
+  }
+  .pageShell {
+    padding: 28px 24px 48px;
+  }
+}
+@media (max-width: 500px) {
+  .pageShell {
+    padding: 24px 18px;
+  }
+}

@@ -1,0 +1,162 @@
+---
+import { sitePath } from '../lib/routes.js';
+interface Props {
+  currentPage: 'home' | 'reader' | 'acknowledgements';
+}
+const { currentPage } = Astro.props;
+const links = [
+  { page: 'home', id: 'homeNav', label: '首页', path: '' },
+  { page: 'reader', id: 'readerNav', label: '阅读', path: 'reader/' },
+  { page: 'acknowledgements', id: 'thanksNav', label: '致谢', path: 'acknowledgements/' },
+];
+---
+
+<header class="appHeader">
+  <a class="brand" href={sitePath()} aria-label="泰拉纪事首页">
+    <span>
+      泰拉 · 纪事<small>TERRA / RECORDS</small>
+    </span>
+  </a>
+  <nav class="appNav" aria-label="应用导航">
+    {links.map(({ page, id, label, path }) => (
+      <a id={id} href={sitePath(path)} aria-current={currentPage === page ? 'page' : undefined}>
+        {label}
+      </a>
+    ))}
+  </nav>
+  <form
+    id="topSearchForm"
+    class="topSearch"
+    role="search"
+    action={sitePath('reader/')}
+    method="get"
+  >
+    <input id="topSearchQuery" name="q" type="search" aria-label="全文检索关键词" maxlength="80" />
+    <button id="openGlobalSearch" type="submit">
+      全文检索
+    </button>
+  </form>
+  <button id="themeToggle" type="button" aria-label="切换到夜间模式">
+    ☾
+  </button>
+</header>
+<style>
+  .appHeader {
+    position: sticky;
+    top: 0;
+    z-index: 15;
+    height: var(--app-header-height);
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    padding: 0 28px;
+    border-bottom: 1px solid var(--border);
+    background: var(--header);
+    font-family: var(--ui-font);
+  }
+  .brand {
+    color: var(--text);
+    text-decoration: none;
+    white-space: nowrap;
+    font-size: 18px;
+    font-weight: 600;
+    letter-spacing: 2px;
+  }
+  .brand small {
+    display: block;
+    font-size: 9px;
+    letter-spacing: 3px;
+    color: var(--muted);
+  }
+  .appNav {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+  .appNav a {
+    color: var(--text);
+    text-decoration: none;
+    border: 1px solid transparent;
+    border-radius: 5px;
+    padding: 7px 12px;
+    white-space: nowrap;
+  }
+  .appNav a:hover,
+  .appNav a:focus-visible {
+    color: var(--accent);
+    border-color: var(--border);
+  }
+  .appNav a[aria-current] {
+    color: var(--accent);
+    background: var(--active);
+    border-color: var(--border);
+  }
+  .topSearch {
+    display: flex;
+    max-width: 460px;
+    flex: 1;
+    margin-left: auto;
+  }
+  .topSearch input {
+    border-radius: 6px 0 0 6px;
+    min-width: 0;
+    font-size: 13px;
+  }
+  .topSearch button {
+    border-radius: 0 6px 6px 0;
+    white-space: nowrap;
+    border-left: 0;
+    color: var(--accent);
+  }
+  .topSearch button.active {
+    background: var(--active);
+  }
+  #themeToggle {
+    flex-shrink: 0;
+  }
+  @media (max-width: 1150px) {
+    .brand small {
+      display: none;
+    }
+    .appHeader {
+      gap: 10px;
+      padding-inline: 18px;
+    }
+  }
+  @media (max-width: 850px) {
+    .appHeader {
+      flex-wrap: wrap;
+      align-content: center;
+      gap: 8px 12px;
+    }
+    .brand {
+      flex: 1;
+      font-size: 15px;
+    }
+    .appNav a {
+      font-size: 12px;
+      padding: 6px;
+    }
+    #themeToggle {
+      font-size: 11px;
+      padding: 6px;
+    }
+    .topSearch {
+      order: 5;
+      flex-basis: 100%;
+      max-width: none;
+    }
+  }
+  @media (max-width: 500px) {
+    .brand {
+      font-size: 13px;
+      letter-spacing: 0;
+    }
+    .appNav {
+      gap: 0;
+    }
+    .appNav a {
+      font-size: 11px;
+    }
+  }
+</style>

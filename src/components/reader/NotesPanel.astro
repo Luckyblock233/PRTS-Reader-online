@@ -1,0 +1,75 @@
+<aside class="inspector" id="notesPanel" aria-label="段落笔记与出处">
+  <div class="notesHeading">
+    <h2>笔记与出处</h2>
+    <button class="panelClose" data-close-panel type="button" aria-label="关闭笔记与出处">
+      关闭
+    </button>
+  </div>
+  <details class="figureCard" open>
+    <summary>角色立绘</summary>
+    <div class="figureHeading">
+      <span id="figureName">选择一段对白</span>
+      <span class="figureBadge">AVG</span>
+    </div>
+    <div id="figureStage" class="figureStage">
+      <img id="figureImage" alt="" hidden />
+      <p id="figureEmpty">点击记录，在此查看对应立绘。</p>
+    </div>
+    <details>
+      <summary>资源详情</summary>
+      <p id="figureRef" class="hint">
+        figure_art · 尚未选择
+      </p>
+      <p id="figureStatus" class="hint">
+        只展示记录明确引用的资源，不用立绘推断角色身份。
+      </p>
+    </details>
+  </details>
+  <section id="notesPane">
+    <h3>所选段落</h3>
+    <blockquote id="selectedQuote">请选择段落</blockquote>
+    <details class="sourceDetails">
+      <summary>段落出处</summary>
+      <div id="selection" class="selection">
+        尚未选择段落
+      </div>
+      <details>
+        <summary>源记录 JSON</summary>
+        <pre id="lineRaw"></pre>
+      </details>
+    </details>
+
+    <label for="note">笔记</label>
+    <textarea id="note" rows="4" placeholder="写下你的观察…"></textarea>
+    <div class="actions">
+      <button id="saveNote" class="primary">
+        保存笔记
+      </button>
+      <button id="bookmark">☆ 收藏段落</button>
+    </div>
+
+    <details class="savedNotes">
+      <summary>
+        笔记与收藏 <span id="noteCount">0</span>
+      </summary>
+      <div id="noteList"></div>
+      <div class="noteTransfer">
+        <button id="export">导出 JSON</button>
+        <label class="fileLabel">
+          导入 JSON
+          <input id="import" type="file" accept="application/json,.json" />
+        </label>
+      </div>
+      <p class="hint" id="noteStatus">
+        笔记仅保存在此浏览器，可导出备份。
+      </p>
+    </details>
+  </section>
+  <label class="notesBehaviorLabel">
+    侧栏显示
+    <select id="notesBehavior" aria-label="笔记侧栏显示">
+      <option value="auto">默认收起</option>
+      <option value="pinned">保持展开</option>
+    </select>
+  </label>
+</aside>

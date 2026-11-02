@@ -45,10 +45,13 @@
     'DOMContentLoaded',
     () => {
       const $ = (id) => document.getElementById(id);
+      const bind = (id, event, handler) => $(id)?.addEventListener(event, handler);
       function render() {
         const light = prefs.theme === 'light';
         $('themeToggle').textContent = light ? '☾' : '☀';
         $('themeToggle').setAttribute('aria-label', light ? '切换到夜间模式' : '切换到白天模式');
+        // Shared pages have theme controls; reading controls exist only on /reader/.
+        if (!$('readingFont')) return;
         $('readingFont').value = prefs.font;
         $('lineSpacing').value = prefs.spacing;
         $('notesBehavior').value = prefs.notes;
@@ -72,14 +75,17 @@
           /* In-memory controls still work. */
         }
       }
-      $('themeToggle').onclick = () => update('theme', prefs.theme === 'light' ? 'dark' : 'light');
-      $('notesBehavior').onchange = (event) => update('notes', event.target.value);
-      $('lineSpacing').onchange = (event) => update('spacing', event.target.value);
-      $('readingFont').onchange = (event) => update('font', event.target.value);
-      $('compactToggle').onclick = () =>
-        update('density', prefs.density === 'compact' ? 'comfortable' : 'compact');
-      $('size').onclick = () => update('size', prefs.size === 'large' ? 'standard' : 'large');
-      $('focusToggle').onclick = () => update('focus', prefs.focus === 'on' ? 'off' : 'on');
+      bind('themeToggle', 'click', () =>
+        update('theme', prefs.theme === 'light' ? 'dark' : 'light'),
+      );
+      bind('notesBehavior', 'change', (event) => update('notes', event.target.value));
+      bind('lineSpacing', 'change', (event) => update('spacing', event.target.value));
+      bind('readingFont', 'change', (event) => update('font', event.target.value));
+      bind('compactToggle', 'click', () =>
+        update('density', prefs.density === 'compact' ? 'comfortable' : 'compact'),
+      );
+      bind('size', 'click', () => update('size', prefs.size === 'large' ? 'standard' : 'large'));
+      bind('focusToggle', 'click', () => update('focus', prefs.focus === 'on' ? 'off' : 'on'));
       render();
     },
     { once: true },

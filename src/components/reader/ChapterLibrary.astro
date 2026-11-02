@@ -1,0 +1,24 @@
+<aside class="library" id="chapterPanel" aria-label="章节目录面板">
+  <button class="panelClose" data-close-panel type="button">
+    关闭目录
+  </button>
+  <h2>剧情资料库</h2>
+  <p class="muted" id="stats">
+    正在读取剧情数据…
+  </p>
+  <label>
+    目录检索
+    <input id="catalogSearch" placeholder="活动、章节、代号…" />
+  </label>
+  <div class="filters">
+    <select id="type" aria-label="剧情类型">
+      <option value="">全部类型</option>
+    </select>
+    <select id="sort" aria-label="目录排序">
+      <option value="source">目录顺序</option>
+      <option value="release">活动开放时间 ↓</option>
+    </select>
+  </div>
+  <p class="hint">目录序号与开放时间都不代表泰拉世界时间。</p>
+  <nav id="tree" aria-label="章节目录"></nav>
+</aside>

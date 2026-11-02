@@ -1,301 +1,161 @@
 ---
-import "../../reader/style.css";
-import "../../reader/features.css";
-import "../../reader/reading.css";
-import "../../reader/application.css";
-import "../../reader/reader-layout.css";
+import SiteLayout from '../layouts/SiteLayout.astro';
+import SourceDialog from '../components/SourceDialog.astro';
+import { readFile } from 'node:fs/promises';
+import { sitePath } from '../lib/routes.js';
+import { formatPublishedAt } from '../lib/date.js';
+const catalog = JSON.parse(await readFile('reader/data/catalog.json', 'utf8'));
+const { snapshot } = catalog;
+const lineCount = catalog.chapters.reduce((sum, chapter) => sum + chapter.lineCount, 0);
 ---
-<!doctype html>
-<html lang="zh-CN">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <title>泰拉 · 纪事</title>
-    <script is:inline src={`${import.meta.env.BASE_URL}/preferences.js?v=reading-8`}></script>
-    <meta name="description" content="在线阅读明日方舟剧情，检索对白、收藏段落并记录观察。" />
-  </head>
-  <body>
-    <header class="appHeader">
-      <a class="brand" href="#home" aria-label="泰拉纪事首页"
-        ><span class="mark"></span>
-        <div>泰拉 · 纪事<small>TERRA / RECORDS</small></div></a
-      >
-      <nav class="appNav" aria-label="应用导航">
-        <button id="homeNav" type="button" aria-current="page">首页</button
-        ><button id="readerNav" type="button">阅读</button>
-        <a class="thanksLink" href={`${import.meta.env.BASE_URL}/acknowledgements/`}>致谢</a>
-      </nav>
-      <form id="topSearchForm" class="topSearch" role="search">
-        <input id="topSearchQuery" aria-label="全文检索关键词" maxlength="80" /><button
-          id="openGlobalSearch"
-          type="submit"
-        >
-          全文检索
-        </button>
-      </form>
-      <button id="themeToggle" type="button" aria-label="切换到夜间模式">☾</button>
-    </header>
-    <section id="homeView" class="appPage" aria-labelledby="homeTitle">
-      <div class="homeHero">
-        <h1 id="homeTitle">“今天有在好好执行源石计划吗？”</h1>
-        <p id="homeIntro"> ————Love from your PRTS. </p>
-        <div class="homeActions">
-          <button id="homeRead" type="button" class="primary">继续阅读 →</button
-          ><button id="homeSearch" type="button">探索全文检索</button>
-          <p id="homeResumeLabel" class="hint">正在读取上次阅读位置…</p>
-        </div>
-      </div>
 
-      <section class="homeUpdates" aria-labelledby="dataUpdateTitle">
-        <div class="updateHeading">
-          <h2 id="dataUpdateTitle">剧情数据版本</h2>
-          <button id="sources" type="button">来源与版本</button>
-        </div>
-        <div class="homeMeta">
-          <span><strong id="homeChapterCount">—</strong> 篇剧情</span
-          ><span><strong id="homeLineCount">—</strong> 条源记录</span>
-          <span class="homePublished">发布时间（北京时间）<time id="homePublishedAt">—</time></span>
-        </div>
-        <p>本站使用经过校验的固定剧情快照，剧情数据随网站发布更新。</p>
-        <p>笔记和阅读位置仅保存在当前浏览器，安全起见，请定期导出备份。</p>
-      </section>
-    </section>
-
-    <div id="readerView" class="workspace" hidden>
-      <aside class="library" id="chapterPanel" aria-label="章节目录面板">
-        <button class="panelClose" data-close-panel type="button">关闭目录</button>
-        <h2>剧情资料库</h2>
-        <p class="muted" id="stats">正在读取剧情数据…</p>
-        <label>目录检索<input id="catalogSearch" placeholder="活动、章节、代号…" /></label>
-        <div class="filters">
-          <select id="type" aria-label="剧情类型">
-            <option value="">全部类型</option></select
-          ><select id="sort" aria-label="目录排序">
-            <option value="source">目录顺序</option>
-            <option value="release">活动开放时间 ↓</option>
-          </select>
-        </div>
-        <p class="hint">目录序号与开放时间都不代表泰拉世界时间。</p>
-        <nav id="tree" aria-label="章节目录"></nav>
-      </aside>
-      <main>
-        <div class="readerHeader">
-          <div class="readerTop">
-            <div>
-              <div class="eyebrow">02 / READING DESK</div>
-              <p id="breadcrumb" class="muted">请选择章节</p>
-            </div>
-            <div>
-              <button id="prev" title="同一目录上一章">← 上一篇</button
-              ><button id="next">下一篇 →</button>
-            </div>
-          </div>
-          <h1 id="title">从原文开始，理解泰拉。</h1>
-          <div class="readerActions">
-            <button id="catalogToggle" aria-controls="chapterPanel" aria-expanded="false">
-              目录
-            </button>
-            <input id="find" type="search" placeholder="篇内查找…" aria-label="篇内查找" />
-            <details id="readingSettings" class="readerMenu">
-              <summary>阅读设置</summary>
-              <div class="menuBody readingControls">
-                <label
-                  >字体<select id="readingFont" aria-label="正文字体">
-                    <option value="wenkai">霞鹜文楷</option>
-                    <option value="serif">书卷宋体</option>
-                    <option value="sans">清晰黑体</option>
-                  </select></label
-                >
-                <label for="size">字号</label
-                ><button id="size" type="button" aria-pressed="false">标准</button>
-                <label
-                  >行距<select id="lineSpacing" aria-label="正文行距">
-                    <option value="comfortable">舒适</option>
-                    <option value="close">适中</option>
-                    <option value="loose">宽松</option>
-                  </select></label
-                >
-                <label for="compactToggle">段落间距</label
-                ><button id="compactToggle" type="button" aria-pressed="false">紧凑模式</button>
-              </div>
-            </details>
-            <details id="readerFilters" class="readerMenu">
-              <summary>筛选与原文</summary>
-              <div class="menuBody toolbar">
-                <p class="muted" id="subtitle"></p>
-                <select id="mode" aria-label="显示内容">
-                  <option value="read">正文阅读</option>
-                  <option value="all">正文与脚本指令</option>
-                  <option value="raw">查看源 JSON</option>
-                </select>
-                <select id="speaker" aria-label="说话人筛选">
-                  <option value="">全部说话人</option>
-                </select>
-                <button id="clearFilters">清除筛选与查找</button>
-              </div>
-            </details>
-            <button
-              id="focusToggle"
-              type="button"
-              aria-pressed="false"
-              title="收起目录和笔记，保留阅读位置"
-            >
-              专注阅读
-            </button>
-            <button
-              id="inspectorToggle"
-              type="button"
-              aria-controls="notesPanel"
-              aria-expanded="false"
-            >
-              笔记与出处
-            </button>
-          </div>
-          <p id="filterStatus" class="hint" role="status" hidden></p>
-        </div>
-        <details id="notice" class="notice" hidden>
-          <summary id="noticeTitle"></summary>
-          <p id="noticeDetail"></p>
-        </details>
-        <details id="brief">
-          <summary>简介与生成摘要（可能剧透）</summary>
-          <h4>游戏简介 · storyInfo</h4>
-          <p id="briefText"></p>
-          <h4>上游 LLM 生成摘要 · 不作为原文事实</h4>
-          <p id="summaryText"></p>
-        </details>
-        <div id="searchHighlightBar" class="searchHighlightBar" hidden>
-          <span id="searchHighlightLabel"></span
-          ><button id="clearSearchHighlight" type="button">清除关键词高亮</button>
-        </div>
-        <section id="content" aria-live="polite">
-          <div class="empty">载入剧情资料库后即可阅读。<br />无需模型 API 或数据库服务。</div>
-        </section>
-        <footer id="readingFooter"></footer>
-      </main>
-      <div id="focusFigureSlot" aria-label="专注阅读立绘"></div>
-      <aside class="inspector" id="notesPanel" aria-label="段落笔记与出处">
-        <div class="notesHeading">
-          <h2>笔记与出处</h2>
-          <button class="panelClose" data-close-panel type="button" aria-label="关闭笔记与出处">
-            关闭
-          </button>
-        </div>
-        <details class="figureCard" open>
-          <summary>角色立绘</summary>
-          <div class="figureHeading">
-            <span id="figureName">选择一段对白</span><span class="figureBadge">AVG</span>
-          </div>
-          <div id="figureStage" class="figureStage">
-            <img id="figureImage" alt="" hidden />
-            <p id="figureEmpty">点击记录，在此查看对应立绘。</p>
-          </div>
-          <details>
-            <summary>资源详情</summary>
-            <p id="figureRef" class="hint">figure_art · 尚未选择</p>
-            <p id="figureStatus" class="hint">只展示记录明确引用的资源，不用立绘推断角色身份。</p>
-          </details>
-        </details>
-        <section id="notesPane">
-          <h3>所选段落</h3>
-          <blockquote id="selectedQuote">请选择段落</blockquote>
-          <details class="sourceDetails">
-            <summary>段落出处</summary>
-            <div id="selection" class="selection">尚未选择段落</div>
-            <details>
-              <summary>源记录 JSON</summary>
-              <pre id="lineRaw"></pre>
-            </details>
-          </details>
-
-          <label for="note">笔记</label>
-          <textarea id="note" rows="4" placeholder="写下你的观察…"></textarea>
-          <div class="actions">
-            <button id="saveNote" class="primary">保存笔记</button
-            ><button id="bookmark">☆ 收藏段落</button>
-          </div>
-
-          <details class="savedNotes">
-            <summary>笔记与收藏 <span id="noteCount">0</span></summary>
-            <div id="noteList"></div>
-            <div class="noteTransfer">
-              <button id="export">导出 JSON</button
-              ><label class="fileLabel"
-                >导入 JSON<input id="import" type="file" accept="application/json,.json"
-              /></label>
-            </div>
-            <p class="hint" id="noteStatus">笔记仅保存在此浏览器，可导出备份。</p>
-          </details>
-        </section>
-        <label class="notesBehaviorLabel"
-          >侧栏显示<select id="notesBehavior" aria-label="笔记侧栏显示">
-            <option value="auto">默认收起</option>
-            <option value="pinned">保持展开</option>
-          </select></label
-        >
-      </aside>
-    </div>
-    <section id="searchView" class="appPage" hidden aria-labelledby="searchTitle">
-      <div class="searchPageHead">
-        <div>
-          <div class="eyebrow">FULL TEXT / ACROSS TERRA</div>
-          <h1 id="searchTitle">全文检索</h1>
-          <p>从一句对白出发，找回它所在的篇章与上下文。</p>
-        </div>
-      </div>
-      <section id="searchPane">
-        <div class="corpusForm">
-          <label
-            >全库关键词<input
-              id="globalQuery"
-              placeholder="输入关键词（支持单字）…"
-              maxlength="100" /></label
-          ><label
-            >检索字段<select id="searchField">
-              <option value="all">正文与发言标签</option>
-              <option value="text">仅正文 / 选项</option>
-              <option value="speaker">仅发言标签</option>
-            </select></label
-          ><button id="searchGo" class="primary">查询全库</button>
-        </div>
-        <p id="searchStatus" class="hint" role="status">
-          覆盖当前资料库全部剧情文本，结果可翻页；不调用 LLM。
+<SiteLayout page="home">
+  <main id="homeView" class="pageShell" data-snapshot-id={snapshot.id} aria-labelledby="homeTitle">
+    <div class="homeHero">
+      <h1 id="homeTitle">“今天有在好好执行源石计划吗？”</h1>
+      <p id="homeIntro">————Love from your PRTS.</p>
+      <div class="homeActions">
+        <a id="homeRead" class="button primary" href={sitePath('reader/')}>
+          继续阅读 →
+        </a>
+        <a id="homeSearch" class="button" href={`${sitePath('reader/')}#search`}>
+          探索全文检索
+        </a>
+        <p id="homeResumeLabel" class="hint">
+          选择一篇剧情，开始阅读
         </p>
-        <div class="searchFilterRow">
-          <label
-            >关键词所在篇章<select id="searchChapter" disabled>
-              <option value="">全部命中篇章</option>
-            </select></label
-          >
-          <div class="searchPager">
-            <button id="searchPrev" disabled>← 上一页</button><span id="searchPage">—</span
-            ><button id="searchNext" disabled>下一页 →</button>
-          </div>
-        </div>
-        <div id="results"></div>
-      </section>
+      </div>
+    </div>
+
+    <section class="homeUpdates" aria-labelledby="dataUpdateTitle">
+      <div class="updateHeading">
+        <h2 id="dataUpdateTitle">剧情数据版本</h2>
+        <button id="sources" type="button">
+          来源与版本
+        </button>
+      </div>
+      <div class="homeMeta">
+        <span>
+          <strong id="homeChapterCount">{catalog.chapters.length.toLocaleString('zh-CN')}</strong>{' '}
+          篇剧情
+        </span>
+        <span>
+          <strong id="homeLineCount">{lineCount.toLocaleString('zh-CN')}</strong> 条源记录
+        </span>
+        <span class="homePublished">
+          <time id="homePublishedAt" datetime={snapshot.publishedAt}>
+            {formatPublishedAt(snapshot.publishedAt)}
+          </time>
+          发布（UTC+8）
+        </span>
+      </div>
+      <p>本站使用经过校验的固定剧情快照，剧情数据随网站发布更新。</p>
+      <p>笔记和阅读位置仅保存在当前浏览器，安全起见，请定期导出备份。</p>
     </section>
-    <dialog id="sourceDialog" aria-labelledby="sourceTitle">
-      <button id="closeDialog" class="close">关闭 ×</button>
-      <h2 id="sourceTitle">来源与版本</h2>
-      <p>剧情数据来自 arknights-data-pipeline 的中文剧情发布包。</p>
-      <dl class="sourceVersion">
-        <dt>当前版本</dt>
-        <dd id="sourceVersion">—</dd>
-      </dl>
-      <p>
-        <a id="releaseLink" target="_blank" rel="noopener noreferrer"
-          >锁定的 GitHub Release ↗</a
-        >
-      </p>
-      <p>
-        <a href="https://github.com/Luckyblock233/PRTS-Reader-online/actions" target="_blank" rel="noopener noreferrer"
-          >查看网站发布记录 ↗</a
-        >
-      </p>
-    </dialog>
-    <button id="exitFocus" type="button" hidden>退出专注 · Esc</button>
-    <div id="toast" role="status"></div>
-    <script>import "../../reader/app.js";</script>
-  </body>
-</html>
+  </main>
+  <SourceDialog snapshot={snapshot} />
+  <script>
+    import '../scripts/home.js';
+  </script>
+</SiteLayout>
+
+<style>
+  .homeHero {
+    position: relative;
+    padding: 18px 0 36px;
+    border-bottom: 1px solid var(--border);
+  }
+  .homeHero h1 {
+    font-size: clamp(32px, 4vw, 52px);
+    max-width: 900px;
+    margin: 25px 0 16px;
+    letter-spacing: 0.04em;
+  }
+  .homeHero #homeIntro {
+    max-width: 760px;
+    font-size: 17px;
+    line-height: 1.9;
+    color: var(--muted);
+    white-space: pre-wrap;
+  }
+  .homeActions {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    margin-top: 28px;
+    flex-wrap: wrap;
+  }
+  .homeActions .button {
+    padding: 11px 22px;
+  }
+  .homeActions .hint {
+    flex-basis: 100%;
+    margin: 0;
+  }
+  .homeMeta {
+    display: flex;
+    gap: 30px;
+    margin: 24px 0 0;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+  .homeMeta span {
+    font-size: 12px;
+    color: var(--muted);
+  }
+  .homeMeta strong {
+    font:
+      24px Georgia,
+      serif;
+    color: var(--accent);
+    margin-right: 6px;
+  }
+  .homePublished {
+    display: flex;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: 8px 12px;
+  }
+  .homePublished time {
+    color: var(--accent);
+    font-size: 16px;
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+  }
+  .homeUpdates {
+    margin-top: 32px;
+  }
+  .homeUpdates > p {
+    color: var(--muted);
+    font-size: 13px;
+    line-height: 1.9;
+  }
+  .updateHeading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+  }
+  .updateHeading h2 {
+    font-size: 22px;
+    margin: 6px 0;
+  }
+  .updateHeading button {
+    flex-shrink: 0;
+  }
+  @media (max-width: 500px) {
+    .homeMeta {
+      gap: 16px;
+    }
+  }
+  @media (max-width: 500px) {
+    .homeHero h1 {
+      font-size: 32px;
+    }
+  }
+  @media (max-width: 500px) {
+    .homeHero #homeIntro {
+      font-size: 15px;
+    }
+  }
+</style>

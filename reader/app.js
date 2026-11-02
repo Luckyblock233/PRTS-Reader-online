@@ -1,5 +1,5 @@
-import { readData, siteUrl } from './static-data.js';
-import { initApplication, showView, setHomeStats } from './application.js';
+import { siteUrl } from './static-data.js';
+import { initReaderNavigation, showView } from './application.js';
 import { initCorpusSearch, setSearchSnapshot } from './corpus-search.js';
 import { speakerColor, showFigure, clearFigure, setFigureSnapshot } from './features.js';
 import {
@@ -268,11 +268,10 @@ function selectLine(index) {
   $('lineRaw').textContent = JSON.stringify(selected.raw, null, 2);
   $('note').value = rec()?.note || '';
   $('bookmark').textContent = rec()?.bookmark ? '★ 已收藏' : '☆ 收藏段落';
-  history.replaceState(null, '', `#${current.meta.id}/${index}`);
+  history.replaceState(null, '', `${location.pathname}#${current.meta.id}/${index}`);
   showFigure(selected);
   saveReadingPosition(catalog.snapshot.id, current.meta, index);
   resumePosition = { chapterId: current.meta.id, index };
-  setHomeStats(catalog, current.meta.title + ' · #' + index);
 }
 function jump(index) {
   if (!current || !Number.isInteger(index) || index < 0 || index >= current.lines.length) return;
@@ -340,7 +339,7 @@ async function navigate(id, index, keyword = '') {
     if (Number.isInteger(index) && index >= 0 && index < c.lines.length) jump(index);
     else {
       document.querySelector('main').scrollTop = 0;
-      history.replaceState(null, '', '#' + id);
+      history.replaceState(null, '', location.pathname + '#' + id);
       saveReadingPosition(catalog.snapshot.id, c.meta, null);
     }
     try {
@@ -453,9 +452,8 @@ $('import').onchange = async (e) => {
     $('import').value = '';
   }
 };
-$('sources').onclick = () => $('sourceDialog').showModal();
-$('closeDialog').onclick = () => $('sourceDialog').close();
 window.addEventListener('beforeunload', saveDraft);
+window.addEventListener('pagehide', saveDraft);
 initReadingSession({
   getSelected: () => selected,
   selectLine,
@@ -467,20 +465,29 @@ function openPage(view, push = true) {
   request++;
   loadingChapter = false;
   showView(view);
-  if (push && location.hash !== '#' + view) history.pushState(null, '', '#' + view);
-  if (view === 'home') $('homeView').scrollTop = 0;
+  if (push && location.hash !== '#' + view)
+    history.pushState(null, '', location.pathname + '#' + view);
 }
 function resumeReader() {
   if (!catalog) return toast('资料库尚未载入');
   if (current) {
     showView('reader');
-    history.pushState(null, '', '#' + current.meta.id + (selected ? '/' + selected.index : ''));
+    history.pushState(
+      null,
+      '',
+      location.pathname + '#' + current.meta.id + (selected ? '/' + selected.index : ''),
+    );
     return;
   }
   if (resumePosition) navigate(resumePosition.chapterId, resumePosition.index);
 }
 function openSearch(query = '') {
   openPage('search');
+  history.replaceState(
+    null,
+    '',
+    location.pathname + (query ? '?q=' + encodeURIComponent(query) : '') + '#search',
+  );
   if (query) {
     $('globalQuery').value = query;
     $('searchField').value = 'all';
@@ -489,12 +496,13 @@ function openSearch(query = '') {
   $('globalQuery').focus({ preventScroll: true });
   $('searchView').scrollTop = 0;
 }
-initApplication({ home: () => openPage('home'), read: resumeReader, search: openSearch });
+initReaderNavigation({ read: resumeReader, search: openSearch });
 window.addEventListener('hashchange', () => {
   if (!catalog) return;
   const hash = location.hash;
-  if (hash === '#home' || !hash) return openPage('home', false);
-  if (hash === '#search') return openPage('search', false);
+  if (hash === '#home') return location.assign(siteUrl(''));
+  if (!hash || hash === '#reader') return resumeReader();
+  if (hash === '#search') return openSearch(new URLSearchParams(location.search).get('q') || '');
   if (!byId.has(hash.slice(1).split('/')[0])) return;
   const target = resolveReadingPosition(catalog.chapters, hash, null, null);
   navigate(target.chapterId, target.index);
@@ -520,8 +528,6 @@ try {
   }
   $('stats').textContent =
     `${catalog.chapters.length.toLocaleString()} 篇 · ${catalog.events.filter((e) => catalog.chapters.some((c) => c.eventId === e.id)).length} 个目录`;
-  $('sourceVersion').textContent = catalog.snapshot.releaseTag;
-  $('releaseLink').href = catalog.snapshot.releaseUrl;
   for (const t of [...new Set(catalog.chapters.map((c) => c.type))].sort()) {
     const o = make(
       'option',
@@ -547,16 +553,14 @@ try {
     );
   } catch {}
   resumePosition = resolveReadingPosition(catalog.chapters, '', previous, last);
-  setHomeStats(
-    catalog,
-    byId.get(resumePosition.chapterId)?.title +
-      (Number.isInteger(resumePosition.index) ? ' · #' + resumePosition.index : ''),
-  );
   if (byId.has(location.hash.slice(1).split('/')[0])) {
     const initial = resolveReadingPosition(catalog.chapters, location.hash, previous, last);
     await navigate(initial.chapterId, initial.index);
-  } else showView(location.hash === '#search' ? 'search' : 'home');
+  } else if (location.hash === '#search' || new URLSearchParams(location.search).has('q')) {
+    openSearch(new URLSearchParams(location.search).get('q') || '');
+  } else {
+    await navigate(resumePosition.chapterId, resumePosition.index);
+  }
 } catch (e) {
-  $('homeResumeLabel').textContent = '资料库未就绪，请先准备数据。';
   $('content').textContent = '资料库加载失败，请检查网络连接后刷新页面。\n' + e.message;
 }

@@ -1,0 +1,29 @@
+---
+import SiteLayout from '../layouts/SiteLayout.astro';
+import ChapterLibrary from '../components/reader/ChapterLibrary.astro';
+import ReadingDesk from '../components/reader/ReadingDesk.astro';
+import NotesPanel from '../components/reader/NotesPanel.astro';
+import SearchPanel from '../components/reader/SearchPanel.astro';
+import '../../reader/style.css';
+import '../../reader/features.css';
+import '../../reader/reading.css';
+import '../../reader/application.css';
+import '../../reader/reader-layout.css';
+---
+
+<SiteLayout page="reader" title="阅读 · 泰拉纪事">
+  <div id="readerView" class="workspace">
+    <ChapterLibrary />
+    <ReadingDesk />
+    <div id="focusFigureSlot" aria-label="专注阅读立绘"></div>
+    <NotesPanel />
+  </div>
+  <SearchPanel />
+  <button id="exitFocus" type="button" hidden>
+    退出专注 · Esc
+  </button>
+  <div id="toast" role="status"></div>
+  <script>
+    import '../../reader/app.js';
+  </script>
+</SiteLayout>

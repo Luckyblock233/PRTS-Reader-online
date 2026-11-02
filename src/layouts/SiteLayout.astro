@@ -1,0 +1,31 @@
+---
+import SiteHeader from '../components/SiteHeader.astro';
+import { sitePath } from '../lib/routes.js';
+import '../styles/theme.css';
+import '../styles/global.css';
+interface Props {
+  page: 'home' | 'reader' | 'acknowledgements';
+  title?: string;
+  description?: string;
+}
+const {
+  page,
+  title = '泰拉 · 纪事',
+  description = '在线阅读明日方舟剧情，检索对白、收藏段落并记录观察。',
+} = Astro.props;
+---
+
+<!doctype html>
+<html lang="zh-CN" data-page={page} data-view={page}>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta name="description" content={description} />
+    <title>{title}</title>
+    <script is:inline src={`${sitePath('preferences.js')}?v=pages-1`}></script>
+  </head>
+  <body>
+    <SiteHeader currentPage={page} />
+    <slot />
+  </body>
+</html>

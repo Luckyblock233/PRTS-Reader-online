@@ -49,11 +49,16 @@ npm run preview
 - 笔记、收藏与续读仅保存在当前浏览器，不上传。请定期导出笔记，换设备或清理浏览器前备份。
 - 更新剧情：定时工作流自动检测并验证新剧情包，通过检查后更新网站；也可手动运行 `Update story data`。访客不能修改网站共享数据。
 - 立绘按固定版本从 GitHub 获取；网络或 GitHub API 频率限制可能影响图片，文字阅读不受影响。
-- 深链接使用 `#章节ID/段落下标`，可直接分享和刷新，无需服务端路由。
+- 阅读深链接使用 `/reader/#章节ID/段落下标`，可直接分享和刷新。旧首页章节链接自动转到阅读页。
 
 ## 目录
 
-- `src/pages/index.astro`：Astro 页面入口；直接修改其中的标题、简介和说明区块即可维护首页内容。
+- `src/pages/index.astro`：独立首页；直接修改文案和局部样式。
+- `src/pages/reader.astro`：阅读入口，组合目录、正文、笔记和搜索组件。
+- `src/pages/acknowledgements.astro`：致谢入口，呈现 THIRD_PARTY_NOTICES.md。
+- `src/layouts/`：共享站点布局与文档阅读布局。
+- `src/components/`：顶部导航、来源弹窗及阅读组件。
+- `src/styles/`：跨页面共用的字体、主题和基础样式。
 - `reader/`：阅读交互、样式、后台搜索与浏览器数据访问。
 - `public/preferences.js`：在页面绘制前恢复外观。
 - `scripts/bootstrap.py` / `prepare.py`：校验及转换上游剧情。

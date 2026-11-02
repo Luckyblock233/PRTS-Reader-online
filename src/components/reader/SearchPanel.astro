@@ -1,0 +1,49 @@
+<section id="searchView" class="appPage" hidden aria-labelledby="searchTitle">
+  <div class="searchPageHead">
+    <div>
+      <div class="eyebrow">FULL TEXT / ACROSS TERRA</div>
+      <h1 id="searchTitle">全文检索</h1>
+      <p>从一句对白出发，找回它所在的篇章与上下文。</p>
+    </div>
+  </div>
+  <section id="searchPane">
+    <div class="corpusForm">
+      <label>
+        全库关键词
+        <input id="globalQuery" placeholder="输入关键词（支持单字）…" maxlength="100" />
+      </label>
+      <label>
+        检索字段
+        <select id="searchField">
+          <option value="all">正文与发言标签</option>
+          <option value="text">仅正文 / 选项</option>
+          <option value="speaker">仅发言标签</option>
+        </select>
+      </label>
+      <button id="searchGo" class="primary">
+        查询全库
+      </button>
+    </div>
+    <p id="searchStatus" class="hint" role="status">
+      覆盖当前资料库全部剧情文本，结果可翻页；不调用 LLM。
+    </p>
+    <div class="searchFilterRow">
+      <label>
+        关键词所在篇章
+        <select id="searchChapter" disabled>
+          <option value="">全部命中篇章</option>
+        </select>
+      </label>
+      <div class="searchPager">
+        <button id="searchPrev" disabled>
+          ← 上一页
+        </button>
+        <span id="searchPage">—</span>
+        <button id="searchNext" disabled>
+          下一页 →
+        </button>
+      </div>
+    </div>
+    <div id="results"></div>
+  </section>
+</section>
