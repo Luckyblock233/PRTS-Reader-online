@@ -8,15 +8,31 @@ export function setViewerFigure(figure) {
 
 export function initFigureViewer() {
   const scales = [100, 125, 150, 200];
+  const scaleStorageKey = 'terra-portrait-scale-v1';
   let scaleIndex = 0;
+  try {
+    const savedIndex = scales.indexOf(Number(localStorage.getItem(scaleStorageKey)));
+    if (savedIndex !== -1) scaleIndex = savedIndex;
+  } catch {
+    // The default size remains available when browser storage is disabled.
+  }
   const scaleButton = $('figureScale');
-  scaleButton.onclick = () => {
-    scaleIndex = (scaleIndex + 1) % scales.length;
+  function applyScale() {
     const percent = scales[scaleIndex];
-    window.dispatchEvent(new Event('reader:beforeappearance'));
     $('readerView').style.setProperty('--portrait-size', `${(180 * percent) / 100}px`);
     scaleButton.textContent = `${percent}%`;
     scaleButton.setAttribute('aria-label', `立绘大小 ${percent}%，点击切换`);
+  }
+  applyScale();
+  scaleButton.onclick = () => {
+    scaleIndex = (scaleIndex + 1) % scales.length;
+    window.dispatchEvent(new Event('reader:beforeappearance'));
+    applyScale();
+    try {
+      localStorage.setItem(scaleStorageKey, String(scales[scaleIndex]));
+    } catch {
+      // Keep size switching usable even when the preference cannot be saved.
+    }
     scaleButton.closest('details').open = true;
     window.dispatchEvent(new Event('reader:appearance'));
   };
