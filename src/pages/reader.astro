@@ -20,9 +20,14 @@ import '../../reader/reader-controls.css';
     <ReadingDesk />
     <div id="focusFigureSlot" aria-label="专注阅读立绘"></div>
     <NotesPanel />
-    <button id="figureShow" type="button" hidden>
-      显示立绘
-    </button>
+    <div class="readerRestoreControls" role="group" aria-label="恢复阅读面板">
+      <button id="readerToolsShow" type="button" aria-controls="readerTools" hidden>
+        显示工具栏
+      </button>
+      <button id="figureShow" type="button" hidden>
+        显示立绘
+      </button>
+    </div>
   </div>
   <SearchPanel />
   <FigureViewer />

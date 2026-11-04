@@ -34,15 +34,6 @@
   padding: 5px 7px;
   font-size: 11px;
 }
-#readerView .readerHeader:has(#readerTools[hidden]) {
-  height: 36px;
-  min-height: 36px;
-  padding: 0;
-  border-bottom: 0;
-}
-#readerView .readerHeader:has(#readerTools[hidden]) .readerToolsToggle {
-  top: 4px;
-}
 #readerView .readerActions {
   flex-wrap: nowrap;
   overflow-x: auto;
@@ -82,13 +73,20 @@
 #readerView #focusFigureSlot:has(.figureCard[hidden]) {
   display: none;
 }
-#readerView #figureShow {
+#readerView .readerRestoreControls {
   position: fixed;
-  bottom: 12px;
-  right: 12px;
+  bottom: max(12px, env(safe-area-inset-bottom));
+  right: max(12px, env(safe-area-inset-right));
   z-index: 13;
+  display: flex;
+  gap: 8px;
+}
+#readerView .readerRestoreControls button {
   padding: 6px 10px;
   font-size: 12px;
+}
+#readerView .inspector {
+  padding-bottom: 64px;
 }
 @media (max-width: 850px) {
   #readerView main {

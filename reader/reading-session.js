@@ -83,20 +83,22 @@ export function initReadingSession({ getSelected, selectLine, isLoading, notify 
   const header = document.querySelector('.readerHeader');
   const tools = document.getElementById('readerTools');
   const toolsToggle = document.getElementById('readerToolsToggle');
+  const toolsShow = document.getElementById('readerToolsShow');
   function setToolsHidden(hidden) {
     tools.hidden = hidden;
-    toolsToggle.textContent = hidden ? '显示工具栏' : '隐藏';
-    toolsToggle.setAttribute('aria-label', hidden ? '显示阅读工具栏' : '隐藏阅读工具栏');
+    header.hidden = hidden;
+    toolsShow.hidden = !hidden;
     toolsToggle.setAttribute('aria-expanded', String(!hidden));
   }
   setToolsHidden(panelPrefs.toolsHidden ?? false);
-  toolsToggle.onclick = () => {
+  toolsToggle.onclick = toolsShow.onclick = () => {
     window.dispatchEvent(new Event('reader:layoutchange'));
     const previousHeight = header.offsetHeight;
     const previousScroll = main.scrollTop;
     setToolsHidden(!tools.hidden);
     savePanelPreference('toolsHidden', tools.hidden);
     main.scrollTop = Math.max(0, previousScroll + header.offsetHeight - previousHeight);
+    (tools.hidden ? toolsShow : toolsToggle).focus({ preventScroll: true });
   };
   let anchor;
   function capturePosition() {
@@ -229,7 +231,7 @@ export function initReadingSession({ getSelected, selectLine, isLoading, notify 
     if (!(event.target instanceof Element)) return;
     if (
       view.dataset.panel === 'notes' &&
-      !event.target.closest('#notesPanel, #inspectorToggle, #figureShow') &&
+      !event.target.closest('#notesPanel, #inspectorToggle, .readerRestoreControls') &&
       root.dataset.notes !== 'pinned'
     )
       closePanel(false);

@@ -336,7 +336,8 @@
   background: var(--active);
   border-color: var(--accent);
 }
-#readerView[data-panel='notes'] .inspector {
+#readerView[data-panel='notes'] .inspector,
+:root[data-notes='pinned']:not([data-focus='on']) #readerView .inspector {
   display: block;
   position: fixed;
   top: var(--app-header-height);
@@ -398,32 +399,9 @@
   display: block;
   margin: 0 0 14px auto;
 }
-@media (min-width: 1151px) {
-  :root[data-notes='pinned']:not([data-focus='on']) #readerView {
-    grid-template-columns: 240px minmax(0, 1fr) 300px;
-  }
-  :root[data-notes='pinned']:not([data-focus='on']) #readerView .inspector {
-    display: block;
-    position: static;
-    width: auto;
-    height: 100%;
-  }
-}
 @media (max-width: 650px) {
   #readerView main {
     padding-bottom: 80px;
-  }
-}
-@media (max-width: 1150px) {
-  :root[data-notes='pinned']:not([data-focus='on']) #readerView .inspector {
-    display: block;
-    position: fixed;
-    top: var(--app-header-height);
-    bottom: 0;
-    right: 0;
-    width: min(360px, 94vw);
-    height: auto;
-    z-index: 12;
   }
 }
 /* Portraits float outside the text flow, so loading or expanding them cannot move prose. */
@@ -560,33 +538,10 @@
 :root #readerView #focusFigureSlot .figureCard > details {
   display: none;
 }
-/* Balance the reading column against the directory; give research its own column. */
+/* Keep reading geometry independent of the overlaid notes panel. */
 @media (min-width: 1151px) {
   :root:not([data-focus='on']) #readerView main {
     padding-left: 48px;
     padding-right: calc(48px + clamp(220px, 100vw - 1200px, 240px));
-  }
-  :root #readerView[data-panel='notes'],
-  :root[data-notes='pinned']:not([data-focus='on']) #readerView {
-    display: grid;
-    grid-template-columns: 240px minmax(0, 1fr) 320px;
-  }
-  :root[data-focus='on'] #readerView[data-panel='notes'] {
-    grid-template-columns: minmax(0, 1fr) 320px;
-  }
-  :root #readerView[data-panel='notes'] main,
-  :root[data-notes='pinned']:not([data-focus='on']) #readerView main,
-  :root[data-focus='on'] #readerView[data-panel='notes'] main {
-    width: 100%;
-    max-width: none;
-    margin: 0;
-    padding-inline: 48px;
-  }
-  :root #readerView[data-panel='notes'] .inspector,
-  :root[data-notes='pinned']:not([data-focus='on']) #readerView .inspector {
-    position: static;
-    width: auto;
-    height: 100%;
-    padding-inline: 20px;
   }
 }
