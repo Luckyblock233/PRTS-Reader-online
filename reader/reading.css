@@ -292,66 +292,6 @@ main[tabindex='-1']:focus {
   height: 100%;
   padding-inline: 40px;
 }
-:root[data-focus='on'] #focusFigureSlot {
-  display: block;
-}
-:root[data-focus='on'] #focusFigureSlot .figureCard {
-  position: fixed;
-  right: 18px;
-  top: 110px;
-  width: 178px;
-  margin: 0;
-  z-index: 4;
-  box-shadow: 0 6px 24px #0001;
-}
-:root[data-focus='on'] #focusFigureSlot .figureHeading {
-  padding: 9px;
-  font-size: 14px;
-}
-:root[data-focus='on'] #focusFigureSlot .figureStage {
-  height: 180px;
-}
-:root[data-focus='on'] #focusFigureSlot #figureRef {
-  font-size: 9px;
-}
-:root[data-focus='on'] #focusFigureSlot #figureStatus {
-  display: none;
-}
-@media (max-width: 1360px) {
-  :root[data-focus='on'] main {
-    scroll-padding-block: 125px 24px;
-  }
-  :root[data-focus='on'] #focusFigureSlot {
-    position: sticky;
-    top: 0;
-    z-index: 4;
-    background: var(--bg);
-  }
-  :root[data-focus='on'] #focusFigureSlot .figureCard {
-    position: static;
-    display: grid;
-    grid-template-columns: 100px 1fr;
-    width: 100%;
-    margin: 8px 0 14px;
-    box-shadow: none;
-  }
-  :root[data-focus='on'] #focusFigureSlot .figureStage {
-    height: 100px;
-    grid-column: 1;
-    grid-row: 1 / 3;
-  }
-  :root[data-focus='on'] #focusFigureSlot .figureHeading {
-    grid-column: 2;
-    grid-row: 1;
-    border: 0;
-  }
-  :root[data-focus='on'] #focusFigureSlot #figureRef {
-    grid-column: 2;
-    grid-row: 2;
-    margin: 0 9px 9px;
-    align-self: start;
-  }
-}
 @media (max-width: 650px) {
   :root[data-focus='on'] .workspace {
     height: calc(100dvh - 78px);

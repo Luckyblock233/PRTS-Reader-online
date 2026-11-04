@@ -60,19 +60,42 @@ export function revealCurrentChapter() {
 }
 
 export function initReadingSession({ getSelected, selectLine, isLoading, notify }) {
+  const panelStorageKey = 'terra-reader-panels-v1';
+  const panelPrefs = {};
+  try {
+    const saved = JSON.parse(localStorage.getItem(panelStorageKey) || '{}');
+    for (const key of ['toolsHidden', 'portraitHidden']) {
+      if (typeof saved?.[key] === 'boolean') panelPrefs[key] = saved[key];
+    }
+  } catch {
+    // Use the normal defaults when browser storage is unavailable or invalid.
+  }
+  function savePanelPreference(key, hidden) {
+    panelPrefs[key] = hidden;
+    try {
+      localStorage.setItem(panelStorageKey, JSON.stringify(panelPrefs));
+    } catch {
+      // Hiding and restoring panels still works without persistent storage.
+    }
+  }
   const root = document.documentElement;
   const main = document.querySelector('main');
   const header = document.querySelector('.readerHeader');
   const tools = document.getElementById('readerTools');
   const toolsToggle = document.getElementById('readerToolsToggle');
+  function setToolsHidden(hidden) {
+    tools.hidden = hidden;
+    toolsToggle.textContent = hidden ? '显示工具栏' : '隐藏';
+    toolsToggle.setAttribute('aria-label', hidden ? '显示阅读工具栏' : '隐藏阅读工具栏');
+    toolsToggle.setAttribute('aria-expanded', String(!hidden));
+  }
+  setToolsHidden(panelPrefs.toolsHidden ?? false);
   toolsToggle.onclick = () => {
     window.dispatchEvent(new Event('reader:layoutchange'));
     const previousHeight = header.offsetHeight;
     const previousScroll = main.scrollTop;
-    tools.hidden = !tools.hidden;
-    toolsToggle.textContent = tools.hidden ? '显示工具栏' : '隐藏';
-    toolsToggle.setAttribute('aria-label', tools.hidden ? '显示阅读工具栏' : '隐藏阅读工具栏');
-    toolsToggle.setAttribute('aria-expanded', String(!tools.hidden));
+    setToolsHidden(!tools.hidden);
+    savePanelPreference('toolsHidden', tools.hidden);
     main.scrollTop = Math.max(0, previousScroll + header.offsetHeight - previousHeight);
   };
   let anchor;
@@ -104,14 +127,16 @@ export function initReadingSession({ getSelected, selectLine, isLoading, notify 
     portrait.hidden = hidden;
     showPortrait.hidden = !hidden;
   }
-  setPortraitHidden(matchMedia('(max-width: 850px)').matches);
+  setPortraitHidden(panelPrefs.portraitHidden ?? matchMedia('(max-width: 850px)').matches);
   document.getElementById('figureHide').onclick = (event) => {
     event.preventDefault();
     setPortraitHidden(true);
+    savePanelPreference('portraitHidden', true);
     showPortrait.focus({ preventScroll: true });
   };
   showPortrait.onclick = () => {
     setPortraitHidden(false);
+    savePanelPreference('portraitHidden', false);
     portrait.open = true;
     document.getElementById('figureHide').focus({ preventScroll: true });
   };
@@ -119,7 +144,7 @@ export function initReadingSession({ getSelected, selectLine, isLoading, notify 
   portrait.before(portraitHome);
   let floatingPortrait = false;
   let sidebarPortraitOpen = portrait.open;
-  let thumbnailOpen = null;
+  let thumbnailOpen = panelPrefs.portraitHidden === false ? true : null;
   const pinnedVisible = () => root.dataset.notes === 'pinned' && root.dataset.focus !== 'on';
   function syncPortrait() {
     const floating = view.dataset.panel !== 'notes' && !pinnedVisible();

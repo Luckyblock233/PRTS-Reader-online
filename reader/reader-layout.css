@@ -435,7 +435,7 @@
   bottom: auto;
   width: 180px;
   z-index: 9;
-  background: var(--panel);
+  background: transparent;
 }
 :root #readerView #focusFigureSlot:empty {
   display: none;
@@ -446,6 +446,7 @@
   width: 100%;
   margin: 0;
   box-shadow: none;
+  background: var(--panel);
   max-height: calc(100dvh - var(--app-header-height) - 100px);
   overflow: auto;
   scrollbar-width: none;
