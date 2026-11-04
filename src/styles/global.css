@@ -3,6 +3,7 @@
 }
 body {
   margin: 0;
+  padding-top: var(--app-header-height);
   background: var(--bg);
   color: var(--text);
   font: 14px/1.65 var(--ui-font);
@@ -116,7 +117,11 @@ h4 {
   display: none !important;
 }
 :root {
-  --app-header-height: 86px;
+  --app-header-size: 86px;
+  --app-header-height: var(--app-header-size);
+}
+:root[data-header-hidden='true'] {
+  --app-header-height: 0px;
 }
 .button {
   display: inline-block;
@@ -143,7 +148,7 @@ h4 {
 }
 @media (max-width: 850px) {
   :root {
-    --app-header-height: 132px;
+    --app-header-size: 52px;
   }
   .pageShell {
     padding: 28px 24px 48px;

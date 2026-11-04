@@ -26,7 +26,6 @@ export function initFigureViewer() {
   applyScale();
   scaleButton.onclick = () => {
     scaleIndex = (scaleIndex + 1) % scales.length;
-    window.dispatchEvent(new Event('reader:beforeappearance'));
     applyScale();
     try {
       localStorage.setItem(scaleStorageKey, String(scales[scaleIndex]));
@@ -34,7 +33,6 @@ export function initFigureViewer() {
       // Keep size switching usable even when the preference cannot be saved.
     }
     scaleButton.closest('details').open = true;
-    window.dispatchEvent(new Event('reader:appearance'));
   };
 
   const dialog = $('figureViewer');

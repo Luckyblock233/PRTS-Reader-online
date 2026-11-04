@@ -6,7 +6,7 @@
   position: relative;
 }
 :root #readerView #focusFigureSlot .figureCard > summary {
-  padding-right: 64px;
+  padding-right: 108px;
 }
 :root #readerView #focusFigureSlot .figureStage {
   height: min(var(--portrait-size, 180px), calc(100dvh - var(--app-header-height) - 160px));
@@ -18,7 +18,7 @@
   display: block;
   position: absolute;
   top: 4px;
-  right: 5px;
+  right: 49px;
   padding: 3px 7px;
   font-size: 12px;
   font-variant-numeric: tabular-nums;
@@ -134,16 +134,6 @@ dialog.figureViewer {
   flex-wrap: wrap;
   gap: 8px;
   color: var(--muted);
-}
-@media (min-width: 1200px) {
-  :root:not([data-focus='on']):not([data-notes='pinned'])
-    #readerView:not([data-panel='notes'])
-    main {
-    padding-right: calc(48px + max(220px, var(--portrait-size, 180px) + 40px));
-  }
-  :root[data-focus='on'] #readerView:not([data-panel='notes']) main {
-    width: calc(100% - 2 * max(220px, var(--portrait-size, 180px) + 40px));
-  }
 }
 @media (max-width: 650px) {
   .figureViewerToolbar {

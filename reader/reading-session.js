@@ -63,6 +63,18 @@ export function initReadingSession({ getSelected, selectLine, isLoading, notify 
   const root = document.documentElement;
   const main = document.querySelector('main');
   const header = document.querySelector('.readerHeader');
+  const tools = document.getElementById('readerTools');
+  const toolsToggle = document.getElementById('readerToolsToggle');
+  toolsToggle.onclick = () => {
+    window.dispatchEvent(new Event('reader:layoutchange'));
+    const previousHeight = header.offsetHeight;
+    const previousScroll = main.scrollTop;
+    tools.hidden = !tools.hidden;
+    toolsToggle.textContent = tools.hidden ? '显示工具栏' : '隐藏';
+    toolsToggle.setAttribute('aria-label', tools.hidden ? '显示阅读工具栏' : '隐藏阅读工具栏');
+    toolsToggle.setAttribute('aria-expanded', String(!tools.hidden));
+    main.scrollTop = Math.max(0, previousScroll + header.offsetHeight - previousHeight);
+  };
   let anchor;
   function capturePosition() {
     if (main.scrollTop === 0) return { scrollTop: 0 };
@@ -87,6 +99,22 @@ export function initReadingSession({ getSelected, selectLine, isLoading, notify 
   const view = document.getElementById('readerView');
   const wide = matchMedia('(min-width: 1151px)');
   const portrait = document.querySelector('.figureCard');
+  const showPortrait = document.getElementById('figureShow');
+  function setPortraitHidden(hidden) {
+    portrait.hidden = hidden;
+    showPortrait.hidden = !hidden;
+  }
+  setPortraitHidden(matchMedia('(max-width: 850px)').matches);
+  document.getElementById('figureHide').onclick = (event) => {
+    event.preventDefault();
+    setPortraitHidden(true);
+    showPortrait.focus({ preventScroll: true });
+  };
+  showPortrait.onclick = () => {
+    setPortraitHidden(false);
+    portrait.open = true;
+    document.getElementById('figureHide').focus({ preventScroll: true });
+  };
   const portraitHome = document.createComment('portrait home');
   portrait.before(portraitHome);
   let floatingPortrait = false;
@@ -176,7 +204,7 @@ export function initReadingSession({ getSelected, selectLine, isLoading, notify 
     if (!(event.target instanceof Element)) return;
     if (
       view.dataset.panel === 'notes' &&
-      !event.target.closest('#notesPanel, #inspectorToggle') &&
+      !event.target.closest('#notesPanel, #inspectorToggle, #figureShow') &&
       root.dataset.notes !== 'pinned'
     )
       closePanel(false);
@@ -198,6 +226,16 @@ export function initReadingSession({ getSelected, selectLine, isLoading, notify 
   });
   for (const id of ['readingSettings', 'readerFilters']) {
     document.getElementById(id).addEventListener('toggle', (event) => {
+      if (event.target.open)
+        header.style.setProperty(
+          '--reader-menu-right',
+          `${Math.max(16, innerWidth - header.getBoundingClientRect().right)}px`,
+        );
+      if (event.target.open)
+        header.style.setProperty(
+          '--reader-menu-top',
+          `${Math.max(8, header.getBoundingClientRect().bottom + 4)}px`,
+        );
       if (event.target.open)
         document.getElementById(
           id === 'readingSettings' ? 'readerFilters' : 'readingSettings',

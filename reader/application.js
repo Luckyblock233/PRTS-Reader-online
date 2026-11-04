@@ -2,6 +2,7 @@ const $ = (id) => document.getElementById(id);
 
 // Only the reader workspace and search results switch in place.
 export function showView(view) {
+  window.dispatchEvent(new Event('reader:viewchange'));
   document.documentElement.dataset.view = view;
   $('readerView').hidden = view !== 'reader';
   $('searchView').hidden = view !== 'search';

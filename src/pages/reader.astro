@@ -11,6 +11,7 @@ import '../../reader/reading.css';
 import '../../reader/application.css';
 import '../../reader/reader-layout.css';
 import '../../reader/figure-viewer.css';
+import '../../reader/reader-controls.css';
 ---
 
 <SiteLayout page="reader" title="阅读 · 泰拉纪事">
@@ -19,6 +20,9 @@ import '../../reader/figure-viewer.css';
     <ReadingDesk />
     <div id="focusFigureSlot" aria-label="专注阅读立绘"></div>
     <NotesPanel />
+    <button id="figureShow" type="button" hidden>
+      显示立绘
+    </button>
   </div>
   <SearchPanel />
   <FigureViewer />

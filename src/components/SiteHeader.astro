@@ -36,16 +36,24 @@ const links = [
       全文检索
     </button>
   </form>
+  <a class="mobileSearch" href={`${sitePath('reader/')}#search`}>
+    检索
+  </a>
   <button id="themeToggle" type="button" aria-label="切换到夜间模式">
     ☾
   </button>
 </header>
+<script>
+  import '../scripts/site-header.js';
+</script>
 <style>
   .appHeader {
-    position: sticky;
+    position: fixed;
     top: 0;
+    left: 0;
+    right: 0;
     z-index: 15;
-    height: var(--app-header-height);
+    height: var(--app-header-size);
     display: flex;
     align-items: center;
     gap: 18px;
@@ -53,6 +61,15 @@ const links = [
     border-bottom: 1px solid var(--border);
     background: var(--header);
     font-family: var(--ui-font);
+    white-space: nowrap;
+    transition: transform 120ms ease;
+  }
+  :global(:root[data-header-hidden='true']) .appHeader {
+    transform: translateY(-100%);
+    visibility: hidden;
+  }
+  .mobileSearch {
+    display: none;
   }
   .brand {
     color: var(--text);
@@ -125,13 +142,19 @@ const links = [
   }
   @media (max-width: 850px) {
     .appHeader {
-      flex-wrap: wrap;
-      align-content: center;
-      gap: 8px 12px;
+      flex-wrap: nowrap;
+      gap: 6px;
+      padding-inline: 10px;
+      overflow-x: auto;
+      scrollbar-width: none;
     }
     .brand {
-      flex: 1;
-      font-size: 15px;
+      flex: 1 0 auto;
+      font-size: 13px;
+      letter-spacing: 0;
+    }
+    .appNav {
+      flex-shrink: 0;
     }
     .appNav a {
       font-size: 12px;
@@ -142,9 +165,14 @@ const links = [
       padding: 6px;
     }
     .topSearch {
-      order: 5;
-      flex-basis: 100%;
-      max-width: none;
+      display: none;
+    }
+    .mobileSearch {
+      display: block;
+      flex-shrink: 0;
+      padding: 6px;
+      font-size: 12px;
+      text-decoration: none;
     }
   }
   @media (max-width: 500px) {
