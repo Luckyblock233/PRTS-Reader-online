@@ -32,6 +32,7 @@ for (const file of [
   'reader/application.js',
   'reader/corpus-search.js',
   'reader/features.js',
+  'reader/figure-viewer.js',
   'reader/reading-session.js',
   'public/preferences.js',
 ]) {

@@ -1,4 +1,5 @@
 import { resolveFigure } from './static-figures.js';
+import { setViewerFigure } from './figure-viewer.js';
 const $ = (id) => document.getElementById(id);
 // Hash the full source speaker label: identical labels keep their color across chapters.
 export function speakerColor(name) {
@@ -18,6 +19,7 @@ export function setFigureSnapshot(snapshot) {
   figureSnapshot = snapshot;
 }
 export function clearFigure() {
+  setViewerFigure(null);
   figureVersion++;
   $('figureName').textContent = '选择一段对白';
   $('figureName').style.color = '';
@@ -28,7 +30,8 @@ export function clearFigure() {
   $('figureRef').textContent = 'figure_art · 尚未选择';
   $('figureStatus').textContent = '只展示记录明确引用的资源，不用立绘推断角色身份。';
 }
-export async function showFigure(line) {
+export async function showFigure(line, meta) {
+  setViewerFigure(null);
   const version = ++figureVersion;
   const name = line.speaker || '无发言标签';
   const ref = line.raw.figure_art;
@@ -59,6 +62,14 @@ export async function showFigure(line) {
       if (version !== figureVersion) return;
       img.hidden = false;
       $('figureEmpty').hidden = true;
+      setViewerFigure({
+        url: image.url,
+        name,
+        ref,
+        member: meta?.member,
+        pointer: line.pointer,
+        sourceId: line.sourceId,
+      });
     };
     img.onerror = () => {
       if (version !== figureVersion) return;

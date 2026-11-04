@@ -1,0 +1,34 @@
+<details class="figureCard" open>
+  <summary>
+    角色立绘
+    <button id="figureScale" class="figureScale" type="button" aria-label="立绘大小 100%，点击切换">
+      100%
+    </button>
+  </summary>
+  <div class="figureHeading">
+    <span id="figureName">选择一段对白</span>
+    <span class="figureBadge">AVG</span>
+  </div>
+  <div id="figureStage" class="figureStage">
+    <button
+      id="figureOpen"
+      class="figureImageButton"
+      type="button"
+      aria-label="放大查看角色立绘"
+      aria-haspopup="dialog"
+      hidden
+    >
+      <img id="figureImage" alt="" hidden />
+    </button>
+    <p id="figureEmpty">点击记录，在此查看对应立绘。</p>
+  </div>
+  <details>
+    <summary>资源详情</summary>
+    <p id="figureRef" class="hint">
+      figure_art · 尚未选择
+    </p>
+    <p id="figureStatus" class="hint">
+      只展示记录明确引用的资源，不用立绘推断角色身份。
+    </p>
+  </details>
+</details>

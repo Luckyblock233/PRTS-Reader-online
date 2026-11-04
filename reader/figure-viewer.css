@@ -1,0 +1,166 @@
+/* The same card moves into the notes panel; only floating portraits use this size. */
+:root #readerView #focusFigureSlot {
+  width: min(var(--portrait-size, 180px), calc(100vw - 32px));
+}
+:root #readerView #focusFigureSlot .figureCard {
+  position: relative;
+}
+:root #readerView #focusFigureSlot .figureCard > summary {
+  padding-right: 64px;
+}
+:root #readerView #focusFigureSlot .figureStage {
+  height: min(var(--portrait-size, 180px), calc(100dvh - var(--app-header-height) - 160px));
+}
+.figureScale {
+  display: none;
+}
+#focusFigureSlot .figureScale {
+  display: block;
+  position: absolute;
+  top: 4px;
+  right: 5px;
+  padding: 3px 7px;
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+}
+#readerView .figureImageButton {
+  display: block;
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  cursor: zoom-in;
+}
+#readerView .figureImageButton[hidden] {
+  display: none;
+}
+.figureImageButton:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: -3px;
+}
+dialog.figureViewer {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100dvh;
+  max-width: none;
+  max-height: none;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: var(--bg);
+  color: var(--text);
+  overflow: hidden;
+}
+.figureViewer[open] {
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr) auto;
+}
+.figureViewer::backdrop {
+  background: #000c;
+}
+.figureViewerToolbar {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 16px 24px;
+  border-bottom: 1px solid var(--border);
+}
+.figureViewerToolbar h2 {
+  flex: 1;
+  min-width: 0;
+  margin: 0;
+  font-size: 18px;
+  overflow-wrap: anywhere;
+}
+.figureViewerControls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.figureViewer button {
+  margin: 0;
+  white-space: nowrap;
+}
+#figureZoomLabel {
+  min-width: 50px;
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+}
+.figureViewerViewport {
+  min-height: 0;
+  overflow: auto;
+  overscroll-behavior: contain;
+  touch-action: none;
+  cursor: grab;
+  background: var(--surface);
+}
+.figureViewerViewport.dragging {
+  cursor: grabbing;
+}
+.figureViewerCanvas {
+  display: grid;
+  place-items: center;
+  min-width: 100%;
+  min-height: 100%;
+  width: max-content;
+  height: max-content;
+}
+#figureViewerImage {
+  display: block;
+  max-width: none;
+  max-height: none;
+  object-fit: contain;
+  user-select: none;
+}
+.figureViewerCaption {
+  padding: 12px 24px 16px;
+  border-top: 1px solid var(--border);
+  max-height: 28dvh;
+  overflow: auto;
+  font-size: 12px;
+}
+#figureViewerSource {
+  margin: 0 0 8px;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+.figureViewerCaption > div {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px;
+  color: var(--muted);
+}
+@media (min-width: 1200px) {
+  :root:not([data-focus='on']):not([data-notes='pinned'])
+    #readerView:not([data-panel='notes'])
+    main {
+    padding-right: calc(48px + max(220px, var(--portrait-size, 180px) + 40px));
+  }
+  :root[data-focus='on'] #readerView:not([data-panel='notes']) main {
+    width: calc(100% - 2 * max(220px, var(--portrait-size, 180px) + 40px));
+  }
+}
+@media (max-width: 650px) {
+  .figureViewerToolbar {
+    flex-wrap: wrap;
+    padding: 10px 12px;
+    gap: 10px;
+  }
+  .figureViewerControls {
+    order: 3;
+    width: 100%;
+    justify-content: center;
+  }
+  .figureViewer button {
+    padding: 6px 8px;
+    font-size: 12px;
+  }
+  .figureViewerCaption {
+    padding: 10px 12px;
+  }
+}

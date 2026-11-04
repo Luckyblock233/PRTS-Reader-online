@@ -1,3 +1,7 @@
+---
+import FigureCard from './FigureCard.astro';
+---
+
 <aside class="inspector" id="notesPanel" aria-label="段落笔记与出处">
   <div class="notesHeading">
     <h2>笔记与出处</h2>
@@ -5,26 +9,7 @@
       关闭
     </button>
   </div>
-  <details class="figureCard" open>
-    <summary>角色立绘</summary>
-    <div class="figureHeading">
-      <span id="figureName">选择一段对白</span>
-      <span class="figureBadge">AVG</span>
-    </div>
-    <div id="figureStage" class="figureStage">
-      <img id="figureImage" alt="" hidden />
-      <p id="figureEmpty">点击记录，在此查看对应立绘。</p>
-    </div>
-    <details>
-      <summary>资源详情</summary>
-      <p id="figureRef" class="hint">
-        figure_art · 尚未选择
-      </p>
-      <p id="figureStatus" class="hint">
-        只展示记录明确引用的资源，不用立绘推断角色身份。
-      </p>
-    </details>
-  </details>
+  <FigureCard />
   <section id="notesPane">
     <h3>所选段落</h3>
     <blockquote id="selectedQuote">请选择段落</blockquote>

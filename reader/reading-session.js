@@ -172,6 +172,7 @@ export function initReadingSession({ getSelected, selectLine, isLoading, notify 
       }),
   );
   document.addEventListener('pointerdown', (event) => {
+    if (document.querySelector('dialog[open]')) return;
     if (!(event.target instanceof Element)) return;
     if (
       view.dataset.panel === 'notes' &&
@@ -186,6 +187,7 @@ export function initReadingSession({ getSelected, selectLine, isLoading, notify 
     }
   });
   document.addEventListener('keydown', (event) => {
+    if (document.querySelector('dialog[open]')) return;
     if (event.key === 'Escape' && view.dataset.panel) {
       closePanel();
       event.preventDefault();

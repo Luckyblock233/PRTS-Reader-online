@@ -4,11 +4,13 @@ import ChapterLibrary from '../components/reader/ChapterLibrary.astro';
 import ReadingDesk from '../components/reader/ReadingDesk.astro';
 import NotesPanel from '../components/reader/NotesPanel.astro';
 import SearchPanel from '../components/reader/SearchPanel.astro';
+import FigureViewer from '../components/reader/FigureViewer.astro';
 import '../../reader/style.css';
 import '../../reader/features.css';
 import '../../reader/reading.css';
 import '../../reader/application.css';
 import '../../reader/reader-layout.css';
+import '../../reader/figure-viewer.css';
 ---
 
 <SiteLayout page="reader" title="阅读 · 泰拉纪事">
@@ -19,6 +21,7 @@ import '../../reader/reader-layout.css';
     <NotesPanel />
   </div>
   <SearchPanel />
+  <FigureViewer />
   <button id="exitFocus" type="button" hidden>
     退出专注 · Esc
   </button>

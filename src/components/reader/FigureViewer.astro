@@ -1,0 +1,49 @@
+<dialog
+  id="figureViewer"
+  class="figureViewer"
+  aria-labelledby="figureViewerTitle"
+  aria-describedby="figureViewerSource"
+>
+  <header class="figureViewerToolbar">
+    <h2 id="figureViewerTitle">角色立绘</h2>
+    <div class="figureViewerControls" aria-label="图片缩放">
+      <button id="figureZoomOut" type="button" aria-label="缩小图片">
+        −
+      </button>
+      <output id="figureZoomLabel" aria-live="polite">
+        100%
+      </output>
+      <button id="figureZoomIn" type="button" aria-label="放大图片">
+        ＋
+      </button>
+      <button id="figureZoomFit" type="button">
+        适应窗口
+      </button>
+      <button id="figureZoomOriginal" type="button">
+        原始尺寸
+      </button>
+    </div>
+    <button id="figureViewerClose" type="button" aria-label="关闭图片查看器" autofocus>
+      关闭 ×
+    </button>
+  </header>
+  <div
+    id="figureViewerViewport"
+    class="figureViewerViewport"
+    tabindex="0"
+    aria-label="立绘图片，可滚动或拖动查看，使用加减键缩放"
+  >
+    <div class="figureViewerCanvas">
+      <img id="figureViewerImage" alt="" draggable="false" />
+    </div>
+  </div>
+  <footer class="figureViewerCaption">
+    <p id="figureViewerSource"></p>
+    <div>
+      <span>滚轮缩放 · 拖动查看 · Esc 关闭</span>
+      <a id="figureViewerOriginal" target="_blank" rel="noopener noreferrer">
+        打开原图 ↗
+      </a>
+    </div>
+  </footer>
+</dialog>

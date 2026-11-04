@@ -2,6 +2,7 @@ import { siteUrl } from './static-data.js';
 import { initReaderNavigation, showView } from './application.js';
 import { initCorpusSearch, setSearchSnapshot } from './corpus-search.js';
 import { speakerColor, showFigure, clearFigure, setFigureSnapshot } from './features.js';
+import { initFigureViewer } from './figure-viewer.js';
 import {
   initReadingSession,
   revealCurrentChapter,
@@ -267,7 +268,7 @@ function selectLine(index) {
   $('note').value = rec()?.note || '';
   $('bookmark').textContent = rec()?.bookmark ? '★ 已收藏' : '☆ 收藏段落';
   history.replaceState(null, '', `${location.pathname}#${current.meta.id}/${index}`);
-  showFigure(selected);
+  showFigure(selected, current.meta);
   saveReadingPosition(catalog.snapshot.id, current.meta, index);
   resumePosition = { chapterId: current.meta.id, index };
 }
@@ -319,9 +320,7 @@ async function navigate(id, index, keyword = '') {
       typeof c.summary === 'string' ? c.summary : JSON.stringify(c.summary ?? '未提供');
     $('notice').hidden = !c.meta.hasChoices && c.meta.optionTrace !== false;
     $('noticeTitle').textContent =
-      c.meta.optionTrace === false
-        ? '分支跳转不可靠'
-        : '含分支，按原文件顺序阅读';
+      c.meta.optionTrace === false ? '分支跳转不可靠' : '含分支，按原文件顺序阅读';
     $('noticeDetail').textContent =
       c.meta.optionTrace === false
         ? '上游标记 OPTIONTRACE=false。分支追踪不可靠，请在源 JSON 中人工核对。'
@@ -452,6 +451,7 @@ $('import').onchange = async (e) => {
 };
 window.addEventListener('beforeunload', saveDraft);
 window.addEventListener('pagehide', saveDraft);
+initFigureViewer();
 initReadingSession({
   getSelected: () => selected,
   selectLine,
