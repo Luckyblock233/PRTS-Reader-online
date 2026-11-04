@@ -18,4 +18,55 @@
     </select>
   </div>
   <nav id="tree" aria-label="章节目录"></nav>
+  <div class="catalogFooter">
+    <button id="catalogBackToTop" type="button" aria-label="回到目录最上方">
+      ↑ 目录顶部
+    </button>
+  </div>
 </aside>
+
+<script>
+  const panel = document.getElementById('chapterPanel');
+  document.getElementById('catalogBackToTop')?.addEventListener('click', () => {
+    panel?.scrollTo({
+      top: 0,
+      behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth',
+    });
+  });
+</script>
+
+<style>
+  :global(#readerView[data-panel='catalog']) .library {
+    display: flex;
+    flex-direction: column;
+  }
+  @media (min-width: 1151px) {
+    :global(:root:not([data-focus='on']) #readerView) .library {
+      display: flex;
+      flex-direction: column;
+    }
+  }
+  .library > * {
+    flex-shrink: 0;
+  }
+  #tree {
+    flex-grow: 1;
+  }
+  .catalogFooter {
+    position: sticky;
+    bottom: 0;
+    z-index: 3;
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 12px;
+    pointer-events: none;
+  }
+  .catalogFooter button {
+    pointer-events: auto;
+    padding: 6px 10px;
+    font-size: 12px;
+    white-space: nowrap;
+    background: var(--panel);
+    box-shadow: 0 2px 8px #0001;
+  }
+</style>
